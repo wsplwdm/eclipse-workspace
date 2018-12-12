@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;lab1.NotInstanceOfInteger&apos; to &apos;NotInstanceOf&apos;&#x0D;&#x0A;- Original project: &apos;java&apos;&#x0D;&#x0A;- Original element: &apos;lab1.NotInstanceOfInteger&apos;&#x0D;&#x0A;- Renamed element: &apos;lab1.NotInstanceOf&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Rename similarly named elements&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;NotInstanceOfInteger&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;lab1{NotInstanceOfInteger.java[NotInstanceOfInteger" matchStrategy="1" name="NotInstanceOf" qualified="false" references="true" similarDeclarations="true" stamp="1542315282712" textual="false" version="1.0"/>
+</session>

@@ -1,0 +1,57 @@
+package socket;
+
+import java.io.*;
+import java.net.*;
+ 
+public class Main {
+    public static void main(String[] args) throws IOException {
+ 
+        Socket echoSocket = null;
+        PrintWriter out = null;
+        BufferedReader in = null;
+ 
+        try {
+            echoSocket = new Socket("192.168.1.159", 3000);
+            out = new PrintWriter(echoSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(
+            echoSocket.getInputStream()));
+        } catch (UnknownHostException e) {
+            System.err.println("Don't know about host: localhost.");
+            System.exit(1);
+        } catch (IOException e) {
+            System.err.println("Couldn't get I/O for "
+            + "the connection to: localhost.");
+            System.exit(1);
+        }
+ 
+        BufferedReader stdIn = new BufferedReader(
+        new InputStreamReader(System.in));
+        String userInput;
+ 
+        System.out.println("Type a message: ");
+        File file = new File("C:\\Users\\darkb\\Desktop\\slowa.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String st; 
+        while ((st = br.readLine()) != null) {
+        	out.println("LOGIN szymon;"+st);
+        	System.out.println("LOGIN szymon;"+st);
+        	System.out.println(in.readLine());
+        	int result=Integer.parseInt(in.readLine());
+			if(result<(st.length()/2)) {
+				System.out.println("echo: " + st);
+				
+			}
+        }
+       
+        
+        while ((userInput = stdIn.readLine()) != null) {
+            out.println(userInput);
+            System.out.println("echo: " + in.readLine());
+        }
+ 
+        out.close();
+        in.close();
+        stdIn.close();
+        echoSocket.close();
+    }
+}

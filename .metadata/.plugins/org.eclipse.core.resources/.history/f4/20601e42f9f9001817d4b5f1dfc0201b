@@ -1,0 +1,94 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import lab1.*;
+import lab1.Integer;
+
+public class Main {
+	public static void main(String[] args) throws Exception {
+		
+		String path ="C:\\Users\\darkb\\Documents\\data2.csv"
+		File file = new File(path);
+    	BufferedReader br;
+		try {
+			br = new BufferedReader(new FileReader(file));
+		
+		boolean header = true;
+		String firstLine = br.readLine();
+    	String[] nazwy = firstLine.split(",");
+    	
+    	
+		String max = " ",min= " ",mean= " ",var= " ",sum= " ",std =" ";
+
+    	int colnumber = nazwy.length;
+    	String secondLine = br.readLine();
+    	String[] typ = secondLine.split(",");
+    	Value[] types = new Value[colnumber];
+    	
+    	for(int i =0;i<colnumber;i++) {
+    		try {
+    			int result = java.lang.Integer.parseInt(typ[i]);
+    			Integer resulttype = new lab1.Integer(result);	
+    			types[i]=resulttype;
+    			}
+    		catch(NumberFormatException ei){
+    			try {
+    				double result = java.lang.Double.parseDouble(typ[i]);
+    				lab1.Double resulttype = new lab1.Double(result);
+    				types[i]=resulttype;
+    				}
+    			catch(NumberFormatException ed) {
+    				try {
+        				float result = java.lang.Float.parseFloat(typ[i]);
+        				lab1.Float resulttype = new lab1.Float(result);
+        				types[i]=resulttype;            				}
+        			catch(NumberFormatException ef) {
+        				String result = typ[i];
+        				lab1.SValue resulttype = new lab1.SValue(result);
+        				types[i]=resulttype;
+        				}
+    			}
+    		}
+    		
+    	}
+    	
+    	
+		DataFrame plik = new DataFrame(path,types,header);
+		plik.print();
+		for(int i =0; i<colnumber;i++) {
+	    	max += plik.max().df.get(i).list.get(0).toString() +"		";
+	    	min += plik.min().df.get(i).list.get(0).toString() +"		";
+	    	mean += plik.mean().df.get(i).list.get(0).toString() +" 	 ";
+	    	var += plik.var().df.get(i).list.get(0).toString() +"		";
+	    	sum += plik.sum().df.get(i).list.get(0).toString() +"		";
+	    	std += plik.std().df.get(i).list.get(0).toString() +"		";
+	    }
+	    	
+	 
+        System.out.println("data frame stats:\n \n"+"max:  "+max+"\n"+"min:  "+min+"\n"+"mean: "+mean+"\n"+"var:  "+var+"\n"+"sum:  "+sum+"\n"+"std:  "+std+"\n");
+		
+        
+        
+        
+        DB db = new DB(plik);
+        db.getDataFrame();
+        
+        
+        
+        
+		} catch (FileNotFoundException e) {
+			
+			e.printStackTrace();
+		} 
+		
+	
+	
+	}   
+}
