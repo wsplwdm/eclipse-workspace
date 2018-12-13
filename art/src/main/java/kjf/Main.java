@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import lab1.*;
 
 public class Main extends Application{
 	public static void main(String[] args) {
@@ -23,6 +24,11 @@ public class Main extends Application{
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Data Frame");
 		primaryStage.show();
+		
+		
+		
+		
+		
 		}
 
 

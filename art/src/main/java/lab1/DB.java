@@ -79,7 +79,8 @@ public class DB extends DataFrame {
         try {
             connect();
             stat = connectvar.createStatement();
-            //stat.executeUpdate("Drop table Frame");
+           
+            stat.executeUpdate("Drop table Frame");
             String command = "CREATE TABLE Frame (";
             
             for(int i=0;i<dftosave.toList().size()-1;i++){

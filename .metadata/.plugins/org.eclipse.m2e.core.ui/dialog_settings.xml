@@ -4,11 +4,13 @@
 	</section>
 	<section name="MavenProjectWizardArtifactPage">
 		<list key="groupId">
+			<item value="df"/>
 			<item value="labs"/>
 		</list>
 		<list key="name">
 		</list>
 		<list key="artifactId">
+			<item value="art"/>
 			<item value="labs"/>
 		</list>
 		<list key="projectNameTemplate">
@@ -52,10 +54,13 @@
 	</section>
 	<section name="Maven2ProjectWizardArchifactPage">
 		<list key="package">
+			<item value="df.artifact"/>
 		</list>
 		<list key="groupId">
+			<item value="df"/>
 		</list>
 		<list key="artifactId">
+			<item value="artifact"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>

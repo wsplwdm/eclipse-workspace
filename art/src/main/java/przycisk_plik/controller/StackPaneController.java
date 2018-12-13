@@ -35,11 +35,12 @@ import javafx.stage.FileChooser.ExtensionFilter;
 
 public class StackPaneController {
 	
-	@FXML
-    private Button button;
+
 
     @FXML
     private Button button2;
+    @FXML
+    private Button db;
 
     @FXML
     private Label stats;
@@ -68,8 +69,10 @@ public class StackPaneController {
     	
     DataFrame plik;
     String[] nazwy;
-    
-    
+    LineChart.Series<?,?> series = new XYChart.Series();
+    int xaxis,yaxis;
+    Value[] xl;
+    Value[] yl;
 
 	public StackPaneController() {
 		
@@ -78,47 +81,68 @@ public class StackPaneController {
 	
     @FXML
     void onActionDraw(ActionEvent event) {
-    	int x =plik.df.indexOf( choiceX.getValue());
-    	int y =plik.df.indexOf( choiceY.getValue());    	
-
-        lineChart.getData().clear();
-        LineChart.Series<?,?> series = new XYChart.Series();
-        Value[] xl = new Value[plik.size()];
-        Value[] yl = new Value[plik.size()];
-        for(int i =0;i<plik.size();i++) {
-      
-        	xl[i]=(plik.df.get(x).list.get(i));
-        		        	
-        }
-        for(int i =0;i<plik.size();i++) {
-		      
-        	yl[i]=(plik.df.get(y).list.get(i));
-        		        	
-        }
-        for(int i=0;i<xl.length;i++) {
-        series.getData().add(new XYChart.Data(xl[i].GetValue(), yl[i].GetValue()));
-        
-        }
-        lineChart.getData().addAll(series);
+		stats1.setText("");
+	    lineChart.getData().clear();
+	    series.getData().clear();
+	    	try {
+	    	xaxis =plik.df.indexOf( choiceX.getValue())+1;
+	   
+	    	yaxis =plik.df.indexOf( choiceY.getValue())+1;    	
+	   
+	        
+	        
+	    	xl= new Value[plik.size()];
+	        yl= new Value[plik.size()];
+	        for(int i =0;i<plik.get(xaxis).list.size();i++) {
+	      
+	        	xl[i]=(plik.df.get(xaxis).list.get(i));
+	        		        	
+	        }
+	        for(int i =0;i<plik.get(yaxis).list.size();i++) {
+			      
+	        	yl[i]=(plik.df.get(yaxis).list.get(i));
+	        		        	
+	        }
+	        for(int i=0;i<xl.length;i++) {
+	        series.getData().add(new XYChart.Data(xl[i].GetValue(), yl[i].GetValue()));
+	        
+	        }
+	        lineChart.getData().addAll(series);
+    	}
+    	catch(Exception e) {
+    		stats1.setText(e.toString());
+			e.printStackTrace();
+    	}
+    }
+    @FXML
+    public void onActionDB() {
+    	stats1.setText("");
+    	try {
+    	DB databaseframe= new DB(plik);
+    	stats1.setText(databaseframe.toString());
+    	DataFrame df = databaseframe.getDataFrame();
+    	df.print();
+    	}
+    	catch(Exception e) {
+    		stats1.setText(e.toString());
+			e.printStackTrace();
+    	}
     	
     }
-
    
 	
-	@FXML
-	public void onActonButton() {
-		
-	}
-	
+
 	@FXML
 	public void onActonButton2() {
+		stats1.setText("");
 		String max = " ",min= " ",mean= " ",var= " ",sum= " ",std =" ";
 		FileChooser fc = new FileChooser();
+		try {
 		fc.getExtensionFilters().add(new ExtensionFilter("csv Files", "*.csv"));
 		List<File> f = fc.showOpenMultipleDialog(null);
 		for(File file: f) {
     	boolean header = true;
-        try {
+        
         	BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath())); 
         	
         	String firstLine = br.readLine();
@@ -160,7 +184,7 @@ public class StackPaneController {
         	}
         	
         	
-			DataFrame plik = new DataFrame(file.getAbsolutePath(),types,header);
+			plik = new DataFrame(file.getAbsolutePath(),types,header);
 			
 			
 			
@@ -177,16 +201,18 @@ public class StackPaneController {
 			    	
 			 
 		        stats.setText("data frame stats:\n \n"+"max:  "+max+"\n"+"min:  "+min+"\n"+"mean: "+mean+"\n"+"var:  "+var+"\n"+"sum:  "+sum+"\n"+"std:  "+std+"\n");
-		        
-		    
-		        
+		        lineChart.getData().clear();
+		    	series.getData().clear();
 		        br.close();
+		        
+		        
+		}
 		} catch (Exception e) {
 			stats1.setText(e.toString());
 			e.printStackTrace();
 		}
         
-		}
+		
 		
 	}
 
