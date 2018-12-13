@@ -50,4 +50,5 @@
 <fullyQualifiedTypeName name="javafx.collections.FXCollections"/>
 <fullyQualifiedTypeName name="lab1.DataFrame"/>
 <fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="lab1.DB"/>
 </qualifiedTypeNameHistroy>

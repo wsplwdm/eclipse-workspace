@@ -1,29 +1,26 @@
 package lab1;
 
-
-
 import java.sql.*;
+
 public class DB extends DataFrame {
     private Connection connectvar = null;
     private Statement stat = null;
     private ResultSet result = null;
+    
     public void connect(){
         try{
            connectvar = DriverManager.getConnection("jdbc:mysql://mysql.agh.edu.pl/margansk","margansk","pAuhC1rjphRvK86h");
         }
-
-     
         catch(Exception e){
             throw new RuntimeException(e);
         }
     }
+    
     public DataFrame getDataFrame(){
         DataFrame returnframe =null;
         try{
             connect();
             stat= connectvar.createStatement();
-
-
             result=stat.executeQuery("select *  FROM Frame");
             ResultSetMetaData rsmd = result.getMetaData();
             int numberofcols= rsmd.getColumnCount();
@@ -48,10 +45,7 @@ public class DB extends DataFrame {
                 while (result.next()) {
 
                     cols[i-1].addElement(new SValue(result.getString(i)));
-
-
                 }
-
             }
              returnframe =new DataFrame(cols);
         }catch(java.sql.SQLException e){
@@ -79,7 +73,6 @@ public class DB extends DataFrame {
         try {
             connect();
             stat = connectvar.createStatement();
-           
             stat.executeUpdate("Drop table Frame");
             String command = "CREATE TABLE Frame (";
             
@@ -142,14 +135,12 @@ public class DB extends DataFrame {
             System.out.println("SQL vendor error "+e.getErrorCode());
         }
     }
+    
     public DataFrame getDataFrameFrom(String where){
         DataFrame returnframe =null;
         try{
             connect();
             stat= connectvar.createStatement();
-
-
-
             result=stat.executeQuery(where);
             ResultSetMetaData rsmd = result.getMetaData();
             int numberofcols= rsmd.getColumnCount();
@@ -175,10 +166,7 @@ public class DB extends DataFrame {
                 while (result.next()) {
 
                     cols[i-1].addElement(new SValue(result.getString(i)));
-
-
                 }
-
             }
             returnframe =new DataFrame(cols);
         }catch(java.sql.SQLException e){
@@ -201,6 +189,7 @@ public class DB extends DataFrame {
         }
         return returnframe ;
     }
+    
     public DataFrame min(){
         DataFrame returnframe =null;
         try{
@@ -240,6 +229,7 @@ public class DB extends DataFrame {
         }
         return returnframe ;
     }
+    
     public DataFrame max(){
         DataFrame returnframe =null;
         try{
@@ -279,6 +269,7 @@ public class DB extends DataFrame {
         }
         return returnframe ;
     }
+    
     public DataFrame groupby(String colname){
         DataFrame returnframe =null;
         try{
