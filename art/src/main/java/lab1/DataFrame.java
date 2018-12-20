@@ -65,11 +65,14 @@ public class DataFrame implements groupby{
     	
     	while ((strLine = br.readLine()) != null){
     		String[] tmp = strLine.split(",");
+    		
     		Float[] tmp2 = new Float[tmp.length];
     		for(int i=0;i<tmp.length;i++) {
     			Float tmp3 = new Float();
     			tmp3.create(tmp[i]);
+    			///
     			
+    			////
     			
     			tmp2[i]=tmp3;
     		}
@@ -359,7 +362,7 @@ public class DataFrame implements groupby{
 
     
     
-    //dodawanie, odejmowanie, mnozenie, dzielenie, potegowanie elementów columny przez wartosc
+    //dodawanie, odejmowanie, mnozenie, dzielenie, potegowanie elementï¿½w columny przez wartosc
     public Column colvalmul(Column k,Value mulelement) {
     	Column tmp = new Column(k.getName(),k.getType());
     	for(int i=0;i< k.getColumnSize();i++) {

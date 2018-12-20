@@ -6,7 +6,6 @@
 <fullyQualifiedTypeName name="java.io.InputStreamReader"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="javafx.application.Application"/>
-<fullyQualifiedTypeName name="przycisk_plik.controller.StackPaneController"/>
 <fullyQualifiedTypeName name="javafx.scene.control.Button"/>
 <fullyQualifiedTypeName name="javafx.stage.FileChooser"/>
 <fullyQualifiedTypeName name="javafx.stage.FileChooser.ExtensionFilter"/>
@@ -51,4 +50,6 @@
 <fullyQualifiedTypeName name="lab1.DataFrame"/>
 <fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="lab1.DB"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="przycisk_plik.controller.StackPaneController"/>
 </qualifiedTypeNameHistroy>
