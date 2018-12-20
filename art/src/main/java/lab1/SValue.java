@@ -2,8 +2,13 @@ package lab1;
 
 public class SValue extends Value {
     public String value;
+    private static SValue svalue = new SValue();
+    
     public SValue(String newvalue){
         value = newvalue;
+    }
+    public SValue getInstance(){
+        return svalue;
     }
     public SValue() {
 		// TODO Auto-generated constructor stub
@@ -86,8 +91,8 @@ public class SValue extends Value {
 
     @Override
     public Value create(String s) {
-        Value returnvalue = new SValue(s);
-        return returnvalue;
+    	value = s;
+        return this;
     }
     @Override
     protected Value clone(){

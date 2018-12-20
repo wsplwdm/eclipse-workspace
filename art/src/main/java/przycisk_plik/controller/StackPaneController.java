@@ -111,11 +111,34 @@ public class StackPaneController {
 	}
 	
 	@FXML
+    public void onActionDB() {
+    	stats1.setText("");
+    	try {
+    	DB databaseframe= new DB(plik);
+    	stats1.setText("databasename:"+databaseframe.toString());
+    	DataFrame df = databaseframe.getDataFrame();
+    	df.print();
+    	System.out.print("max \n");
+    	databaseframe.max().print();
+    	}
+    	catch(Exception e) {
+    		stats1.setText(e.toString());
+			e.printStackTrace();
+    	}
+    	
+    }
+	
+	@FXML
 	public void onActonButton2() {
+		
 		String max = " ",min= " ",mean= " ",var= " ",sum= " ",std =" ";
+		try {
 		FileChooser fc = new FileChooser();
 		fc.getExtensionFilters().add(new ExtensionFilter("csv Files", "*.csv"));
+		
 		List<File> f = fc.showOpenMultipleDialog(null);
+		
+		
 		for(File file: f) {
     	boolean header = true;
         try {
@@ -160,8 +183,9 @@ public class StackPaneController {
         	}
         	
         	
-			DataFrame plik = new DataFrame(file.getAbsolutePath(),types,header);
-			
+			//DataFrame plik = new DataFrame(file.getAbsolutePath(),types,header);
+			DataFrame plik = new DataFrame(file.getAbsolutePath(),nazwy,types);
+
 			
 			
 			 
@@ -186,6 +210,9 @@ public class StackPaneController {
 			e.printStackTrace();
 		}
         
+		}
+		}catch(Exception ef) {
+			stats1.setText(ef.toString());
 		}
 		
 	}

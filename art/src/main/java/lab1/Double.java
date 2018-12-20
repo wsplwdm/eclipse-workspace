@@ -6,7 +6,7 @@ public class Double extends Value {
     private double value;
     private static Double aDouble = new Double();
 
-    public static Double getInstance(){
+    public Double getInstance(){
         return aDouble;
     }
 
@@ -28,47 +28,47 @@ public class Double extends Value {
 
     @Override
     public Value add(Value value) throws NotInstanceOf {
-        if (value instanceof Integer){
-            this.value += ((Integer) value).getValue();
+        try {
+            this.value += ((Double) value).getValue();
             return this;
         }
-        else {
-        	throw new NotInstanceOf("Invalid Value type(not instance of Integer)", value);
+        catch(Exception e) {
+        	throw new NotInstanceOf("Invalid Value type(not instance of Double)", value);
         }
     }
 
     @Override
     public Value sub(Value value)throws NotInstanceOf {
-        if (value instanceof Integer){
-            this.value -= ((Integer) value).getValue();
+        try{
+            this.value -= ((Double) value).getValue();
             return this;
         }
-        else {
-        	throw new NotInstanceOf("Invalid Value type(not instance of Integer)", value);
+        catch(Exception e) {
+        	throw new NotInstanceOf("Invalid Value type(not instance of Double)", value);
         }
 
     }
 
     @Override
     public Value mul(Value value) throws NotInstanceOf{
-        if (value instanceof Integer){
-            this.value *= ((Integer) value).getValue();
+        try {
+            this.value *= ((Double) value).getValue();
             return this;
         }
-        else {
-        	throw new NotInstanceOf("Invalid Value type(not instance of Integer)", value);
+        catch(Exception e) {
+        	throw new NotInstanceOf("Invalid Value type(not instance of Double)", value);
         }
 
     }
 
     @Override
     public Value div(Value value) throws NotInstanceOf{
-        if (value instanceof Integer){
-            this.value /= ((Integer) value).getValue();
+        try{
+            this.value /= ((Double) value).getValue();
             return this;
         }
-        else {
-        	throw new NotInstanceOf("Invalid Value type(not instance of Integer)", value);
+        catch(Exception e) {
+        	throw new NotInstanceOf("Invalid Value type(not instance of Double)", value);
         }
 
     }
@@ -100,22 +100,22 @@ public class Double extends Value {
 
     @Override
     public boolean lte(Value value)throws NotInstanceOf {
-        if (value instanceof Integer) {
-            return this.value <= ((Integer) value).getValue();
+        try {
+            return this.value <= ((Double) value).getValue();
         }
         
-        else {
+        catch(Exception e) {
         	throw new NotInstanceOf("Invalid Value type(not instance of Integer)", value);
         }
     }
 
     @Override
     public boolean gte(Value value) throws NotInstanceOf{
-        if (value instanceof Integer) {
-            return this.value >= ((Integer) value).getValue();
+        try {
+            return this.value >= ((Double) value).getValue();
         }
         
-        else {
+        catch(Exception e) {
         	throw new NotInstanceOf("Invalid Value type(not instance of Integer)", value);
         }
     }
@@ -146,7 +146,7 @@ public class Double extends Value {
 
     @Override
     public Value create(String s) {
-        value = java.lang.Integer.parseInt(s);
+        value = java.lang.Double.parseDouble(s);
         return this;
     }
     @Override

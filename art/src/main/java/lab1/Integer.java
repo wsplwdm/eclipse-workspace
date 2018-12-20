@@ -41,11 +41,11 @@ public class Integer extends Value{
 
         @Override
         public Value sub(Value value) throws NotInstanceOf{
-            if (value instanceof Integer){
+            try{
                 this.value -= ((Integer) value).getValue();
                 return this;
             }
-            else {
+            catch(Exception e) {
             	throw new NotInstanceOf("Invalid Value type(not instance of integer)", value);
             }
 
@@ -53,11 +53,11 @@ public class Integer extends Value{
 
         @Override
         public Value mul(Value value) throws NotInstanceOf{
-            if (value instanceof Integer){
+            try{
                 this.value *= ((Integer) value).getValue();
                 return this;
             }
-            else {
+            catch(Exception e) {
             	throw new NotInstanceOf("Invalid Value type(not instance of integer)", value);
             }
 
@@ -66,27 +66,27 @@ public class Integer extends Value{
         @Override
         public Value div(Value value) throws NotInstanceOf{
         	
-            if (value instanceof Integer){
+            try{
                 this.value /= ((Integer) value).getValue();
                 return this;
             }
-            else {
+            catch(Exception e) {
             	throw new NotInstanceOf("Invalid Value type(not instance of integer)", value);
             }
         }
 
         @Override
         public Value pow(Value value) throws NotInstanceOf{
-            if (value instanceof SValue){
+            try{
             	throw new NotInstanceOf("Invalid Value type(try numeric insteadof SValue)", value);
                 
-            }
-            else {
+            }catch(Exception e) {
+           
             	try {
 	            	this.value = (int)Math.pow((double)this.value,(double)((Integer) value).getValue());
 	                return this;
             	}
-            	catch(ClassCastException e) {
+            	catch(ClassCastException ef) {
             		print("Double cannot be cast to Integer");
             		
             	}
@@ -103,20 +103,20 @@ public class Integer extends Value{
 
 		@Override
         public boolean eq(Value value) throws NotInstanceOf{
-            if (value instanceof Integer){
+            try){
                 return Objects.equals(this.value, ((Integer) value).getValue());
             }
-            else {
+            catch(Exception e) {
             	throw new NotInstanceOf("Invalid Value type(not instance of integer)", value);
             }
         }
 
         @Override
         public boolean lte(Value value) throws NotInstanceOf{
-            if (value instanceof Integer) {
+            try {
                 return this.value <= ((Integer) value).getValue();
             }
-            else {
+            catch(Exception e) {
             	throw new NotInstanceOf("Invalid Value type(not instance of integer)", value);
             }
             
@@ -124,20 +124,20 @@ public class Integer extends Value{
 
         @Override
         public boolean gte(Value value) throws NotInstanceOf{
-            if (value instanceof Integer) {
+            try {
                 return this.value >= ((Integer) value).getValue();
             }
-            else {
+            catch(Exception e) {
             	throw new NotInstanceOf("Invalid Value type(not instance of integer)", value);
             }
         }
 
         @Override
         public boolean neq(Value value) throws NotInstanceOf{
-            if (value instanceof Integer){
+            try{
                 return !Objects.equals(this.value, ((Integer) value).getValue());
             }
-            else {
+            catch(Exception e) {
             	throw new NotInstanceOf("Invalid Value type(not instance of integer)", value);
             }
         }

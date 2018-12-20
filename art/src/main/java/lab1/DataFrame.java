@@ -2,6 +2,8 @@ package lab1;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
@@ -49,6 +51,47 @@ public class DataFrame implements groupby{
     	br.close();
 	  
     }
+    public DataFrame(String file, String[] nazwy,Value[] typy) throws IOException {
+    	FileInputStream fstream = new FileInputStream(file);
+    	BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+    	String strLine;
+    	String pierwszaLinia = br.readLine();
+    	for (int i=0; i<nazwy.length; i++)
+        {
+            df.add(new Column(nazwy[i],typy[i]));
+        }
+    	while ((strLine = br.readLine()) != null){
+    		String[] values = strLine.split(",");
+    		for(int j=0;j<nazwy.length;j++) {
+    			if(typy[j].getInstance() instanceof Integer) {
+    				Integer addelement = new Integer();
+    				addelement.create(values[j]);
+    				df.get(j).addElement(addelement);
+    			}
+    			if(typy[j].getInstance() instanceof Double) {
+    				Double addelement = new Double();
+    				addelement.create(values[j]);
+    				df.get(j).addElement(addelement);
+    			}
+    			if(typy[j].getInstance() instanceof Float) {
+    				Float addelement = new Float();
+    				addelement.create(values[j]);
+    				df.get(j).addElement(addelement);
+    			}
+    			if(typy[j].getInstance() instanceof SValue) {
+    				SValue addelement = new SValue();
+    				addelement.create(values[j]);
+    				df.get(j).addElement(addelement);
+    			}
+    			
+    		}
+    		
+    	}
+    	br.close();
+    }
+    
+    
+    
     public DataFrame(String file,Value[] types,boolean header) throws Exception{
     	FileInputStream fstream = new FileInputStream(file);
     	BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
@@ -197,6 +240,13 @@ public class DataFrame implements groupby{
         Column[] NewKols = new Column[toList().size()];
         int it=0;
         for(Column k: toList()){
+        	if(k.getVType() instanceof SValue) {
+        		max = new SValue("___");
+        		NewKols[it] = new Column(k.getName(), k.getType());
+        		NewKols[it].list.add(max);
+                it++;
+        	} 
+        	else {
             if(groupelement==null || groupelement!=k.getName()) {
                 max = toList().get(it).list.get(0);
                 for (int i = 0; i < k.getColumnSize(); i++) {
@@ -212,6 +262,7 @@ public class DataFrame implements groupby{
                 NewKols[it]= new Column(k);
                 it++;
             }
+        	}
         }
         return new DataFrame(NewKols);
     }
@@ -221,6 +272,13 @@ public class DataFrame implements groupby{
         Column[] NewKols = new Column[toList().size()];
         int it=0;
         for(Column k: toList()){
+        	if(k.getVType() instanceof SValue) {
+        		min = new SValue("___");
+        		NewKols[it] = new Column(k.getName(), k.getType());
+        		NewKols[it].list.add(min);
+                it++;
+        	} 
+        	else {
             if(groupelement==null || groupelement!=k.getName()) {
                 min = toList().get(it).list.get(0);
                 for (int i = 0; i < k.getColumnSize(); i++) {
@@ -236,6 +294,7 @@ public class DataFrame implements groupby{
                 NewKols[it]= new Column(k);
                 it++;
             }
+            }
         }
         return new DataFrame(NewKols);
     }
@@ -245,20 +304,29 @@ public class DataFrame implements groupby{
         Column[] NewKols = new Column[toList().size()];
         int it=0;
         for(Column k: toList()){
-            if(groupelement==null || groupelement!=k.getName()) {
-                mean = toList().get(it).list.get(0);
-                for (int i = 1; i < k.getColumnSize(); i++) {
-                    mean = mean.add(k.list.get(i));
-                }
-                mean = mean.div(new Integer(k.getColumnSize()));
-                NewKols[it] = new Column(k.getName(), k.getType());
-                NewKols[it].list.add(mean);
+        	if(k.getVType() instanceof SValue) {
+        		mean = new SValue("___");
+        		NewKols[it] = new Column(k.getName(), k.getType());
+        		NewKols[it].list.add(mean);
                 it++;
-            }
-            else{
-                NewKols[it]= new Column(k);
-                it++;
-            }
+        	} 
+        	else {
+	        	if(groupelement==null || groupelement!=k.getName()) {
+	            	
+	                mean = toList().get(it).list.get(0);
+	                for (int i = 1; i < k.getColumnSize(); i++) {
+	                    mean = mean.add(k.list.get(i));
+	                }
+	                mean = mean.div(new Double(k.getColumnSize()));
+	                NewKols[it] = new Column(k.getName(), k.getType());
+	                NewKols[it].list.add(mean);
+	                it++;
+	            }
+	            else{
+	                NewKols[it]= new Column(k);
+	                it++;
+	            }
+        	}
         }
         return new DataFrame(NewKols);
     }
@@ -271,7 +339,16 @@ public class DataFrame implements groupby{
         
         int it=0;
         for(Column k: toList()){
+        	if(k.getVType() instanceof SValue) {
+        		Returnv = new SValue("___");
+        		NewKols[it] = new Column(k.getName(), k.getType());
+        		NewKols[it].list.add(Returnv);
+                it++;
+        	}
+        	else {
             if(groupelement==null || groupelement!=k.getName()) {
+            	
+            	
                 for(int i=0;i<k.getColumnSize();i++){
                     Returnv =Returnv.add( (k.list.get(i).sub(newmean.toList().get(it).list.get(0))).pow(new Integer(2)));
                 }
@@ -286,6 +363,7 @@ public class DataFrame implements groupby{
                 NewKols[it]= new Column(k);
                 it++;
             }
+            }
         }
         return new DataFrame(NewKols);
     }
@@ -295,6 +373,13 @@ public class DataFrame implements groupby{
         Column[] NewKols = new Column[toList().size()];
         int it=0;
         for(Column k: toList()){
+        	if(k.getVType() instanceof SValue) {
+        		sum = new SValue("___");
+        		NewKols[it] = new Column(k.getName(), k.getType());
+        		NewKols[it].list.add(sum);
+                it++;
+        	} 
+        	else {
             if(groupelement==null || groupelement!=k.getName()) {
                 sum = toList().get(it).list.get(0);
                 for (int i = 1; i < k.getColumnSize(); i++) {
@@ -308,6 +393,7 @@ public class DataFrame implements groupby{
                 NewKols[it]= new Column(k);
                 it++;
             }
+        	}
         }
         return new DataFrame(NewKols);
     }
@@ -320,6 +406,13 @@ public class DataFrame implements groupby{
         
         int it=0;
         for(Column k: toList()){
+        	if(k.getVType() instanceof SValue) {
+        		Returnv = new SValue("___");
+        		NewKols[it] = new Column(k.getName(), k.getType());
+        		NewKols[it].list.add(Returnv);
+                it++;
+        	} 
+        	else {
             if(groupelement==null || groupelement!=k.getName()) {
                 for(int i=0;i<k.getColumnSize();i++){
                     Returnv =Returnv.add( k.list.get(i).sub(newmean.toList().get(it).list.get(0)));
@@ -333,6 +426,7 @@ public class DataFrame implements groupby{
             else{
                 NewKols[it]= new Column(k);
                 it++;
+            }
             }
         }
         return new DataFrame(NewKols);
