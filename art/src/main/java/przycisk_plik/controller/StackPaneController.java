@@ -141,6 +141,9 @@ public class StackPaneController {
 		String max = " ",min= " ",mean= " ",var= " ",sum= " ",std =" ";
 		FileChooser fc = new FileChooser();
 		try {
+			choiceX.getItems().clear();
+			choiceY.getItems().clear();
+        	
 		fc.getExtensionFilters().add(new ExtensionFilter("csv Files", "*.csv"));
 		List<File> f = fc.showOpenMultipleDialog(null);
 		for(File file: f) {
