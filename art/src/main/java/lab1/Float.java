@@ -6,7 +6,7 @@ public class Float extends Value{
     private float value;
     private static Float aFloat = new Float();
 
-    public static Float getInstance(){
+    public Float getInstance(){
         return aFloat;
     }
 

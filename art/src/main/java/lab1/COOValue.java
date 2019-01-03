@@ -95,4 +95,10 @@ public class COOValue extends Value{
 		return type;
 	}
 
+	@Override
+	protected Value getInstance() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

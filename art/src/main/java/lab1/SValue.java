@@ -2,6 +2,7 @@ package lab1;
 
 public class SValue extends Value {
     public String value;
+    
     public SValue(String newvalue){
         value = newvalue;
     }
@@ -86,8 +87,9 @@ public class SValue extends Value {
 
     @Override
     public Value create(String s) {
-        Value returnvalue = new SValue(s);
-        return returnvalue;
+    	value = s;
+        return this;
+        
     }
     @Override
     protected Value clone(){
@@ -105,6 +107,11 @@ public class SValue extends Value {
 	public String getType() {
 		String type = "SValue";
 		return type;
+	}
+	@Override
+	protected Value getInstance() {
+		// TODO Auto-generated method stub
+		return null;
 	}
     
 }

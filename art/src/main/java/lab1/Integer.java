@@ -41,7 +41,7 @@ public class Integer extends Value{
 
         @Override
         public Value sub(Value value) throws NotInstanceOf{
-            if (value instanceof Integer){
+            if (value instanceof lab1.Integer||value instanceof lab1.Double||value instanceof lab1.Float){
                 this.value -= ((Integer) value).getValue();
                 return this;
             }
@@ -53,8 +53,9 @@ public class Integer extends Value{
 
         @Override
         public Value mul(Value value) throws NotInstanceOf{
-            if (value instanceof Integer){
-                this.value *= ((Integer) value).getValue();
+            if (value instanceof lab1.Integer||value instanceof lab1.Double||value instanceof lab1.Float){
+                this.value *= ((Double) value).getValue();
+                
                 return this;
             }
             else {
@@ -66,8 +67,9 @@ public class Integer extends Value{
         @Override
         public Value div(Value value) throws NotInstanceOf{
         	
-            if (value instanceof Integer){
-                this.value /= ((Integer) value).getValue();
+            if (value instanceof lab1.Integer||value instanceof lab1.Double||value instanceof lab1.Float){
+                this.value /= java.lang.Double.parseDouble(value.GetValue().toString());
+                
                 return this;
             }
             else {

@@ -117,4 +117,10 @@ public class DateTime extends Value{
 		String type = "DateTime";
 		return type;
 	}
+
+	@Override
+	protected Value getInstance() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

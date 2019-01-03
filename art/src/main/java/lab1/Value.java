@@ -17,4 +17,5 @@ public abstract class Value implements Cloneable {
 	 public abstract Object GetValue();
 	 public abstract Value create(String s);
 	 protected abstract Value clone();
+	protected abstract Value getInstance();
 }

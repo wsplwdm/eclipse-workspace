@@ -6,6 +6,8 @@ public class DB extends DataFrame {
     private Connection connectvar = null;
     private Statement stat = null;
     private ResultSet result = null;
+    private String[] dblist;
+    String dbname = przycisk_plik.controller.StackPaneController.nazwapliku.get(0);
     
     public void connect(){
         try{
@@ -73,7 +75,7 @@ public class DB extends DataFrame {
         try {
             connect();
             stat = connectvar.createStatement();
-            stat.executeUpdate("Drop table Frame");
+            //stat.executeUpdate("Drop table Frame");
             String command = "CREATE TABLE Frame (";
             
             for(int i=0;i<dftosave.toList().size()-1;i++){

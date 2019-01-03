@@ -2,29 +2,31 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="forma" key="selection"/>
+		<item value="" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="forma"/>
-			<item value="MEAN"/>
-			<item value="max"/>
-			<item value="sum"/>
-			<item value="sun"/>
-			<item value="std"/>
-			<item value="toS"/>
-			<item value="Frame"/>
-			<item value="stati"/>
-			<item value="stat"/>
+			<item value="&quot;&quot;"/>
+			<item value="add"/>
+			<item value="string"/>
+			<item value="SingleColumn"/>
+			<item value="mydataframe"/>
 			<item value="stats"/>
 			<item value="addValue"/>
 			<item value="StrValue"/>
 			<item value="Type "/>
 			<item value="Type"/>
+			<item value="StrType"/>
+			<item value="listofvalues"/>
+			<item value="sizeOfCol"/>
+			<item value="getCol"/>
+			<item value="dftosave"/>
 		</list>
 		<list key="replacehistory">
+			<item value="Column"/>
+			<item value="df"/>
 			<item value="addElement"/>
 			<item value="SValue"/>
 			<item value="Value "/>
@@ -38,8 +40,6 @@
 			<item value="lab1.Double"/>
 			<item value="lab1.Float"/>
 			<item value="lab1.Integer"/>
-			<item value="toList"/>
-			<item value="DB"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
