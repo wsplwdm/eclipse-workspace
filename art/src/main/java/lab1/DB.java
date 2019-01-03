@@ -7,7 +7,7 @@ public class DB extends DataFrame {
     private Statement stat = null;
     private ResultSet result = null;
     private String[] dblist;
-    String dbname = przycisk_plik.controller.StackPaneController.nazwapliku.get(0);
+    public String dbname;
     
     public void connect(){
         try{
@@ -23,12 +23,12 @@ public class DB extends DataFrame {
         try{
             connect();
             stat= connectvar.createStatement();
-            result=stat.executeQuery("select *  FROM Frame");
+            result=stat.executeQuery("select *  FROM "+dbname);
             ResultSetMetaData rsmd = result.getMetaData();
             int numberofcols= rsmd.getColumnCount();
             Column[] cols = new Column[numberofcols];
             for(int i=1;i<=numberofcols;i++) {
-                result=stat.executeQuery("select *  FROM Frame");
+                result=stat.executeQuery("select *  FROM "+dbname);
                 Value typo = new SValue();
                 String gt =rsmd.getColumnTypeName(i);
                 if(gt=="INT" || gt=="TINYINT"|| gt=="SMALLINT"|| gt=="MEDIUMINT" || gt=="BIGINT"){
@@ -73,10 +73,12 @@ public class DB extends DataFrame {
     public DB(DataFrame dftosave) {
     	super(dftosave);
         try {
+        	dbname = przycisk_plik.controller.StackPaneController.nazwapliku;
             connect();
             stat = connectvar.createStatement();
             //stat.executeUpdate("Drop table Frame");
-            String command = "CREATE TABLE Frame (";
+            System.out.println(dbname);
+            String command = "CREATE TABLE "+dbname+" (";
             
             for(int i=0;i<dftosave.toList().size()-1;i++){
                 command=command+dftosave.toList().get(i).getName()+" ";
@@ -117,7 +119,7 @@ public class DB extends DataFrame {
             stat.executeUpdate(command);
             String secondcommand;
             for(int i =0;i<dftosave.size();i++){
-                 secondcommand="INSERT INTO Frame (" ;
+                 secondcommand="INSERT INTO "+dbname+" (" ;
                 for(int j=0;j<dftosave.toList().size()-1;j++){
                     secondcommand=secondcommand+dftosave.toList().get(j).getName()+" , ";
                 }
@@ -199,12 +201,12 @@ public class DB extends DataFrame {
             stat= connectvar.createStatement();
 
 
-            result=stat.executeQuery("select *  FROM Frame");
+            result=stat.executeQuery("select *  FROM "+dbname);
             ResultSetMetaData rsmd = result.getMetaData();
             int numberofcols= rsmd.getColumnCount();
             Column[] cols = new Column[numberofcols];
             for(int i=1;i<=numberofcols;i++) {
-                result=stat.executeQuery("select MIN("+rsmd.getColumnName(i)+")  FROM Frame");
+                result=stat.executeQuery("select MIN("+rsmd.getColumnName(i)+")  FROM "+dbname);
                 Value typo = new lab1.Integer();
                 cols[i-1]=new Column(rsmd.getColumnName(i),typo);
                 result.next();
@@ -239,12 +241,12 @@ public class DB extends DataFrame {
             stat= connectvar.createStatement();
 
 
-            result=stat.executeQuery("select *  FROM Frame");
+            result=stat.executeQuery("select *  FROM "+dbname);
             ResultSetMetaData rsmd = result.getMetaData();
             int numberofcols= rsmd.getColumnCount();
             Column[] cols = new Column[numberofcols];
             for(int i=1;i<=numberofcols;i++) {
-                result=stat.executeQuery("select MAX("+rsmd.getColumnName(i)+")  FROM Frame");
+                result=stat.executeQuery("select MAX("+rsmd.getColumnName(i)+")  FROM "+dbname);
                 Value typo = new lab1.Integer();
                 cols[i-1]=new Column(rsmd.getColumnName(i),typo);
                 result.next();
@@ -279,12 +281,12 @@ public class DB extends DataFrame {
             stat= connectvar.createStatement();
 
 
-            result=stat.executeQuery("select *  FROM Frame WHERE GROUP BY"+colname);
+            result=stat.executeQuery("select *  FROM "+dbname+" WHERE GROUP BY"+colname);
             ResultSetMetaData rsmd = result.getMetaData();
             int numberofcols= rsmd.getColumnCount();
             Column[] cols = new Column[numberofcols];
             for(int i=1;i<=numberofcols;i++) {
-                result=stat.executeQuery("select *  FROM Frame WHERE GROUP BY"+colname);
+                result=stat.executeQuery("select *  FROM "+dbname+" WHERE GROUP BY"+colname);
                 Value typo = new SValue();
                 String gt =rsmd.getColumnTypeName(i);
                 if(gt=="INT" || gt=="TINYINT"|| gt=="SMALLINT"|| gt=="MEDIUMINT" || gt=="BIGINT"){

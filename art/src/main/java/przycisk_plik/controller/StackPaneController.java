@@ -58,8 +58,8 @@ public class StackPaneController {
 
     @FXML
     private ChoiceBox choiceY;
-    public static
-    List<String> nazwapliku;	
+    
+    public static String nazwapliku;
     DataFrame plik2;
     String[] nazwy;
     LineChart.Series<?,?> series = new XYChart.Series();
@@ -72,6 +72,8 @@ public class StackPaneController {
 		
 		
 	}
+	
+	
 	
     @FXML
     void onActionDraw(ActionEvent event) {
@@ -115,11 +117,14 @@ public class StackPaneController {
     	stats1.setText("");
     	try {
     	DB databaseframe= new DB(plik2);
-    	stats1.setText("databasename:"+databaseframe.toString());
+    	stats1.setText("database:	"+databaseframe.toString()+"	name:	"+databaseframe.dbname);
     	DataFrame df = databaseframe.getDataFrame();
     	df.print();
     	System.out.print("max \n");
     	databaseframe.max().print();
+    	System.out.print("min \n");
+    	databaseframe.min().print();
+    	
     	}
     	catch(Exception e) {
     		stats1.setText(e.toString());
@@ -139,13 +144,15 @@ public class StackPaneController {
 		fc.getExtensionFilters().add(new ExtensionFilter("csv Files", "*.csv"));
 		List<File> f = fc.showOpenMultipleDialog(null);
 		for(File file: f) {
-			nazwapliku.add(file.getName());
+			
     	boolean header = true;
         
         	BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath())); 
         	
         	String firstLine = br.readLine();
         	nazwy = firstLine.split(",");
+        	
+        	nazwapliku=file.getName().replaceAll(".csv", "");
         	
         	choiceX.getItems().addAll(nazwy);
 			choiceY.getItems().addAll(nazwy);

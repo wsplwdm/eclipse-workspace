@@ -23,6 +23,9 @@ public class Main extends Application{
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Data Frame");
 		primaryStage.show();
+		
+		
+		
 		}
 
 
