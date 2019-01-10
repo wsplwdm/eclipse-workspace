@@ -1,6 +1,7 @@
 package lab1;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DB extends DataFrame {
     private Connection connectvar = null;
@@ -274,19 +275,21 @@ public class DB extends DataFrame {
         return returnframe ;
     }
     
-    public DataFrame groupby(String colname){
-        DataFrame returnframe =null;
+    public ArrayList<DataFrame> groupby(String colname){
+        ArrayList<DataFrame> returnframe = new ArrayList<DataFrame>();
+        
+        
         try{
             connect();
             stat= connectvar.createStatement();
 
-
-            result=stat.executeQuery("select *  FROM "+dbname+" WHERE GROUP BY"+colname);
+            stat.executeQuery("SET OPTION SQL_SELECT_LIMIT=DEFAULT");
+            result=stat.executeQuery("select *  FROM "+dbname+"  GROUP BY "+colname+";");
             ResultSetMetaData rsmd = result.getMetaData();
             int numberofcols= rsmd.getColumnCount();
             Column[] cols = new Column[numberofcols];
             for(int i=1;i<=numberofcols;i++) {
-                result=stat.executeQuery("select *  FROM "+dbname+" WHERE GROUP BY"+colname);
+                result=stat.executeQuery("select *  FROM "+dbname+"  GROUP BY "+colname+";");
                 Value typo = new SValue();
                 String gt =rsmd.getColumnTypeName(i);
                 if(gt=="INT" || gt=="TINYINT"|| gt=="SMALLINT"|| gt=="MEDIUMINT" || gt=="BIGINT"){
@@ -311,7 +314,8 @@ public class DB extends DataFrame {
                 }
 
             }
-            returnframe =new DataFrame(cols);
+            
+            returnframe.add(new DataFrame(cols));
         }catch(java.sql.SQLException e){
             System.out.println("SQL exception "+e.getMessage());
             System.out.println("SQL state "+e.getSQLState());

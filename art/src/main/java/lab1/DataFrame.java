@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import lab1.Thread;
 
 
 
@@ -289,12 +290,12 @@ public class DataFrame implements groupby{
         return df.get(0).list.size();
     }
     
-    ArrayList<DataFrame> groupby(String id) {
+    public ArrayList<DataFrame> groupby(int id) {
         ArrayList<Value> unique = new ArrayList<>();
         ArrayList<DataFrame> returnframe = new ArrayList<>();
         Value[] types = new Value[toList().size()-1] ;
         String[] names = new String[toList().size()-1];
-        Column specialone = get(id);
+        Column specialone = df.get(id);
         int h=0;
         for(Column k: toList()){
             if(k!=specialone) {
@@ -339,13 +340,13 @@ public class DataFrame implements groupby{
         return returnframe;
     }
     
-    public ArrayList<DataFrame> groupbyThread(String id){
+    public ArrayList<DataFrame> groupbyThread(int id){
         int cores = Runtime.getRuntime().availableProcessors();
         ArrayList<Value> unique = new ArrayList<>();
         ArrayList<DataFrame> returnframe = new ArrayList<>();
         Value[] types = new Value[toList().size()-1] ;
         String[] names = new String[toList().size()-1];
-        Column specialone = get(id);
+        Column specialone = df.get(id);
         int h=0;
         for(Column k: toList()){
             if(k!=specialone) {
@@ -369,12 +370,12 @@ public class DataFrame implements groupby{
 
         ExecutorService executor = Executors.newFixedThreadPool(cores);
         for(int i =0;i<unique.size();i++){
-            Runnable worker = new WorkerThread(this,unique.get(i),returnframe.get(i),specialone);
+            Runnable worker = new Thread(this,unique.get(i),returnframe.get(i),specialone);
             executor.execute(worker);
         }
         executor.shutdown();
         try {
-            while(!executor.awaitTermination(Integer.MAX_VALUE, TimeUnit.MILLISECONDS)) {
+            while(!executor.awaitTermination(java.lang.Integer.MAX_VALUE, TimeUnit.MILLISECONDS)) {
                 //do nothing, just wait
             }
         } catch (InterruptedException e) {
@@ -627,6 +628,184 @@ public class DataFrame implements groupby{
     return returndf;
     }
 
+    public DataFrame maxthrd(){
+        int cores = Runtime.getRuntime().availableProcessors();
+        String[] names = new String[toList().size()];
+        Value[] types = new Value[toList().size()];
+        for(int i=0;i<toList().size();i++){
+            names[i]=toList().get(i).getName();
+            types[i]=toList().get(i).getVType();
+        }
+        DataFrame outputFrame = new DataFrame(names,types);
+
+        ExecutorService executor = Executors.newFixedThreadPool(cores);
+        for (Column k : toList()) {
+            Runnable worker = new ThreadMax(k,outputFrame);
+            executor.execute(worker);
+
+        }
+        executor.shutdown();
+        try {
+            while(!executor.awaitTermination(java.lang.Integer.MAX_VALUE, TimeUnit.MILLISECONDS)) {
+                //do nothing, just wait
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            executor.shutdownNow();
+        }
+        return outputFrame ;
+    }
+
+
+    public DataFrame minthrd(){
+        int cores = Runtime.getRuntime().availableProcessors();
+        String[] names = new String[toList().size()];
+        Value[] types = new Value[toList().size()];
+        for(int i=0;i<toList().size();i++){
+            names[i]=toList().get(i).getName();
+            types[i]=toList().get(i).getVType();
+        }
+        DataFrame outputFrame = new DataFrame(names,types);
+
+        ExecutorService executor = Executors.newFixedThreadPool(cores);
+        for (Column k : toList()) {
+            Runnable worker = new ThreadMin(k,outputFrame);
+            executor.execute(worker);
+
+        }
+        executor.shutdown();
+        try {
+            while(!executor.awaitTermination(java.lang.Integer.MAX_VALUE, TimeUnit.MILLISECONDS)) {
+                //do nothing, just wait
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            executor.shutdownNow();
+        }
+        return outputFrame ;
+    }
+
+ 
+    public DataFrame meanthrd(){
+        int cores = Runtime.getRuntime().availableProcessors();
+        String[] names = new String[toList().size()];
+        Value[] types = new Value[toList().size()];
+        for(int i=0;i<toList().size();i++){
+            names[i]=toList().get(i).getName();
+            types[i]=toList().get(i).getVType();
+        }
+        DataFrame outputFrame = new DataFrame(names,types);
+
+        ExecutorService executor = Executors.newFixedThreadPool(cores);
+        for (Column k : toList()) {
+            Runnable worker = new ThreadMean(k,outputFrame);
+            executor.execute(worker);
+
+        }
+        executor.shutdown();
+        try {
+            while(!executor.awaitTermination(java.lang.Integer.MAX_VALUE, TimeUnit.MILLISECONDS)) {
+                //do nothing, just wait
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            executor.shutdownNow();
+        }
+        return outputFrame ;
+    }
+
+
+    public DataFrame stdthrd(){
+        int cores = Runtime.getRuntime().availableProcessors();
+        String[] names = new String[toList().size()];
+        Value[] types = new Value[toList().size()];
+        for(int i=0;i<toList().size();i++){
+            names[i]=toList().get(i).getName();
+            types[i]=toList().get(i).getVType();
+        }
+        DataFrame outputFrame = new DataFrame(names,types);
+
+        ExecutorService executor = Executors.newFixedThreadPool(cores);
+        for (Column k : toList()) {
+            Runnable worker = new ThreadStd(k,outputFrame);
+            executor.execute(worker);
+
+        }
+        executor.shutdown();
+        try {
+            while(!executor.awaitTermination(java.lang.Integer.MAX_VALUE, TimeUnit.MILLISECONDS)) {
+                //do nothing, just wait
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            executor.shutdownNow();
+        }
+        return outputFrame ;
+    }
+
+
+    public DataFrame sumthrd(){
+        int cores = Runtime.getRuntime().availableProcessors();
+        String[] names = new String[toList().size()];
+        Value[] types = new Value[toList().size()];
+        for(int i=0;i<toList().size();i++){
+            names[i]=toList().get(i).getName();
+            types[i]=toList().get(i).getVType();
+        }
+        DataFrame outputFrame = new DataFrame(names,types);
+
+        ExecutorService executor = Executors.newFixedThreadPool(cores);
+        for (Column k : toList()) {
+            Runnable worker = new ThreadSum(k,outputFrame);
+            executor.execute(worker);
+
+        }
+        executor.shutdown();
+        try {
+            while(!executor.awaitTermination(java.lang.Integer.MAX_VALUE, TimeUnit.MILLISECONDS)) {
+                //do nothing, just wait
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            executor.shutdownNow();
+        }
+        return outputFrame ;
+    }
+
+   
+    public DataFrame varthrd(){
+        int cores = Runtime.getRuntime().availableProcessors();
+        String[] names = new String[toList().size()];
+        Value[] types = new Value[toList().size()];
+        for(int i=0;i<toList().size();i++){
+            names[i]=toList().get(i).getName();
+            types[i]=toList().get(i).getVType();
+        }
+        DataFrame outputFrame = new DataFrame(names,types);
+
+        ExecutorService executor = Executors.newFixedThreadPool(cores);
+        for (Column k : toList()) {
+            Runnable worker = new ThreadVar(k,outputFrame);
+            executor.execute(worker);
+
+        }
+        executor.shutdown();
+        try {
+            while(!executor.awaitTermination(java.lang.Integer.MAX_VALUE, TimeUnit.MILLISECONDS)) {
+                //do nothing, just wait
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            executor.shutdownNow();
+        }
+        return outputFrame ;
+    }
+
+    
+    
+    
+    
+    
     
     
     //dodawanie, odejmowanie, mnozenie, dzielenie, potegowanie element�w columny przez wartosc

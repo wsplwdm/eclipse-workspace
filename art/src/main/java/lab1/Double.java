@@ -15,6 +15,9 @@ public class Double extends Value {
     public Double(final double d){
         value = d;
     }
+    public Double(String s) {
+    	value = java.lang.Double.parseDouble(s);
+    }
 
     public double getValue() {
         return (double)value;

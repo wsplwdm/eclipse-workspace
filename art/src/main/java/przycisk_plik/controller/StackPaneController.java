@@ -1,4 +1,5 @@
 package przycisk_plik.controller;
+import java.util.concurrent.TimeUnit;
 
 
 import java.util.ArrayList;
@@ -15,8 +16,10 @@ import lab1.*;
 import lab1.Integer;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.List;
 
 import javafx.scene.chart.XYChart;
@@ -151,6 +154,7 @@ public class StackPaneController {
     	boolean header = true;
         
         	BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath())); 
+        	System.out.println(file.getAbsolutePath());
         	
         	String firstLine = br.readLine();
         	nazwy = firstLine.split(",");
@@ -198,25 +202,63 @@ public class StackPaneController {
 			
 			
 			
-			 
-			    
-			    for(int i =0; i<colnumber;i++) {
+			 int group= 0;
+			 String sgroup=nazwy[0];
+				
+			   /* for(int i =0; i<colnumber;i++) {
 			    	
 			    	DataFrame plik = new DataFrame(file.getAbsolutePath(),nazwy,types);
 			    	
-			    	plik.print();
-			    	
-			    	max += plik.max().df.get(i).list.get(0).toString() +"		";
-			    	min += plik.min().df.get(i).list.get(0).toString() +"		";
-			    	mean += plik.mean().df.get(i).list.get(0).toString() +" 	 ";
-			    	var += plik.var().df.get(i).list.get(0).toString() +"		";
-			    	sum += plik.sum().df.get(i).list.get(0).toString() +"		";
-			    	std += plik.std().df.get(i).list.get(0).toString() +"		";
+			    	//max += plik.max().df.get(i).list.get(0).toString() +"		";
+			    	//min += plik.min().df.get(i).list.get(0).toString() +"		";
+			    	//mean += plik.mean().df.get(i).list.get(0).toString() +" 	 ";
+			    	//var += plik.var().df.get(i).list.get(0).toString() +"		";
+			    	//sum += plik.sum().df.get(i).list.get(0).toString() +"		";
+			    	//std += plik.std().df.get(i).list.get(0).toString() +"		";
+			    }*/
+			    long startTime1 = System.nanoTime();
+			    DataFrame plik1 = new DataFrame(file.getAbsolutePath(),nazwy,types);
+			    ArrayList<DataFrame> gb1=plik1.groupby(group);
+			    for(DataFrame df:gb1) {
+			    df.max();
+			    df.min();
 			    }
-			    plik2.max().print();
-			    	
-			 
-		        stats.setText("data frame stats:\n \n"+"max:  "+max+"\n"+"min:  "+min+"\n"+"mean: "+mean+"\n"+"var:  "+var+"\n"+"sum:  "+sum+"\n"+"std:	"+std);
+			    
+			    long time1 = (System.nanoTime()-startTime1)/ 1000000;
+			    
+			    
+			    long startTime2 = System.nanoTime();
+			    DB databaseframe= new DB(plik2);
+			    //ArrayList<DataFrame> gb2=databaseframe.groupby(sgroup);
+			    
+			    databaseframe.max();
+			    databaseframe.min();
+			    
+		    	//stats1.setText("database:	"+databaseframe.toString()+"	name:	"+databaseframe.dbname);
+		    	
+		    	long time2 = (System.nanoTime()-startTime2)/ 1000000;
+			    
+		    	
+		    	long startTime3 = System.nanoTime();
+		    	ArrayList<DataFrame> gb3=plik1.groupbyThread(group);
+			    for(DataFrame df31:gb3) {
+			    	df31.maxthrd();
+			    	df31.minthrd();
+			    }
+		   
+		    	long time3 = (System.nanoTime()-startTime3) / 1000000;
+			    
+		        stats.setText("wyniki: \n normalny df:  "+time1+"\n"+"database df:"	 +time2+"\n"+"thread df:	"+time3	);
+		        
+		        String path=file.getAbsolutePath().toString().replace(".csv", "wyniki.csv");
+		       
+		        		
+		        BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+		        writer.write("normalny df,database df,thread df"+"\n");
+		        writer.write(time1+","+time2+","+time3);
+		        writer.close();
+		        
+		        //stats.setText("data frame stats:\n \n"+"max:  "+max+"\n"+"min:  "+min+"\n"+"mean: "+mean+"\n"+"var:  "+var+"\n"+"sum:  "+sum+"\n"+"std:	"+std);
 		        lineChart.getData().clear();
 		    	series.getData().clear();
 		        br.close();
