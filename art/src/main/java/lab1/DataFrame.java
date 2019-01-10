@@ -6,13 +6,22 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 
 public class DataFrame implements groupby{
     public ArrayList<Column> df = new ArrayList<Column>();
     public String groupelement;
-
+    private Value id;
+    
+    public Value getId(){
+        return id;
+    }
+    public void setId(Value v){
+        id=v;
+    }
 
     public DataFrame(String[] names, String[] types){
         for (int i=0; i<names.length; i++)
@@ -21,6 +30,17 @@ public class DataFrame implements groupby{
         }
     }
     
+    public DataFrame(String[] namesofcolumns, Value[] typesofcolumns) {
+        try {
+        	for (int i = 0; i < namesofcolumns.length; ++i) {
+        		df.add(new Column(namesofcolumns[i], typesofcolumns[i]));
+        	}
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }
+
+    }
+
     public DataFrame(String file,String[] types,boolean header) throws Exception{
     	FileInputStream fstream = new FileInputStream(file);
     	BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
@@ -238,18 +258,153 @@ public class DataFrame implements groupby{
             System.out.println();
         }
     }
-    
-    
-    public DataFrame groupby(String id){
-        Column[] Cols = new Column[size()];
-        int it=0;
-        for(Column k: toList()){
-            Cols[it]=new Column(k);
-        }
-        DataFrame returndf = new DataFrame(Cols);
-        returndf.setGroupElement(id);
-        return returndf;
+    public String[] dfStats(String path, String[] names,Value[] types) {
+    	String[] ret= {"","","","","",""};
+    	//max min mean vaar sum std
+    	for(int i =0; i<names.length;i++) {
+	    	
+	    	DataFrame plik;
+			try {
+				plik = new DataFrame(path,names,types);
+			
+	    	
+	    	plik.print();
+	    	ret[0] += plik.max().df.get(i).list.get(0).toString() +"		";
+	    	ret[1] += plik.min().df.get(i).list.get(0).toString() +"		";
+	    	ret[2] += plik.mean().df.get(i).list.get(0).toString() +" 	 ";
+	    	ret[3] += plik.var().df.get(i).list.get(0).toString() +"		";
+	    	ret[4] += plik.sum().df.get(i).list.get(0).toString() +"		";
+	    	ret[5] += plik.std().df.get(i).list.get(0).toString() +"		";
+	    	
+	    
+    	
+    	} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	}
+    	return ret;
     }
+    public int sizeOfCol() {
+        return df.get(0).list.size();
+    }
+    
+    ArrayList<DataFrame> groupby(String id) {
+        ArrayList<Value> unique = new ArrayList<>();
+        ArrayList<DataFrame> returnframe = new ArrayList<>();
+        Value[] types = new Value[toList().size()-1] ;
+        String[] names = new String[toList().size()-1];
+        Column specialone = get(id);
+        int h=0;
+        for(Column k: toList()){
+            if(k!=specialone) {
+                types[h] = k.getVType();
+                names[h] = k.getName();
+                h++;
+            }
+
+        }
+        for(int i =0;i<sizeOfCol();i++){
+            if(!unique.contains(specialone.list.get(i))){
+                unique.add(specialone.list.get(i));
+            }
+
+        }
+        for(int i =0;i<unique.size();i++){
+            returnframe.add(new DataFrame(names,types));
+            returnframe.get(i).setId(unique.get(i));
+        }
+        Value[] values ;
+        int g ;
+        for(int i =0;i<sizeOfCol();i++){
+
+            values = new Value[toList().size()-1];
+            g=0;
+            for(Column k: toList()){
+                if(k!=specialone){
+                    values[g]=k.list.get(i);
+                    g++;
+                }
+            }
+
+
+            for(int j=0;j<returnframe.size();j++){
+                if(specialone.list.get(i).eq(returnframe.get(j).getId())){
+
+                    returnframe.get(j).add(values);
+                    break;
+                }
+            }
+        }
+        return returnframe;
+    }
+    
+    public ArrayList<DataFrame> groupbyThread(String id){
+        int cores = Runtime.getRuntime().availableProcessors();
+        ArrayList<Value> unique = new ArrayList<>();
+        ArrayList<DataFrame> returnframe = new ArrayList<>();
+        Value[] types = new Value[toList().size()-1] ;
+        String[] names = new String[toList().size()-1];
+        Column specialone = get(id);
+        int h=0;
+        for(Column k: toList()){
+            if(k!=specialone) {
+                types[h] = k.getVType();
+                names[h] = k.getName();
+                h++;
+            }
+
+        }
+        for(int i =0;i<sizeOfCol();i++){
+            if(!unique.contains(specialone.list.get(i))){
+                unique.add(specialone.list.get(i));
+            }
+
+        }
+        for(int i =0;i<unique.size();i++){
+            returnframe.add(new DataFrame(names,types));
+            returnframe.get(i).setId(unique.get(i));
+        }
+
+
+        ExecutorService executor = Executors.newFixedThreadPool(cores);
+        for(int i =0;i<unique.size();i++){
+            Runnable worker = new WorkerThread(this,unique.get(i),returnframe.get(i),specialone);
+            executor.execute(worker);
+        }
+        executor.shutdown();
+        try {
+            while(!executor.awaitTermination(Integer.MAX_VALUE, TimeUnit.MILLISECONDS)) {
+                //do nothing, just wait
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            executor.shutdownNow();
+        }
+        return returnframe;
+    }
+    
+    
+    
+    
+    //max i min działający tylko na danej kolumnie zwracający pojedynczą Value z wynikiem
+  public Value max(Column col) {
+	  Value max=col.get(0);
+	  for(Value v:col.list) {
+		  if(v.gte(max))
+			  max=v;
+	  }
+	  return max;
+  }
+  public Value min(Column col) {
+	  Value min=col.get(0);
+	  for(Value v:col.list) {
+		  if(v.lte(min))
+			  min=v;
+	  }
+	  return min;
+  }
+    
     
     public DataFrame max() {
         Value max = toList().get(0).list.get(0);
@@ -280,8 +435,13 @@ public class DataFrame implements groupby{
             }
         	}
         }
+        
+        
         return new DataFrame(NewKols);
     }
+    
+    
+    
     
     public DataFrame min() {
         Value min = toList().get(0).list.get(0);

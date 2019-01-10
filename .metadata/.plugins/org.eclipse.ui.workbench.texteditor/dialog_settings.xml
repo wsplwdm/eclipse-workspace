@@ -2,36 +2,37 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="" key="selection"/>
+		<item value="toList" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="getArray"/>
+			<item value="return "/>
+			<item value="listofvalues"/>
+			<item value="SingleColumn"/>
+			<item value="create"/>
+			<item value="dbname"/>
+			<item value="xl"/>
+			<item value="frame"/>
+			<item value="int"/>
+			<item value="size"/>
+			<item value="print"/>
 			<item value="&quot;&quot;"/>
 			<item value="add"/>
 			<item value="string"/>
-			<item value="SingleColumn"/>
 			<item value="mydataframe"/>
-			<item value="stats"/>
-			<item value="addValue"/>
-			<item value="StrValue"/>
-			<item value="Type "/>
-			<item value="Type"/>
-			<item value="StrType"/>
-			<item value="listofvalues"/>
-			<item value="sizeOfCol"/>
-			<item value="getCol"/>
-			<item value="dftosave"/>
 		</list>
 		<list key="replacehistory">
+			<item value="toList"/>
+			<item value="list"/>
 			<item value="Column"/>
 			<item value="df"/>
 			<item value="addElement"/>
 			<item value="SValue"/>
 			<item value="Value "/>
 			<item value="Value"/>
-			<item value="list"/>
 			<item value="size"/>
 			<item value="getVType"/>
 			<item value="lab1.DateTime"/>
@@ -39,7 +40,6 @@
 			<item value="getName"/>
 			<item value="lab1.Double"/>
 			<item value="lab1.Float"/>
-			<item value="lab1.Integer"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

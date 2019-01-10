@@ -195,7 +195,7 @@ public class StackPaneController {
         	
 			
 			plik2 = new DataFrame(file.getAbsolutePath(),nazwy,types);
-			//plik2.print();
+			
 			
 			
 			 
@@ -205,6 +205,7 @@ public class StackPaneController {
 			    	DataFrame plik = new DataFrame(file.getAbsolutePath(),nazwy,types);
 			    	
 			    	plik.print();
+			    	
 			    	max += plik.max().df.get(i).list.get(0).toString() +"		";
 			    	min += plik.min().df.get(i).list.get(0).toString() +"		";
 			    	mean += plik.mean().df.get(i).list.get(0).toString() +" 	 ";
@@ -212,6 +213,7 @@ public class StackPaneController {
 			    	sum += plik.sum().df.get(i).list.get(0).toString() +"		";
 			    	std += plik.std().df.get(i).list.get(0).toString() +"		";
 			    }
+			    plik2.max().print();
 			    	
 			 
 		        stats.setText("data frame stats:\n \n"+"max:  "+max+"\n"+"min:  "+min+"\n"+"mean: "+mean+"\n"+"var:  "+var+"\n"+"sum:  "+sum+"\n"+"std:	"+std);
