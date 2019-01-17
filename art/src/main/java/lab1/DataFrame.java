@@ -85,16 +85,53 @@ public class DataFrame implements groupby{
 	  
     }
     
-    public DataFrame(String file, String[] nazwy,Value[] typy) throws IOException {
-    	///tworzenie datafram'a z pliku (zalecane), pierwszy wiersz jest traktowany jako nazwy kolumn
-    	FileInputStream fstream = new FileInputStream(file);
-    	BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
-    	String strLine;
-    	String pierwszaLinia = br.readLine();
+    public DataFrame(String file) throws IOException {
+    	///tworzenie datafram'a ze ścieżki do pliku, pierwszy wiersz jest traktowany jako nazwy kolumn
+    	FileInputStream fstream1 = new FileInputStream(file);
+    	BufferedReader br1 = new BufferedReader(new InputStreamReader(fstream1));
+    	
+    	String firstLine = br1.readLine();
+    	String[] nazwy = firstLine.split(",");
+    	int colnumber = nazwy.length;
+    	String secondLine = br1.readLine();
+    	String[] typ = secondLine.split(",");
+    	Value[] typy = new Value[colnumber];
+    	
+    	for(int i =0;i<colnumber;i++) {
+    		try {
+    			int result = java.lang.Integer.parseInt(typ[i]);
+    			Integer resulttype = new lab1.Integer(result);	
+    			typy[i]=resulttype;
+    			}
+    		catch(NumberFormatException ei){
+    			try {
+    				double result = java.lang.Double.parseDouble(typ[i]);
+    				lab1.Double resulttype = new lab1.Double(result);
+    				typy[i]=resulttype;
+    				}
+    			catch(NumberFormatException ed) {
+    				try {
+        				float result = java.lang.Float.parseFloat(typ[i]);
+        				lab1.Float resulttype = new lab1.Float(result);
+        				typy[i]=resulttype;            				}
+        			catch(NumberFormatException ef) {
+        				String result = typ[i];
+        				lab1.SValue resulttype = new lab1.SValue(result);
+        				typy[i]=resulttype;
+        				}
+    			}
+    		}
+    		
+    	}
     	for (int i=0; i<nazwy.length; i++)
         {
             df.add(new Column(nazwy[i],typy[i]));
         }
+    	br1.close();
+    	FileInputStream fstream = new FileInputStream(file);
+    	BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+    	String strLine;
+    	firstLine = br.readLine();
     	while ((strLine = br.readLine()) != null){
     		String[] values = strLine.split(",");
     		if(values.length!=nazwy.length) {
@@ -142,8 +179,8 @@ public class DataFrame implements groupby{
     		}
     		
     	}
-    	br.close();
     	
+    	br.close();
     }
     
     
@@ -265,82 +302,28 @@ public class DataFrame implements groupby{
         }
     }
     
-    public DataFrame dfFromFile(String path) {
-    	BufferedReader br;
-		try {
-			br = new BufferedReader(new FileReader(path));
-		
-    	System.out.println(path);
-    	
-    	String firstLine = br.readLine();
-    	String[] nazwy = firstLine.split(",");
-    	
-    	int colnumber = nazwy.length;
-    	String secondLine = br.readLine();
-    	String[] typ = secondLine.split(",");
-    	Value[] types = new Value[colnumber];
-    	
-    	for(int i =0;i<colnumber;i++) {
-    		try {
-    			int result = java.lang.Integer.parseInt(typ[i]);
-    			Integer resulttype = new lab1.Integer(result);	
-    			types[i]=resulttype;
-    			}
-    		catch(NumberFormatException ei){
-    			try {
-    				double result = java.lang.Double.parseDouble(typ[i]);
-    				lab1.Double resulttype = new lab1.Double(result);
-    				types[i]=resulttype;
-    				}
-    			catch(NumberFormatException ed) {
-    				try {
-        				float result = java.lang.Float.parseFloat(typ[i]);
-        				lab1.Float resulttype = new lab1.Float(result);
-        				types[i]=resulttype;            				}
-        			catch(NumberFormatException ef) {
-        				String result = typ[i];
-        				lab1.SValue resulttype = new lab1.SValue(result);
-        				types[i]=resulttype;
-        				}
-    			}
-    		}
-    		
-    	}
-    	
-        	
-    	br.close();
-			return new DataFrame(path,nazwy,types);
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-    }
+  
     
     
-    
-    
-    
-    
-    
-    
-    public String[] dfStats(String path, String[] names,Value[] types) {
+    public String[] dfStats(String path) throws IOException {
     	//otwiera datafram'a i zwraca statystyki 
     	String[] ret= {"","","","","",""};
-    	//max min mean vaar sum std
-    	for(int i =0; i<names.length;i++) {
+    	//max min mean vaar sum std\
+    	DataFrame tmp = new DataFrame(path);
+    	for(int i =0; i<tmp.df.size();i++) {
 	    	
 	    	DataFrame plik;
 			try {
-				plik = new DataFrame(path,names,types);
+				plik = new DataFrame(path);
 			
 	    	
-	    	plik.print();
-	    	ret[0] += plik.maxthrd().df.get(i).list.get(0).toString() +"		";
-	    	ret[1] += plik.minthrd().df.get(i).list.get(0).toString() +"		";
-	    	ret[2] += plik.meanthrd().df.get(i).list.get(0).toString() +" 	 ";
-	    	ret[3] += plik.varthrd().df.get(i).list.get(0).toString() +"		";
-	    	ret[4] += plik.sumthrd().df.get(i).list.get(0).toString() +"		";
-	    	ret[5] += plik.stdthrd().df.get(i).list.get(0).toString() +"		";
+	    	
+	    	ret[0] += plik.max().df.get(i).list.get(0).toString() +"		";
+	    	ret[1] += plik.min().df.get(i).list.get(0).toString() +"		";
+	    	ret[2] += plik.mean().df.get(i).list.get(0).toString() +" 		 ";
+	    	ret[3] += plik.var().df.get(i).list.get(0).toString() +"		";
+	    	ret[4] += plik.sum().df.get(i).list.get(0).toString() +"		";
+	    	ret[5] += plik.std().df.get(i).list.get(0).toString() +"		";
 	    	
 	    
     	

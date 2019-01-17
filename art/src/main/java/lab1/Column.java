@@ -7,6 +7,7 @@ public class Column {
     private String type,name;
     int dfsize=0;
     public ArrayList<Value> list;
+	
     
     public Column(String name, String type){
     	this.type = type;

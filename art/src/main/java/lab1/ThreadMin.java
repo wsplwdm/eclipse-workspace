@@ -20,7 +20,7 @@ public class ThreadMin implements Runnable {
              if(k.getName().equals(columnToProcess.getName())){
             	 Value min=new lab1.Integer(java.lang.Integer.MAX_VALUE);
             	 if(columnToProcess.list.get(0) instanceof SValue !=true) {
- 	                min = columnToProcess.list.get(0);}
+ 	                min = new SValue(" ---- ");}
                  for(int i=0;i<columnToProcess.getColumnSize();i++){
                 	 if(columnToProcess.list.get(i) instanceof SValue !=true) {
 	                     if(min.gte(columnToProcess.list.get(i))){

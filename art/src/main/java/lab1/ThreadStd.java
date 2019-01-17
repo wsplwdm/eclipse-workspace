@@ -18,9 +18,11 @@ public class ThreadStd implements Runnable {
     public void run() {
         Value var;
         for(Column k: df.toList()){
-        	if(columnToProcess.list.get(0) instanceof SValue!=true) {
+        
 	            if(k.getName().equals(columnToProcess.getName())){
 	                var = columnToProcess.list.get(0);
+	            	if(columnToProcess.list.get(0) instanceof SValue!=true) {
+	            		var =new SValue(" ---- ");}
 	                for(int i=1;i<columnToProcess.getColumnSize();i++){
 	                    var =var.add(columnToProcess.list.get(i));
 	
@@ -42,5 +44,5 @@ public class ThreadStd implements Runnable {
         }
 
 
-    }
+    
 }

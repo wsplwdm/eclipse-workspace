@@ -21,7 +21,7 @@
             <Insets left="120.0" top="20.0" />
          </StackPane.margin>
       </Button>
-      <Label fx:id="stats" alignment="TOP_CENTER" prefHeight="174.0" prefWidth="236.0" text="time comparsion:" textAlignment="JUSTIFY" StackPane.alignment="TOP_CENTER">
+      <Label fx:id="stats" alignment="TOP_CENTER" prefHeight="174.0" prefWidth="236.0" text="time comparsion: [s]" textAlignment="JUSTIFY" StackPane.alignment="TOP_CENTER">
          <StackPane.margin>
             <Insets right="300.0" top="20.0" />
          </StackPane.margin>

@@ -34,15 +34,15 @@ public class StackPaneController {
 
 
     @FXML
-    private Button button2;
+    private Button button2; //wczytywanie df  z pliku
     @FXML
-    private Button db;
+    private Button db; // przycisk do bazdanych
 
     @FXML
     private Label stats;//czasy wykonania
 
     @FXML
-    private Button button;
+    private Button button; //rysowanie wykresu
 
     @FXML
     private LineChart lineChart;
@@ -83,6 +83,7 @@ public class StackPaneController {
 	
     @FXML
     void onActionDraw(ActionEvent event) {
+    	//rysuje wykres z wybranych kolumn
 		stats1.setText("");
 	    lineChart.getData().clear();
 	    series.getData().clear();
@@ -92,6 +93,7 @@ public class StackPaneController {
 	    	xaxis =nazwy1.indexOf( choiceX.getValue());
 
 	    	yaxis =nazwy1.indexOf( choiceY.getValue());  
+	    	if(plik2.get(xaxis).getVType() instanceof SValue !=true && plik2.get(yaxis).getVType() instanceof SValue !=true ) {
 	    	xl= new Value[plik2.size()];
 	        yl= new Value[plik2.size()];
 	        for(int i =0;i<plik2.get(xaxis).list.size();i++) {
@@ -113,18 +115,25 @@ public class StackPaneController {
 	      
 	        lineChart.getData().addAll(series);
     	}
+	    	else {
+	    		stats1.setText("invalid column data format");}
+	    	
+	    }
     	catch(Exception e) {
     		errormessage(e);
-    	}
+    		stats1.setText(e.getMessage());
+    	
+	    }
     }
     @FXML
     public void onActionDB() {
+    	//tworzy bazodanowy dataframe z wczytanego pliku
     	stats1.setText("");
     	try {
     	DB databaseframe= new DB(plik2);
     	stats1.setText("database:	"+databaseframe.toString()+"	name:	"+databaseframe.dbname);
     	DataFrame df = databaseframe.getDataFrame();
-    	df.print();
+    	
     	System.out.print("max \n");
     	databaseframe.max().print();
     	System.out.print("min \n");
@@ -147,6 +156,8 @@ public class StackPaneController {
     
 	@FXML
 	public void onActonButton2() {
+		//wczytuje datafram'a z pliku .csv liczy statystyki i porównuje czasy wykonania max i min ró¿nymi metodami i zapisuje do pliku .csv o nazwie 
+		// równe nazwie pliku wejœciowego + "_wyniki"
 		stats1.setText("");
 		String max = " ",min= " ",mean= " ",var= " ",sum= " ",std =" ";
 		FileChooser fc = new FileChooser();
@@ -158,107 +169,63 @@ public class StackPaneController {
 		List<File> f = fc.showOpenMultipleDialog(null);
 		for(File file: f) {
 			
-    	boolean header = true;
+			
     		String path = file.getAbsolutePath();
+    		
         	BufferedReader br = new BufferedReader(new FileReader(path)); 
         	System.out.println(path);
         	
-        	String firstLine = br.readLine();
-        	nazwy = firstLine.split(",");
+        
         	
         	nazwapliku=file.getName().replaceAll(".csv", "");
-        	
+        	plik2 = new DataFrame(path);
+        
+        	String firstLine = br.readLine();
+        	nazwy = firstLine.split(",");
         	choiceX.getItems().addAll(nazwy);
 			choiceY.getItems().addAll(nazwy);
         	
-        	int colnumber = nazwy.length;
-        	String secondLine = br.readLine();
-        	String[] typ = secondLine.split(",");
-        	Value[] types = new Value[colnumber];
         	
-        	for(int i =0;i<colnumber;i++) {
-        		try {
-        			int result = java.lang.Integer.parseInt(typ[i]);
-        			Integer resulttype = new lab1.Integer(result);	
-        			types[i]=resulttype;
-        			}
-        		catch(NumberFormatException ei){
-        			try {
-        				double result = java.lang.Double.parseDouble(typ[i]);
-        				lab1.Double resulttype = new lab1.Double(result);
-        				types[i]=resulttype;
-        				}
-        			catch(NumberFormatException ed) {
-        				try {
-            				float result = java.lang.Float.parseFloat(typ[i]);
-            				lab1.Float resulttype = new lab1.Float(result);
-            				types[i]=resulttype;            				}
-            			catch(NumberFormatException ef) {
-            				String result = typ[i];
-            				lab1.SValue resulttype = new lab1.SValue(result);
-            				types[i]=resulttype;
-            				}
-        			}
-        		}
-        		
-        	}
         	
         	
 			
-			plik2 = new DataFrame(file.getAbsolutePath(),nazwy,types);
+			
 			
 			
 			
 			 int group= 0;
-			 String sgroup=nazwy[0];
+			
 				
-			   /* for(int i =0; i<colnumber;i++) {
-			    	
-			    	DataFrame plik = new DataFrame(file.getAbsolutePath(),nazwy,types);
-			    	
-			    	//max += plik.max().df.get(i).list.get(0).toString() +"		";
-			    	//min += plik.min().df.get(i).list.get(0).toString() +"		";
-			    	//mean += plik.mean().df.get(i).list.get(0).toString() +" 	 ";
-			    	//var += plik.var().df.get(i).list.get(0).toString() +"		";
-			    	//sum += plik.sum().df.get(i).list.get(0).toString() +"		";
-			    	//std += plik.std().df.get(i).list.get(0).toString() +"		";
-			    }*/
+			  
 			    long startTime1 = System.nanoTime();
-			    DataFrame plik1 = new DataFrame(file.getAbsolutePath(),nazwy,types);
+			    DataFrame plik1 = new DataFrame(path);
 			    ArrayList<DataFrame> gb1=plik1.groupby(group);
 			    for(DataFrame df:gb1) {
 			    df.max();
 			    df.min();
 			    }
-			    
 			    long time1 = (System.nanoTime()-startTime1)/ 1000000;
+			    
 			    
 			    
 			    long startTime2 = System.nanoTime();
 			    DB databaseframe= new DB(plik2);
-			    //ArrayList<DataFrame> gb2=databaseframe.groupby(sgroup);
-			    
 			    databaseframe.max();
 			    databaseframe.min();
-			    
-		    	//stats1.setText("database:	"+databaseframe.toString()+"	name:	"+databaseframe.dbname);
-		    	
 		    	long time2 = (System.nanoTime()-startTime2)/ 1000000;
 			    
 		    	
 		    	long startTime3 = System.nanoTime();
 		    	ArrayList<DataFrame> gb3=plik1.groupbyThread(group);
-		    	
 			    for(DataFrame df31:gb3) {
-			    	df31.maxthrd().print();
+			    	df31.maxthrd();
 			    	df31.minthrd();
 			    }
-		   
 		    	long time3 = (System.nanoTime()-startTime3) / 1000000;
 			    
 		        stats.setText("wyniki: \n normalny df:  "+time1+"\n"+"database df:"	 +time2+"\n"+"thread df:	"+time3	);
 		        
-		        String path2=file.getAbsolutePath().toString().replace(".csv", "wyniki.csv");
+		        String path2=file.getAbsolutePath().toString().replace(".csv", "_wyniki.csv");
 		       
 		        		
 		        BufferedWriter writer = new BufferedWriter(new FileWriter(path2));
@@ -272,7 +239,10 @@ public class StackPaneController {
 		        br.close();
 		        
 		        //DataFrame plik = new DataFrame(file.getAbsolutePath(),nazwy,types);
+		        String[] stat = plik1.dfStats(path);
+		        String stat2="data frame stats:\n \n"+"max:  "+stat[0]+"\n"+"min:  "+stat[1]+"\n"+"mean: "+stat[2]+"\n"+"var:  "+stat[3]+"\n"+"sum:  "+stat[4]+"\n"+"std:	"+stat[5];
 		        
+		        stats2.setText(stat2);
 		        
 		        
 		        
@@ -289,7 +259,6 @@ public class StackPaneController {
 	}
 
 	
+}	
 	
 	
-	
-}

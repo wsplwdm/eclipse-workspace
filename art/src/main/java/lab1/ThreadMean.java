@@ -17,9 +17,11 @@ public class ThreadMean implements Runnable {
     public void run() {
         Value mean;
         for(Column k: df.toList()){
-        	if(columnToProcess.list.get(0) instanceof SValue!=true) {
+        	
 	            if(k.getName().equals(columnToProcess.getName())){
 	                mean = columnToProcess.list.get(0);
+	                if(columnToProcess.list.get(0) instanceof SValue!=true) {
+	                	mean=new SValue(" ---- ");}
 	                for(int i=1;i<columnToProcess.getColumnSize();i++){
 	                    mean =mean.add(columnToProcess.list.get(i));
 	
@@ -33,5 +35,5 @@ public class ThreadMean implements Runnable {
         }
 
 
-    }
+    
 }
