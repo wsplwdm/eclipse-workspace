@@ -5,26 +5,28 @@ import lab1.Column;
 import lab1.Value;
 
 public class ThreadSum implements Runnable {
-    private DataFrame frame;
-    private Column colToCount;
-    public ThreadSum(Column k, DataFrame inputframe) {
-        frame=inputframe;
-        colToCount=k;
+    private DataFrame df;
+    private Column columnToProcess;
+    public ThreadSum(Column col, DataFrame inputframe) {
+        df=inputframe;
+        columnToProcess=col;
     }
 
     @Override
     public void run() {
         Value sum;
-        for(Column k: frame.toList()){
-            if(k.getName().equals(colToCount.getName())){
-                sum = colToCount.list.get(0);
-                for(int i=1;i<colToCount.getColumnSize();i++){
-                    sum =sum.add(colToCount.list.get(i));
-
-                }
-                k.addElement(sum);
-                break;
-            }
+        for(Column k: df.toList()){
+        	if(columnToProcess.list.get(0) instanceof SValue!=true) {
+	            if(k.getName().equals(columnToProcess.getName())){
+	                sum = columnToProcess.list.get(0);
+	                for(int i=1;i<columnToProcess.getColumnSize();i++){
+	                    sum =sum.add(columnToProcess.list.get(i));
+	
+	                }
+	                k.addElement(sum);
+	                break;
+	            }
+        	}
         }
 
 

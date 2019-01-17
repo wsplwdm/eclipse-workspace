@@ -6,23 +6,27 @@ import lab1.Column;
 import lab1.Value;
 
 public class ThreadMin implements Runnable {
-    private DataFrame frame;
-    private Column colToCount;
-    public ThreadMin(Column k, DataFrame inputframe) {
-        frame=inputframe;
-        colToCount=k;
+    private DataFrame df;
+    private Column columnToProcess;
+    public ThreadMin(Column col, DataFrame inputframe) {
+        df=inputframe;
+        columnToProcess=col;
     }
 
     @Override
     public void run() {
 
-    	 for(Column k: frame.toList()){
-             if(k.getName().equals(colToCount.getName())){
-                 Value min = colToCount.list.get(0);
-                 for(int i=0;i<colToCount.getColumnSize();i++){
-                     if(min.gte(colToCount.list.get(i))){
-                         min=colToCount.list.get(i);
-                     }
+    	 for(Column k: df.toList()){
+             if(k.getName().equals(columnToProcess.getName())){
+            	 Value min=new lab1.Integer(java.lang.Integer.MAX_VALUE);
+            	 if(columnToProcess.list.get(0) instanceof SValue !=true) {
+ 	                min = columnToProcess.list.get(0);}
+                 for(int i=0;i<columnToProcess.getColumnSize();i++){
+                	 if(columnToProcess.list.get(i) instanceof SValue !=true) {
+	                     if(min.gte(columnToProcess.list.get(i))){
+	                         min=columnToProcess.list.get(i);
+	                     }
+                	 }
                 }
                 k.addElement(min);
                 break;

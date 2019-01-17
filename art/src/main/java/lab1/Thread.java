@@ -6,32 +6,32 @@ import lab1.Value;
 
 public class Thread implements Runnable {
     private Value id;
-    private DataFrame inputDataFrame;
-    private DataFrame outputDataFrame;
-    private Column groupingCol;
+    private DataFrame dfToProcess;
+    private DataFrame dfOutput;
+    private Column groupcol;
     
-    public Thread(DataFrame array, Value value, DataFrame dataFrame, Column s) {
+    public Thread(DataFrame dftoprocess, Value value, DataFrame dfout, Column col) {
         id=value;
-        inputDataFrame =array;
-        outputDataFrame = dataFrame;
-        groupingCol =s;
+        dfToProcess =dftoprocess;
+        dfOutput = dfout;
+        groupcol =col;
     }
 
     @Override
     public void run() {
-        Value[] valuesToAdd ;
-        int h =0;
-        for(int j = 0; j< inputDataFrame.sizeOfCol(); j++) {
-            if(groupingCol.list.get(j).eq(id)) {
-                valuesToAdd = new Value[inputDataFrame.toList().size() - 1];
-                h = 0;
-                for (int i = 0; i < inputDataFrame.toList().size(); i++) {
-                    if (!inputDataFrame.toList().get(i).getName().equals(groupingCol.getName())) {
-                        valuesToAdd[h] = inputDataFrame.toList().get(i).list.get(j);
-                        h++;
+        Value[] values ;
+       
+        for(int j = 0; j< dfToProcess.size(); j++) {
+            if(groupcol.list.get(j).eq(id)) {
+                values = new Value[dfToProcess.toList().size() - 1];
+                int i = 0;
+                for (int k = 0; k < dfToProcess.toList().size(); k++) {
+                    if (!dfToProcess.toList().get(k).getName().equals(groupcol.getName())) {
+                        values[i] = dfToProcess.toList().get(k).list.get(j);
+                        i++;
                     }
                 }
-                outputDataFrame.add(valuesToAdd);
+                dfOutput.add(values);
             }
         }
 

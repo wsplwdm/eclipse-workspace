@@ -28,15 +28,14 @@ public class Integer extends Value{
 
         @Override
         public Value add(Value value) {
-            if(value instanceof Float) {
-                this.value += ((Float) value).getValue();
-                
-            }
-            if(value instanceof Integer) {
-                this.value += ((Integer) value).getValue();
-                
-            }
-            return this;
+        	if (value instanceof Integer||value instanceof lab1.Double||value instanceof lab1.Float) {
+                this.value += java.lang.Double.parseDouble(value.GetValue().toString());
+             
+                 return this;
+             }
+             else {
+             	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
+             }
         }
 
         @Override
@@ -46,7 +45,7 @@ public class Integer extends Value{
                 return this;
             }
             else {
-            	throw new NotInstanceOf("Invalid Value type(not instance of integer)", value);
+            	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
             }
 
         }
@@ -59,7 +58,7 @@ public class Integer extends Value{
                 return this;
             }
             else {
-            	throw new NotInstanceOf("Invalid Value type(not instance of integer)", value);
+            	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
             }
 
         }
@@ -73,7 +72,7 @@ public class Integer extends Value{
                 return this;
             }
             else {
-            	throw new NotInstanceOf("Invalid Value type(not instance of integer)", value);
+            	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
             }
         }
 
@@ -109,7 +108,7 @@ public class Integer extends Value{
                 return Objects.equals(this.value, ((Integer) value).getValue());
             }
             else {
-            	throw new NotInstanceOf("Invalid Value type(not instance of integer)", value);
+            	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
             }
         }
 
@@ -119,7 +118,7 @@ public class Integer extends Value{
                 return this.value <= ((Integer) value).getValue();
             }
             else {
-            	throw new NotInstanceOf("Invalid Value type(not instance of integer)", value);
+            	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
             }
             
         }
@@ -130,7 +129,7 @@ public class Integer extends Value{
                 return this.value >= ((Integer) value).getValue();
             }
             else {
-            	throw new NotInstanceOf("Invalid Value type(not instance of integer)", value);
+            	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
             }
         }
 
@@ -140,7 +139,7 @@ public class Integer extends Value{
                 return !Objects.equals(this.value, ((Integer) value).getValue());
             }
             else {
-            	throw new NotInstanceOf("Invalid Value type(not instance of integer)", value);
+            	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
             }
         }
 

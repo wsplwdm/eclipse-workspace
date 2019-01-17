@@ -37,7 +37,7 @@ public class Double extends Value {
             return this;
         }
         else {
-        	throw new NotInstanceOf("Invalid Value type(not instance of Integer)", value);
+        	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
         }
     }
 
@@ -49,7 +49,7 @@ public class Double extends Value {
              return this;
          }
         else {
-        	throw new NotInstanceOf("Invalid Value type(not instance of Integer)", value);
+        	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
         }
 
     }
@@ -62,7 +62,7 @@ public class Double extends Value {
              return this;
          }
         else {
-        	throw new NotInstanceOf("Invalid Value type(not instance of Integer)", value);
+        	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
         }
 
     }
@@ -74,7 +74,7 @@ public class Double extends Value {
             return this;
     	}
         else {
-        	throw new NotInstanceOf("Invalid Value type(not instance of Integer)", value);
+        	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
         }
 
     }
@@ -87,7 +87,7 @@ public class Double extends Value {
         }
         
         else {
-        	throw new NotInstanceOf("Invalid Value type(not instance of Integer)", value);
+        	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
         }
 
     }
@@ -100,7 +100,7 @@ public class Double extends Value {
         }
         
         else {
-        	throw new NotInstanceOf("Invalid Value type(not instance of Integer)", value);
+        	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
         }
     }
 
@@ -111,7 +111,7 @@ public class Double extends Value {
          }
         
         else {
-        	throw new NotInstanceOf("Invalid Value type(not instance of Integer)", value);
+        	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
         }
     }
 
@@ -122,7 +122,7 @@ public class Double extends Value {
         }
         
         else {
-        	throw new NotInstanceOf("Invalid Value type(not instance of Integer)", value);
+        	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
         }
     }
 
@@ -133,7 +133,7 @@ public class Double extends Value {
         }
         
         else {
-        	throw new NotInstanceOf("Invalid Value type(not instance of Integer)", value);
+        	throw new NotInstanceOf("Invalid Value type(not instance of numeric)", value);
         }
     }
 

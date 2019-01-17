@@ -39,7 +39,7 @@ public class StackPaneController {
     private Button db;
 
     @FXML
-    private Label stats;
+    private Label stats;//czasy wykonania
 
     @FXML
     private Button button;
@@ -54,7 +54,10 @@ public class StackPaneController {
     private NumberAxis yAxis;
 
     @FXML
-    private Label stats1;
+    private Label stats1;//output wyj¹tków
+    
+    @FXML
+    private Label stats2;//statystki datafram'a
 
     @FXML
     private ChoiceBox choiceX;
@@ -111,8 +114,7 @@ public class StackPaneController {
 	        lineChart.getData().addAll(series);
     	}
     	catch(Exception e) {
-    		stats1.setText(e.toString());
-			e.printStackTrace();
+    		errormessage(e);
     	}
     }
     @FXML
@@ -130,14 +132,19 @@ public class StackPaneController {
     	
     	}
     	catch(Exception e) {
-    		stats1.setText(e.toString());
-			e.printStackTrace();
+    		errormessage(e);
     	}
     	
     }
    
 	
-
+    ///wypisywanie wyj¹tków w gui
+    public void errormessage(Exception e) {
+    	stats1.setText(e.toString());
+    	e.printStackTrace();
+    }
+    
+    
 	@FXML
 	public void onActonButton2() {
 		stats1.setText("");
@@ -152,9 +159,9 @@ public class StackPaneController {
 		for(File file: f) {
 			
     	boolean header = true;
-        
-        	BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath())); 
-        	System.out.println(file.getAbsolutePath());
+    		String path = file.getAbsolutePath();
+        	BufferedReader br = new BufferedReader(new FileReader(path)); 
+        	System.out.println(path);
         	
         	String firstLine = br.readLine();
         	nazwy = firstLine.split(",");
@@ -241,8 +248,9 @@ public class StackPaneController {
 		    	
 		    	long startTime3 = System.nanoTime();
 		    	ArrayList<DataFrame> gb3=plik1.groupbyThread(group);
+		    	
 			    for(DataFrame df31:gb3) {
-			    	df31.maxthrd();
+			    	df31.maxthrd().print();
 			    	df31.minthrd();
 			    }
 		   
@@ -250,18 +258,20 @@ public class StackPaneController {
 			    
 		        stats.setText("wyniki: \n normalny df:  "+time1+"\n"+"database df:"	 +time2+"\n"+"thread df:	"+time3	);
 		        
-		        String path=file.getAbsolutePath().toString().replace(".csv", "wyniki.csv");
+		        String path2=file.getAbsolutePath().toString().replace(".csv", "wyniki.csv");
 		       
 		        		
-		        BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+		        BufferedWriter writer = new BufferedWriter(new FileWriter(path2));
 		        writer.write("normalny df,database df,thread df"+"\n");
 		        writer.write(time1+","+time2+","+time3);
 		        writer.close();
 		        
-		        //stats.setText("data frame stats:\n \n"+"max:  "+max+"\n"+"min:  "+min+"\n"+"mean: "+mean+"\n"+"var:  "+var+"\n"+"sum:  "+sum+"\n"+"std:	"+std);
+		        //stats2.setText("data frame stats:\n \n"+"max:  "+max+"\n"+"min:  "+min+"\n"+"mean: "+mean+"\n"+"var:  "+var+"\n"+"sum:  "+sum+"\n"+"std:	"+std);
 		        lineChart.getData().clear();
 		    	series.getData().clear();
 		        br.close();
+		        
+		        //DataFrame plik = new DataFrame(file.getAbsolutePath(),nazwy,types);
 		        
 		        
 		        
@@ -271,8 +281,7 @@ public class StackPaneController {
 			stats1.setText("failed opening or choosing file");
 			e.printStackTrace();
 		}catch (Exception e) {
-			stats1.setText(e.toString());
-			e.printStackTrace();
+			errormessage(e);
 		}
         
 		

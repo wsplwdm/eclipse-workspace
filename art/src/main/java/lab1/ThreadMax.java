@@ -6,29 +6,35 @@ import lab1.Column;
 import lab1.Value;
 
 public class ThreadMax implements Runnable {
-    private DataFrame frame;
-    private Column colToCount;
-    public ThreadMax(Column k, DataFrame inputframe) {
-        frame=inputframe;
-        colToCount=k;
+    private DataFrame df;
+    private Column columnToProcess;
+    public ThreadMax(Column col, DataFrame inputframe) {
+        df=inputframe;
+        columnToProcess=col;
     }
 
     @Override
     public void run() {
+    	try {
+	        for(Column k: df.toList()){
+	            if(k.getName().equals(columnToProcess.getName())){
+	            	Value max=new lab1.Integer(java.lang.Integer.MIN_VALUE);
+	            	if(columnToProcess.list.get(0) instanceof SValue !=true) {
+	                max = columnToProcess.list.get(0);}
+	            
+	                for(int i=0;i<columnToProcess.getColumnSize();i++){
+	                	if(columnToProcess.list.get(i) instanceof SValue !=true) {
+		                    if(max.lte(columnToProcess.list.get(i))){
+		                        max=columnToProcess.list.get(i);
+		                    }
+	                	}
+	                }
+	                k.addElement(max);
+	                break;
+	            }
+	        }
 
-        for(Column k: frame.toList()){
-            if(k.getName().equals(colToCount.getName())){
-                Value max = colToCount.list.get(0);
-                for(int i=0;i<colToCount.getColumnSize();i++){
-                    if(max.lte(colToCount.list.get(i))){
-                        max=colToCount.list.get(i);
-                    }
-                }
-                k.addElement(max);
-                break;
-            }
-        }
-
-
+		}catch(Exception e) {}
+    	
     }
 }

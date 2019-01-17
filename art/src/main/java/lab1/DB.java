@@ -53,8 +53,7 @@ public class DB extends DataFrame {
              returnframe =new DataFrame(cols);
         }catch(java.sql.SQLException e){
             System.out.println("SQL exception "+e.getMessage());
-            System.out.println("SQL state "+e.getSQLState());
-            System.out.println("SQL vendor error "+e.getErrorCode());
+            
         }finally {
             if(result!=null) {
                 try {
