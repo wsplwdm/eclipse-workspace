@@ -73,94 +73,86 @@ public class DB extends DataFrame {
     public DB(DataFrame dftosave) {
     	super(dftosave);
     	
-        try {
-        	dbname = przycisk_plik.controller.StackPaneController.nazwapliku;
-            connect();
-            stat = connectvar.createStatement();
-           
-            //stat.executeUpdate("Drop table "+dbname);
-            
-            System.out.println(dbname);
-            String command = "CREATE TABLE "+dbname+" (";
-            
-            for(int i=0;i<dftosave.toList().size();i++){
-                command=command+dftosave.toList().get(i).getName()+" ";
-                if((dftosave.toList().get(i).getVType())instanceof lab1.Integer){
-                    command = command+"INT, ";
-                }
-                else if((dftosave.toList().get(i).getVType())instanceof lab1.Double){
-                    command = command+"DOUBLE, ";
-                }
-                else if((dftosave.toList().get(i).getVType())instanceof lab1.Float){
-                    command = command+"FLOAT, ";
-                }
-                else if((dftosave.toList().get(i).getVType())instanceof lab1.DateTime){
-                    command = command+"DATETIME, ";
-                }
-                else{
-                    command = command+"VARCHAR(255), ";
-                }
-                
-            }
-            command =command.substring(0,command.length()-2);
-            command=command + ")";
-            
-            //command=command+dftosave.toList().get(dftosave.toList().size()-1).getName()+" ";
-            
-            /*
-            if((dftosave.toList().get(dftosave.toList().size()-1).getVType())instanceof lab1.Integer){
-                command = command+"INT ) ";
-            }
-            else if((dftosave.toList().get(dftosave.toList().size()-1).getVType())instanceof lab1.Double){
-                command = command+"DOUBLE) ";
-            }
-            else if((dftosave.toList().get(dftosave.toList().size()-1).getVType())instanceof lab1.Float){
-                command = command+"FLOAT )";
-            }
-            
-            else if((dftosave.toList().get(dftosave.toList().size()-1).getVType())instanceof lab1.DateTime){
-                command = command+"DATETIME) ";
-            }
-            else{
-                command = command+"VARCHAR(255) )";
-            }*/
-           
-            stat.executeUpdate(command);
-        }catch (java.sql.SQLException e){
-        	System.out.println("jeden ");
-            System.out.println("SQL exception "+e.getMessage());
-            System.out.println("SQL state "+e.getSQLState());
-            System.out.println("SQL vendor error "+e.getErrorCode());
-        }
-            String secondcommand;
-            for(int i =0;i<dftosave.size();i++){
-                 secondcommand="INSERT INTO "+dbname+" (" ;
-                for(int j=0;j<dftosave.toList().size()-1;j++){
-                    secondcommand=secondcommand+dftosave.toList().get(j).getName()+" , ";
-                }
-                secondcommand=secondcommand+dftosave.toList().get(dftosave.toList().size()-1).getName();
-                secondcommand=secondcommand+") VALUES (";
-                for(int j=0;j<dftosave.toList().size();j++){
-                    secondcommand = secondcommand + "'"+dftosave.toList().get(j).list.get(i) + "'"+",";
+    	  try {
+          	dbname = przycisk_plik.controller.StackPaneController.nazwapliku;
+              connect();
+              stat = connectvar.createStatement();
+              stat.executeUpdate("Drop table 1groupby");
+              //System.out.println(dbname);
+              String command = "CREATE TABLE "+dbname+" (";
+              
+              for(int i=0;i<dftosave.toList().size()-1;i++){
+                  command=command+dftosave.toList().get(i).getName()+" ";
+                  if((dftosave.toList().get(i).getVType())instanceof lab1.Integer){
+                      command = command+"INT, \n";
+                  }
+                  else if((dftosave.toList().get(i).getVType())instanceof lab1.Double){
+                      command = command+"DOUBLE, \n";
+                  }
+                  else if((dftosave.toList().get(i).getVType())instanceof lab1.Float){
+                      command = command+"FLOAT, \n";
+                  }
+                  else if((dftosave.toList().get(i).getVType())instanceof lab1.DateTime){
+                      command = command+"DATETIME, \n";
+                  }
+                  else{
+                      command = command+"VARCHAR(255), \n";
+                  }
 
-                }
-                secondcommand =secondcommand.substring(0, secondcommand.length()-1);
-                //dodawanie ostatniego elementu (¿eby w
-                //secondcommand = secondcommand + dftosave.toList().get(dftosave.toList().size()-1).list.get(i);
-                secondcommand=secondcommand+");";
-                try {
-                	
-					stat.executeUpdate(secondcommand);
-					
-				} catch (SQLException e) {
-					System.out.println("dwa ");
-		            System.out.println("SQL exception "+e.getMessage());
-		            System.out.println("SQL state "+e.getSQLState());
-		            System.out.println("SQL vendor error "+e.getErrorCode());
-				}
-            }
-        
-    }
+              }
+              
+              command=command+dftosave.toList().get(dftosave.toList().size()-1).getName()+" ";
+              if((dftosave.toList().get(dftosave.toList().size()-1).getVType())instanceof lab1.Integer){
+                  command = command+"INT ) \n";
+              }
+              else if((dftosave.toList().get(dftosave.toList().size()-1).getVType())instanceof lab1.Double){
+                  command = command+"DOUBLE) \n";
+              }
+              else if((dftosave.toList().get(dftosave.toList().size()-1).getVType())instanceof lab1.Float){
+                  command = command+"FLOAT )\n";
+              }
+              
+              else if((dftosave.toList().get(dftosave.toList().size()-1).getVType())instanceof lab1.DateTime){
+                  command = command+"DATETIME) \n";
+              }
+              else{
+                  command = command+"VARCHAR(255) )\n";
+              }
+              System.out.println(command);
+              stat.executeUpdate(command);
+              String secondcommand;
+              int ile=2000;
+              
+            	  for(int k =0;k<dftosave.size();k+=ile) {
+            		  System.out.println(k);
+                   secondcommand="INSERT INTO "+dbname+" (" ;
+                  for(int j=0;j<dftosave.toList().size()-1;j++){
+                      secondcommand=secondcommand+dftosave.toList().get(j).getName()+" , ";
+                  }
+                  secondcommand=secondcommand+dftosave.toList().get(dftosave.toList().size()-1).getName();
+                  secondcommand=secondcommand+") VALUES";
+                  for(int i =k;(i<k+ile && i<dftosave.size());i++){
+                	  secondcommand+="('";
+                	  for(int j=0;j<dftosave.toList().size()-1;j++){
+	                      secondcommand = secondcommand + dftosave.toList().get(j).list.get(i) + "','";
+
+                  }
+                  secondcommand = secondcommand + dftosave.toList().get(dftosave.toList().size()-1).list.get(i);
+                  secondcommand=secondcommand+"'),";
+                 
+              }
+                  secondcommand=secondcommand.substring(0,secondcommand.length()-1);
+                  secondcommand=secondcommand+";";
+                  //System.out.println(secondcommand);
+                  stat.executeUpdate(secondcommand);
+            	  }
+              
+          }catch (java.sql.SQLException e){
+              System.out.println("SQL exception "+e.getMessage());
+              System.out.println("SQL state "+e.getSQLState());
+              System.out.println("SQL vendor error "+e.getErrorCode());
+          }
+      }
     
     public DataFrame getDataFrameFrom(String where){
         DataFrame returnframe =null;
