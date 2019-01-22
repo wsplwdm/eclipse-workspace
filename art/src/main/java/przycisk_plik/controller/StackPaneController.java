@@ -150,18 +150,17 @@ public class StackPaneController {
 	    }
 	    long time1 = (System.nanoTime()-startTime1)/ 1000000;
 	    
-	    
-	    System.out.println("ju¿ przed db");
+	
 
 	    long startTime2 = System.nanoTime();
-	    DB databaseframe= new DB(plik2);
+	    //DB databaseframe= new DB(plik2);
 	    //databaseframe.groupby("id");
-	   // databaseframe.max();
-	   // databaseframe.min();
+	    //databaseframe.max();
+	    //databaseframe.min();
 	   
     	long time2 = (System.nanoTime()-startTime2)/ 1000000;
 	    
-System.out.println("ju¿ po db");
+
     	long startTime3 = System.nanoTime();
     	ArrayList<DataFrame> gb3=plik2.groupbyThread(group);
 	    for(DataFrame df31:gb3) {
@@ -171,7 +170,7 @@ System.out.println("ju¿ po db");
 	    }
     	long time3 = (System.nanoTime()-startTime3) / 1000000;
 	    
-        stats.setText("wyniki: \n normalny df:  "+time1+"\n"+"database df:"	 +time2+"\n"+"thread df:	"+time3	);
+        stats.setText("wyniki:[ms] \n normalny df:  "+time1+"\n"+"database df:"	 +time2+"\n"+"thread df:	"+time3	);
         String path2=path.replace(".csv", "_wyniki.csv");
 	       
 		

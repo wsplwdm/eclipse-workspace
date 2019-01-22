@@ -1,5 +1,6 @@
 package lab1;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -70,6 +71,28 @@ public class DB extends DataFrame {
         }
         return returnframe ;
     }
+    public DB(String path) throws IOException {
+    	super(path);
+    	try {
+    	dbname = przycisk_plik.controller.StackPaneController.nazwapliku;
+    	 connect();
+         stat = connectvar.createStatement();
+         //stat.executeUpdate("Drop table 1groupby");
+         String command ="LOAD DATA INFILE \""+path+"\"\r\n" + 
+         		"INTO TABLE "+dbname+"\r\n" + 
+         		"COLUMNS TERMINATED BY ','\r\n" + 
+         		"OPTIONALLY ENCLOSED BY '\"'\r\n" + 
+         		"ESCAPED BY '\"'\r\n" + 
+         		"LINES TERMINATED BY '\\n'\r\n" + 
+         		"IGNORE 1 LINES;";
+         System.out.println(command);
+         stat.executeUpdate(command);
+    	 }catch (java.sql.SQLException e){
+             System.out.println("SQL exception "+e.getMessage());
+             System.out.println("SQL state "+e.getSQLState());
+             System.out.println("SQL vendor error "+e.getErrorCode());
+         }
+    }
     public DB(DataFrame dftosave) {
     	super(dftosave);
     	
@@ -121,7 +144,7 @@ public class DB extends DataFrame {
               System.out.println(command);
               stat.executeUpdate(command);
               String secondcommand;
-              int ile=2000;
+              int ile=10000;
               
             	  for(int k =0;k<dftosave.size();k+=ile) {
             		  System.out.println(k);
@@ -299,6 +322,7 @@ public class DB extends DataFrame {
             stat= connectvar.createStatement();
 
             stat.executeQuery("SET OPTION SQL_SELECT_LIMIT=DEFAULT");
+            System.out.println("select *  FROM "+dbname+"  GROUP BY "+colname+";");
             result=stat.executeQuery("select *  FROM "+dbname+"  GROUP BY "+colname+";");
             System.out.println("select *  FROM "+dbname+"  GROUP BY "+colname+";");
             ResultSetMetaData rsmd = result.getMetaData();
