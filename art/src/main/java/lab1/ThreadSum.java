@@ -19,11 +19,15 @@ public class ThreadSum implements Runnable {
         	
 	            if(k.getName().equals(columnToProcess.getName())){
 	                sum = columnToProcess.list.get(0);
-	                if(columnToProcess.list.get(0) instanceof SValue!=true) {
+	                if(columnToProcess.list.get(0) instanceof SValue==true) {
 	                	sum=new SValue(" ---- ");}
+	                else {
+	                	sum=columnToProcess.list.get(0);
+	                
 	                for(int i=1;i<columnToProcess.getColumnSize();i++){
 	                    sum =sum.add(columnToProcess.list.get(i));
 	
+	                }
 	                }
 	                k.addElement(sum);
 	                break;

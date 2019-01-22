@@ -2,44 +2,44 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value=" id" key="selection"/>
+		<item value="" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value=" id"/>
-			<item value="id"/>
-			<item value="getArray"/>
-			<item value="return "/>
-			<item value="listofvalues"/>
-			<item value="SingleColumn"/>
-			<item value="create"/>
-			<item value="dbname"/>
-			<item value="xl"/>
-			<item value="frame"/>
-			<item value="int"/>
-			<item value="size"/>
+			<item value="dupa"/>
+			<item value="print()"/>
 			<item value="print"/>
-			<item value="&quot;&quot;"/>
-			<item value="add"/>
+			<item value="plik"/>
+			<item value="stats"/>
+			<item value=" frame"/>
+			<item value="frame"/>
+			<item value="colToCount"/>
+			<item value="TimeUnit"/>
+			<item value="setId"/>
+			<item value="eq"/>
+			<item value="returnframe"/>
+			<item value="unique"/>
+			<item value="specialone"/>
+			<item value="sizeOfCol()"/>
 		</list>
 		<list key="replacehistory">
+			<item value=" df"/>
+			<item value="df"/>
+			<item value="columnToProcess"/>
+			<item value="setGroupbyId"/>
+			<item value="returnDataFrame"/>
+			<item value="tmpValues"/>
+			<item value="groupByThisColumn"/>
+			<item value="size()"/>
+			<item value="&quot;Invalid Value type(not instance of numeric"/>
 			<item value="toList"/>
 			<item value="list"/>
 			<item value="Column"/>
-			<item value="df"/>
 			<item value="addElement"/>
 			<item value="SValue"/>
 			<item value="Value "/>
-			<item value="Value"/>
-			<item value="size"/>
-			<item value="getVType"/>
-			<item value="lab1.DateTime"/>
-			<item value="getType"/>
-			<item value="getName"/>
-			<item value="lab1.Double"/>
-			<item value="lab1.Float"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

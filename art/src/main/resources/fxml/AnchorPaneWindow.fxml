@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
@@ -13,12 +14,12 @@
    <children> 
       <Button fx:id="button" mnemonicParsing="false" onAction="#onActionDraw" prefHeight="63.0" prefWidth="57.0" text="Draw Line Chart" wrapText="true" StackPane.alignment="TOP_LEFT">
          <StackPane.margin>
-            <Insets left="20.0" top="21.0" />
+            <Insets left="120.0" top="21.0" />
          </StackPane.margin>
       </Button>
       <Button fx:id="button2" layoutX="30.0" layoutY="30.0" mnemonicParsing="false" onAction="#onActonButton2" prefHeight="66.0" prefWidth="63.0" text="open csv file" wrapText="true" StackPane.alignment="TOP_LEFT">
          <StackPane.margin>
-            <Insets left="120.0" top="20.0" />
+            <Insets left="20.0" top="20.0" />
          </StackPane.margin>
       </Button>
       <Label fx:id="stats" alignment="TOP_CENTER" prefHeight="174.0" prefWidth="236.0" text="time comparsion: [s]" textAlignment="JUSTIFY" StackPane.alignment="TOP_CENTER">
@@ -26,7 +27,7 @@
             <Insets right="300.0" top="20.0" />
          </StackPane.margin>
       </Label>
-      <LineChart fx:id="lineChart" StackPane.alignment="BOTTOM_CENTER">
+      <LineChart fx:id="lineChart" prefHeight="551.0" prefWidth="600.0" StackPane.alignment="BOTTOM_CENTER">
         <xAxis>
           <NumberAxis side="BOTTOM" fx:id="xAxis" />
         </xAxis>
@@ -34,8 +35,11 @@
           <NumberAxis fx:id="yAxis" side="LEFT" />
         </yAxis>
          <StackPane.margin>
-            <Insets bottom="50.0" top="250.0" />
+            <Insets bottom="50.0" right="600.0" top="250.0" />
          </StackPane.margin>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
       </LineChart>
       <Label fx:id="stats1" prefHeight="48.0" prefWidth="1200.0" textFill="#cd3333" StackPane.alignment="BOTTOM_CENTER">
          <font>
@@ -60,16 +64,36 @@
             <Insets left="120.0" top="160.0" />
          </StackPane.margin>
       </ChoiceBox>
-      <Button fx:id="db" mnemonicParsing="false" onAction="#onActionDB" prefHeight="41.0" prefWidth="137.0" text="create databaseframe" StackPane.alignment="TOP_RIGHT">
+      <Button fx:id="db" mnemonicParsing="false" onAction="#onActionDB" prefHeight="43.0" prefWidth="95.0" text="create databaseframe" wrapText="true" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="20.0" top="200.0" />
+         </StackPane.margin>
+      </Button>
+      <Label fx:id="stats2" alignment="TOP_CENTER" prefHeight="177.0" prefWidth="627.0" text="dataframe statistics:" textAlignment="JUSTIFY" StackPane.alignment="TOP_RIGHT">
          <StackPane.margin>
             <Insets right="20.0" top="20.0" />
          </StackPane.margin>
-      </Button>
-      <Label fx:id="stats2" alignment="TOP_CENTER" prefHeight="174.0" prefWidth="415.0" text="dataframe statistics:" textAlignment="JUSTIFY" StackPane.alignment="TOP_RIGHT">
-         <StackPane.margin>
-            <Insets right="200.0" top="20.0" />
-         </StackPane.margin>
       </Label>
+      <TextArea fx:id="textarea" editable="false" prefHeight="200.0" prefWidth="200.0" StackPane.alignment="CENTER_RIGHT">
+         <StackPane.margin>
+            <Insets bottom="40.0" left="620.0" right="40.0" top="200.0" />
+         </StackPane.margin>
+      </TextArea>
+      <Button fx:id="button3" mnemonicParsing="false" onAction="#onActonCompare" prefHeight="63.0" prefWidth="74.0" text="compare methods" wrapText="true" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="220.0" top="21.0" />
+         </StackPane.margin>
+      </Button>
+      <Button fx:id="viewbutton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionview" prefHeight="44.0" prefWidth="90.0" text="view dataframe" wrapText="true" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="140.0" top="200.0" />
+         </StackPane.margin>
+      </Button>
+      <Button fx:id="statsbutton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionStats" prefHeight="48.0" prefWidth="98.0" text="view dataframe stats" wrapText="true" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="260.0" top="200.0" />
+         </StackPane.margin>
+      </Button>
        
    </children>
 </StackPane>

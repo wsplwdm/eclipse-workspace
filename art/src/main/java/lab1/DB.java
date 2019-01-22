@@ -72,51 +72,66 @@ public class DB extends DataFrame {
     }
     public DB(DataFrame dftosave) {
     	super(dftosave);
+    	
         try {
         	dbname = przycisk_plik.controller.StackPaneController.nazwapliku;
             connect();
             stat = connectvar.createStatement();
-            //stat.executeUpdate("Drop table Frame");
+           
+            //stat.executeUpdate("Drop table "+dbname);
+            
             System.out.println(dbname);
             String command = "CREATE TABLE "+dbname+" (";
             
-            for(int i=0;i<dftosave.toList().size()-1;i++){
+            for(int i=0;i<dftosave.toList().size();i++){
                 command=command+dftosave.toList().get(i).getName()+" ";
                 if((dftosave.toList().get(i).getVType())instanceof lab1.Integer){
-                    command = command+"INT, \n";
+                    command = command+"INT, ";
                 }
                 else if((dftosave.toList().get(i).getVType())instanceof lab1.Double){
-                    command = command+"DOUBLE, \n";
+                    command = command+"DOUBLE, ";
                 }
                 else if((dftosave.toList().get(i).getVType())instanceof lab1.Float){
-                    command = command+"FLOAT, \n";
+                    command = command+"FLOAT, ";
                 }
                 else if((dftosave.toList().get(i).getVType())instanceof lab1.DateTime){
-                    command = command+"DATETIME, \n";
+                    command = command+"DATETIME, ";
                 }
                 else{
-                    command = command+"VARCHAR(255), \n";
+                    command = command+"VARCHAR(255), ";
                 }
-
+                
             }
-            command=command+dftosave.toList().get(dftosave.toList().size()-1).getName()+" ";
+            command =command.substring(0,command.length()-2);
+            command=command + ")";
+            
+            //command=command+dftosave.toList().get(dftosave.toList().size()-1).getName()+" ";
+            
+            /*
             if((dftosave.toList().get(dftosave.toList().size()-1).getVType())instanceof lab1.Integer){
-                command = command+"INT ) \n";
+                command = command+"INT ) ";
             }
             else if((dftosave.toList().get(dftosave.toList().size()-1).getVType())instanceof lab1.Double){
-                command = command+"DOUBLE) \n";
+                command = command+"DOUBLE) ";
             }
             else if((dftosave.toList().get(dftosave.toList().size()-1).getVType())instanceof lab1.Float){
-                command = command+"FLOAT )\n";
+                command = command+"FLOAT )";
             }
             
             else if((dftosave.toList().get(dftosave.toList().size()-1).getVType())instanceof lab1.DateTime){
-                command = command+"DATETIME) \n";
+                command = command+"DATETIME) ";
             }
             else{
-                command = command+"VARCHAR(255) )\n";
-            }
+                command = command+"VARCHAR(255) )";
+            }*/
+           
             stat.executeUpdate(command);
+        }catch (java.sql.SQLException e){
+        	System.out.println("jeden ");
+            System.out.println("SQL exception "+e.getMessage());
+            System.out.println("SQL state "+e.getSQLState());
+            System.out.println("SQL vendor error "+e.getErrorCode());
+        }
             String secondcommand;
             for(int i =0;i<dftosave.size();i++){
                  secondcommand="INSERT INTO "+dbname+" (" ;
@@ -125,19 +140,26 @@ public class DB extends DataFrame {
                 }
                 secondcommand=secondcommand+dftosave.toList().get(dftosave.toList().size()-1).getName();
                 secondcommand=secondcommand+") VALUES (";
-                for(int j=0;j<dftosave.toList().size()-1;j++){
-                    secondcommand = secondcommand + dftosave.toList().get(j).list.get(i) + ",";
+                for(int j=0;j<dftosave.toList().size();j++){
+                    secondcommand = secondcommand + "'"+dftosave.toList().get(j).list.get(i) + "'"+",";
 
                 }
-                secondcommand = secondcommand + dftosave.toList().get(dftosave.toList().size()-1).list.get(i);
+                secondcommand =secondcommand.substring(0, secondcommand.length()-1);
+                //dodawanie ostatniego elementu (¿eby w
+                //secondcommand = secondcommand + dftosave.toList().get(dftosave.toList().size()-1).list.get(i);
                 secondcommand=secondcommand+");";
-                stat.executeUpdate(secondcommand);
+                try {
+                	
+					stat.executeUpdate(secondcommand);
+					
+				} catch (SQLException e) {
+					System.out.println("dwa ");
+		            System.out.println("SQL exception "+e.getMessage());
+		            System.out.println("SQL state "+e.getSQLState());
+		            System.out.println("SQL vendor error "+e.getErrorCode());
+				}
             }
-        }catch (java.sql.SQLException e){
-            System.out.println("SQL exception "+e.getMessage());
-            System.out.println("SQL state "+e.getSQLState());
-            System.out.println("SQL vendor error "+e.getErrorCode());
-        }
+        
     }
     
     public DataFrame getDataFrameFrom(String where){
@@ -195,6 +217,7 @@ public class DB extends DataFrame {
     }
     
     public DataFrame min(){
+    	System.out.println("min DB");
         DataFrame returnframe =null;
         try{
             connect();
@@ -235,6 +258,7 @@ public class DB extends DataFrame {
     }
     
     public DataFrame max(){
+    	System.out.println("max DB");
         DataFrame returnframe =null;
         try{
             connect();
@@ -277,18 +301,20 @@ public class DB extends DataFrame {
     public ArrayList<DataFrame> groupby(String colname){
         ArrayList<DataFrame> returnframe = new ArrayList<DataFrame>();
         
-        
+        System.out.println("groupby DB");
         try{
             connect();
             stat= connectvar.createStatement();
 
             stat.executeQuery("SET OPTION SQL_SELECT_LIMIT=DEFAULT");
             result=stat.executeQuery("select *  FROM "+dbname+"  GROUP BY "+colname+";");
+            System.out.println("select *  FROM "+dbname+"  GROUP BY "+colname+";");
             ResultSetMetaData rsmd = result.getMetaData();
             int numberofcols= rsmd.getColumnCount();
             Column[] cols = new Column[numberofcols];
             for(int i=1;i<=numberofcols;i++) {
                 result=stat.executeQuery("select *  FROM "+dbname+"  GROUP BY "+colname+";");
+                //System.out.println("select *  FROM "+dbname+"  GROUP BY "+colname+";");
                 Value typo = new SValue();
                 String gt =rsmd.getColumnTypeName(i);
                 if(gt=="INT" || gt=="TINYINT"|| gt=="SMALLINT"|| gt=="MEDIUMINT" || gt=="BIGINT"){

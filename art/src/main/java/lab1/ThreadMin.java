@@ -19,8 +19,11 @@ public class ThreadMin implements Runnable {
     	 for(Column k: df.toList()){
              if(k.getName().equals(columnToProcess.getName())){
             	 Value min=new lab1.Integer(java.lang.Integer.MAX_VALUE);
-            	 if(columnToProcess.list.get(0) instanceof SValue !=true) {
+            	 if(columnToProcess.list.get(0) instanceof SValue ==true) {
  	                min = new SValue(" ---- ");}
+            	 else {
+            		 min=columnToProcess.list.get(0);
+            	
                  for(int i=0;i<columnToProcess.getColumnSize();i++){
                 	 if(columnToProcess.list.get(i) instanceof SValue !=true) {
 	                     if(min.gte(columnToProcess.list.get(i))){
@@ -28,6 +31,7 @@ public class ThreadMin implements Runnable {
 	                     }
                 	 }
                 }
+            	 }
                 k.addElement(min);
                 break;
             }

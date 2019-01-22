@@ -21,8 +21,11 @@ public class ThreadVar implements Runnable {
         	
 	            if(k.getName().equals(columnToProcess.getName())){
 	                var = columnToProcess.list.get(0);
-	                if(columnToProcess.list.get(0) instanceof SValue!=true) {
-	                	var=new SValue(" ---- ");}
+	                if(columnToProcess.list.get(0) instanceof SValue==true) {
+	                	Value Returnv=new SValue(" ---- ");
+	                	k.addElement(Returnv);}
+	                
+	                else {
 	                for(int i=1;i<columnToProcess.getColumnSize();i++){
 	                    var =var.add(columnToProcess.list.get(i));
 	
@@ -38,6 +41,7 @@ public class ThreadVar implements Runnable {
 	                Returnv=Returnv.div(colSize);
 	
 	                k.addElement(Returnv);
+	                }
 	                break;
 	            }
         	}

@@ -21,8 +21,13 @@ public class ThreadStd implements Runnable {
         
 	            if(k.getName().equals(columnToProcess.getName())){
 	                var = columnToProcess.list.get(0);
-	            	if(columnToProcess.list.get(0) instanceof SValue!=true) {
-	            		var =new SValue(" ---- ");}
+	            	if(columnToProcess.list.get(0) instanceof SValue==true) {
+	            		Value Returnv =new SValue(" ---- ");
+	            		k.addElement(Returnv);
+	            	}
+	            	else {
+	            		var=columnToProcess.list.get(0);
+	            	
 	                for(int i=1;i<columnToProcess.getColumnSize();i++){
 	                    var =var.add(columnToProcess.list.get(i));
 	
@@ -35,9 +40,12 @@ public class ThreadStd implements Runnable {
 	                for (int i = 0; i < columnToProcess.getColumnSize(); i++) {
 	                    Returnv = Returnv.add((columnToProcess.list.get(i).sub(var)).pow(new Double(2)));
 	                }
+	                
 	                Returnv=Returnv.div(colSize);
 	                Returnv = Returnv.pow(new Double(0.5));
+	            	
 	                k.addElement(Returnv);
+	            	}
 	                break;
 	            }
         	}

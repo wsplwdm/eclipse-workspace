@@ -20,13 +20,16 @@ public class ThreadMean implements Runnable {
         	
 	            if(k.getName().equals(columnToProcess.getName())){
 	                mean = columnToProcess.list.get(0);
-	                if(columnToProcess.list.get(0) instanceof SValue!=true) {
+	                if(columnToProcess.list.get(0) instanceof SValue==true) {
 	                	mean=new SValue(" ---- ");}
+	                else {
+	                	mean=columnToProcess.list.get(0);
+	               
 	                for(int i=1;i<columnToProcess.getColumnSize();i++){
 	                    mean =mean.add(columnToProcess.list.get(i));
 	
 	                }
-	
+	                }
 	                mean= mean.div(new Integer(columnToProcess.getColumnSize()));
 	                k.addElement(mean);
 	                break;

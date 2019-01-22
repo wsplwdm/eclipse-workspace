@@ -318,12 +318,12 @@ public class DataFrame implements groupby{
 			
 	    	
 	    	
-	    	ret[0] += plik.max().df.get(i).list.get(0).toString() +"		";
-	    	ret[1] += plik.min().df.get(i).list.get(0).toString() +"		";
-	    	ret[2] += plik.mean().df.get(i).list.get(0).toString() +" 		 ";
-	    	ret[3] += plik.var().df.get(i).list.get(0).toString() +"		";
-	    	ret[4] += plik.sum().df.get(i).list.get(0).toString() +"		";
-	    	ret[5] += plik.std().df.get(i).list.get(0).toString() +"		";
+	    	ret[0] += plik.maxthrd().df.get(i).list.get(0).toString() +"		";
+	    	ret[1] += plik.minthrd().df.get(i).list.get(0).toString() +"		";
+	    	ret[2] += plik.meanthrd().df.get(i).list.get(0).toString() +" 		 ";
+	    	ret[3] += plik.varthrd().df.get(i).list.get(0).toString() +"		";
+	    	ret[4] += plik.sumthrd().df.get(i).list.get(0).toString() +"		";
+	    	ret[5] += plik.stdthrd().df.get(i).list.get(0).toString() +"		";
 	    	
 	    
     	
