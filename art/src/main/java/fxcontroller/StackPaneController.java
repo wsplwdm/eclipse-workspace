@@ -47,13 +47,13 @@ public class StackPaneController {
     private Button db; // przycisk do bazdanych
     
     @FXML
-    private Button button3; // przycisk do porównania
+    private Button button3; // przycisk do porï¿½wnania
     
     @FXML
-    private Button viewbutton; // przycisk do porównania
+    private Button viewbutton; // przycisk do porï¿½wnania
     
     @FXML
-    private Button statsbutton; // przycisk do porównania
+    private Button statsbutton; // przycisk do porï¿½wnania
 
     @FXML
     private Label stats;//czasy wykonania
@@ -73,7 +73,7 @@ public class StackPaneController {
     private NumberAxis yAxis;
 
     @FXML
-    private Label stats1;//output wyj¹tków
+    private Label stats1;//output wyjï¿½tkï¿½w
     
     @FXML
     private Label stats2;//statystki datafram'a
@@ -122,8 +122,11 @@ public class StackPaneController {
            dos.writeObject("hello");
             String h =dis.readObject().toString();
             if(h =="hello") {
-            	
-            	dos.writeObject(operations.getValue().toString());
+            	String choosenOperation = operations.getValue().toString();
+            	if(choosenOperation=="groupby") {
+            		choosenOperation+="#"+choiceX.getValue();
+            	}
+            	dos.writeObject(choosenOperation);
             	dos.writeObject(plik2);
             }
             String r =dis.readObject().toString();
@@ -141,7 +144,7 @@ public class StackPaneController {
 	@FXML
 	void onActionview(){
 		
-	    	//drukuje datafram'a
+	    	
 			textarea.clear();
 			DataFrameToTextArea="";
 	    	for(int i=0;i<nazwy.length;i++) {
@@ -173,9 +176,9 @@ public class StackPaneController {
         stat2+=" \n"+"max:   "+stat[0]+"\n"+"min:   "+stat[1]+"\n"+"mean: "+stat[2]+"\n"+"var:   "+stat[3]+"\n"+"sum:   "+stat[4]+"\n"+"std: 	"+stat[5];
         
         stats2.setText(stat2);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			stats1.setText("something went wrong: "+e.getMessage());
 		}
 	}
 	
@@ -197,9 +200,10 @@ public class StackPaneController {
 
 	    long startTime2 = System.nanoTime();
 	    //DB databaseframe= new DB(plik2);
-	    //databaseframe.groupby("id");
-	    //databaseframe.max();
-	    //databaseframe.min();
+	    DB databaseframe = new DB("1groupby");
+	    databaseframe.groupby("id");
+	    databaseframe.max();
+	    databaseframe.min();
 	   
     	long time2 = (System.nanoTime()-startTime2)/ 1000000;
 	    
@@ -304,7 +308,7 @@ public class StackPaneController {
     }
    
 	
-    ///wypisywanie wyj¹tków w gui
+    ///wypisywanie wyjï¿½tkï¿½w w gui
     public void errormessage(Exception e) {
     	stats1.setText(e.toString());
     	e.printStackTrace();
@@ -319,8 +323,8 @@ public class StackPaneController {
 		String[] operationList= {"max","min","mean","sum","var","std","groupby"};
 		operations.getItems().addAll(operationList);
 		
-		//wczytuje datafram'a z pliku .csv liczy statystyki i porównuje czasy wykonania max i min ró¿nymi metodami i zapisuje do pliku .csv o nazwie 
-		// równe nazwie pliku wejœciowego + "_wyniki"
+		//wczytuje datafram'a z pliku .csv liczy statystyki i porï¿½wnuje czasy wykonania max i min rï¿½nymi metodami i zapisuje do pliku .csv o nazwie 
+		// rï¿½wne nazwie pliku wejï¿½ciowego + "_wyniki"
 		stats1.setText("");
 		String max = " ",min= " ",mean= " ",var= " ",sum= " ",std =" ";
 		FileChooser fc = new FileChooser();

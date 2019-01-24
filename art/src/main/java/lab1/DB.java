@@ -74,6 +74,7 @@ public class DB extends DataFrame {
         }
         return returnframe ;
     }
+   
     /*
     public DB(String path) throws IOException {
     	super(path);
@@ -97,7 +98,7 @@ public class DB extends DataFrame {
              System.out.println("SQL vendor error "+e.getErrorCode());
          }
     }*/
-    public DB(String name){
+    public DB(String name) {
     	super();
     	this.dbname=name;
     	
@@ -106,7 +107,7 @@ public class DB extends DataFrame {
     	super(dftosave);
     	
     	  try {
-          	dbname = fxcontroller.StackPaneController.nazwapliku;
+          	//dbname = fxcontroller.StackPaneController.nazwapliku;
               connect();
               stat = connectvar.createStatement();
               stat.executeUpdate("Drop table 1groupby");

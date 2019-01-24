@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="przycisk_plik.controller.StackPaneController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxcontroller.StackPaneController">
    <children> 
       <Button fx:id="button" mnemonicParsing="false" onAction="#onActionDraw" prefHeight="63.0" prefWidth="57.0" text="Draw Line Chart" wrapText="true" StackPane.alignment="TOP_LEFT">
          <StackPane.margin>
@@ -51,14 +51,6 @@
             <Insets left="120.0" top="120.0" />
          </StackPane.margin>
       </ChoiceBox>
-      <Label prefHeight="66.0" prefWidth="38.0" text="XAxs:       YAxs:" wrapText="true" StackPane.alignment="TOP_LEFT">
-         <StackPane.margin>
-            <Insets left="40.0" top="120.0" />
-         </StackPane.margin>
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
       <ChoiceBox fx:id="choiceY" prefWidth="150.0" StackPane.alignment="TOP_LEFT">
          <StackPane.margin>
             <Insets left="120.0" top="160.0" />
@@ -104,6 +96,19 @@
             <Insets right="300.0" top="200.0" />
          </StackPane.margin>
       </Button>
+      <Label prefHeight="66.0" prefWidth="38.0" text="XAxs:       YAxs:" wrapText="true" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="40.0" top="120.0" />
+         </StackPane.margin>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label prefHeight="35.0" prefWidth="277.0" text="&lt;--- column to groupby   \/  when using server" StackPane.alignment="TOP_CENTER">
+         <StackPane.margin>
+            <Insets right="350.0" top="116.0" />
+         </StackPane.margin>
+      </Label>
        
    </children>
 </StackPane>
