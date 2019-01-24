@@ -1,9 +1,10 @@
-package lab1;
+package threads;
 
 import lab1.DataFrame;
+import valueTypes.Integer;
+import valueTypes.SValue;
+import valueTypes.Value;
 import lab1.Column;
-import lab1.Integer;
-import lab1.Value;
 
 public class ThreadMean implements Runnable {
     private DataFrame df;

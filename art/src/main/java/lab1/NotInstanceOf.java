@@ -1,5 +1,7 @@
 package lab1;
 
+import valueTypes.Value;
+
 public class NotInstanceOf extends RuntimeException{
 	public NotInstanceOf(String message, Value v)
     {

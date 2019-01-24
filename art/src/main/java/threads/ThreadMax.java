@@ -1,9 +1,11 @@
-package lab1;
+package threads;
 
 
 import lab1.DataFrame;
+import valueTypes.Integer;
+import valueTypes.SValue;
+import valueTypes.Value;
 import lab1.Column;
-import lab1.Value;
 
 public class ThreadMax implements Runnable {
     private DataFrame df;
@@ -19,7 +21,7 @@ public class ThreadMax implements Runnable {
 	        for(Column k: df.getListOfColumns()){
 	            if(k.getName().equals(columnToProcess.getName())){
 	            	
-	            	Value max=new lab1.Integer(java.lang.Integer.MIN_VALUE);
+	            	Value max=new valueTypes.Integer(java.lang.Integer.MIN_VALUE);
 	            	if(columnToProcess.listOfValues.get(0) instanceof SValue ==true) {
 	            		max = new SValue(" ---- ");}
 	            	else {

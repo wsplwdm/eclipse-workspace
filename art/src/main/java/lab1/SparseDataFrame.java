@@ -2,6 +2,10 @@ package lab1;
 
 import java.util.ArrayList;
 
+import valueTypes.COOValue;
+import valueTypes.SValue;
+import valueTypes.Value;
+
 public class SparseDataFrame extends DataFrame {
 	SValue hidelement;
 

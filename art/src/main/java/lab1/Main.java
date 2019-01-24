@@ -1,4 +1,4 @@
-package kjf;
+package lab1;
 
 
 import javafx.application.Application;

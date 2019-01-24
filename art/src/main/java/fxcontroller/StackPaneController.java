@@ -1,7 +1,5 @@
-package przycisk_plik.controller;
+package fxcontroller;
 import java.util.concurrent.TimeUnit;
-
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -14,14 +12,22 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import lab1.*;
-import lab1.Integer;
+import valueTypes.Integer;
+import valueTypes.SValue;
+import valueTypes.Value;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.List;
 
 import javafx.scene.chart.XYChart;
@@ -54,6 +60,8 @@ public class StackPaneController {
 
     @FXML
     private Button button; //rysowanie wykresu
+    @FXML
+    private Button server; //
 
     @FXML
     private LineChart lineChart;
@@ -77,6 +85,8 @@ public class StackPaneController {
 
     @FXML
     private ChoiceBox choiceY;
+    @FXML
+    private ChoiceBox<String> operations;
     
     public static String nazwapliku;
     DataFrame plik2;
@@ -98,7 +108,35 @@ public class StackPaneController {
 		
 		
 	}
-	
+	@FXML
+	void onActionServer(){
+		System.out.println("start server");
+		try {
+			InetAddress ip = InetAddress.getByName("localhost");
+            Socket s = new Socket(ip, 6000); 
+            System.out.println("stackpane s");
+            ObjectInputStream dis = new ObjectInputStream(s.getInputStream());
+            System.out.println("stack in");
+            ObjectOutputStream dos = new ObjectOutputStream(s.getOutputStream()); 
+            System.out.println("stack out");
+           dos.writeObject("hello");
+            String h =dis.readObject().toString();
+            if(h =="hello") {
+            	
+            	dos.writeObject(operations.getValue().toString());
+            	dos.writeObject(plik2);
+            }
+            String r =dis.readObject().toString();
+            System.out.println(r);
+            DataFrame outputFrame = (DataFrame) dis.readObject();
+            outputFrame.print();
+			
+			
+		} catch (IOException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	@FXML
 	void onActionview(){
@@ -278,6 +316,9 @@ public class StackPaneController {
     
 	@FXML
 	public void onActonButton2() {
+		String[] operationList= {"max","min","mean","sum","var","std","groupby"};
+		operations.getItems().addAll(operationList);
+		
 		//wczytuje datafram'a z pliku .csv liczy statystyki i porównuje czasy wykonania max i min ró¿nymi metodami i zapisuje do pliku .csv o nazwie 
 		// równe nazwie pliku wejœciowego + "_wyniki"
 		stats1.setText("");
@@ -288,8 +329,8 @@ public class StackPaneController {
 			choiceY.getItems().clear();
         	
 		fc.getExtensionFilters().add(new ExtensionFilter("csv Files", "*.csv"));
-		List<File> f = fc.showOpenMultipleDialog(null);
-		for(File file: f) {
+			File file = fc.showOpenDialog(null);
+		
 			
 			
     		path = file.getAbsolutePath();
@@ -323,7 +364,7 @@ public class StackPaneController {
 		        
 		        
 		        
-		}
+		
 		} catch (NullPointerException e) {
 			stats1.setText("failed opening or choosing file");
 			e.printStackTrace();

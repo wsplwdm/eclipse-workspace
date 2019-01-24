@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
+import valueTypes.SValue;
+import valueTypes.Value;
+
 public class DB extends DataFrame {
     private Connection connectvar = null;
     private Statement stat = null;
@@ -34,16 +37,16 @@ public class DB extends DataFrame {
                 Value typo = new SValue();
                 String gt =rsmd.getColumnTypeName(i);
                 if(gt=="INT" || gt=="TINYINT"|| gt=="SMALLINT"|| gt=="MEDIUMINT" || gt=="BIGINT"){
-                    typo = new lab1.Integer();
+                    typo = new valueTypes.Integer();
                 }
                 if(gt=="FLOAT"){
-                    typo = new lab1.Float();
+                    typo = new valueTypes.Float();
                 }
                 if(gt=="DOUBLE"){
-                    typo = new lab1.Double();
+                    typo = new valueTypes.Double();
                 }
                 if(gt=="DATETIME"){
-                    typo=new lab1.DateTime();
+                    typo=new valueTypes.DateTime();
                 }
                 cols[i-1]=new Column(rsmd.getColumnName(i),typo);
                 while (result.next()) {
@@ -74,7 +77,7 @@ public class DB extends DataFrame {
     public DB(String path) throws IOException {
     	super(path);
     	try {
-    	dbname = przycisk_plik.controller.StackPaneController.nazwapliku;
+    	dbname = fxcontroller.StackPaneController.nazwapliku;
     	 connect();
          stat = connectvar.createStatement();
          //stat.executeUpdate("Drop table 1groupby");
@@ -97,7 +100,7 @@ public class DB extends DataFrame {
     	super(dftosave);
     	
     	  try {
-          	dbname = przycisk_plik.controller.StackPaneController.nazwapliku;
+          	dbname = fxcontroller.StackPaneController.nazwapliku;
               connect();
               stat = connectvar.createStatement();
               stat.executeUpdate("Drop table 1groupby");
@@ -106,16 +109,16 @@ public class DB extends DataFrame {
               
               for(int i=0;i<dftosave.getListOfColumns().size()-1;i++){
                   command=command+dftosave.getListOfColumns().get(i).getName()+" ";
-                  if((dftosave.getListOfColumns().get(i).getVType())instanceof lab1.Integer){
+                  if((dftosave.getListOfColumns().get(i).getVType())instanceof valueTypes.Integer){
                       command = command+"INT, \n";
                   }
-                  else if((dftosave.getListOfColumns().get(i).getVType())instanceof lab1.Double){
+                  else if((dftosave.getListOfColumns().get(i).getVType())instanceof valueTypes.Double){
                       command = command+"DOUBLE, \n";
                   }
-                  else if((dftosave.getListOfColumns().get(i).getVType())instanceof lab1.Float){
+                  else if((dftosave.getListOfColumns().get(i).getVType())instanceof valueTypes.Float){
                       command = command+"FLOAT, \n";
                   }
-                  else if((dftosave.getListOfColumns().get(i).getVType())instanceof lab1.DateTime){
+                  else if((dftosave.getListOfColumns().get(i).getVType())instanceof valueTypes.DateTime){
                       command = command+"DATETIME, \n";
                   }
                   else{
@@ -125,17 +128,17 @@ public class DB extends DataFrame {
               }
               
               command=command+dftosave.getListOfColumns().get(dftosave.getListOfColumns().size()-1).getName()+" ";
-              if((dftosave.getListOfColumns().get(dftosave.getListOfColumns().size()-1).getVType())instanceof lab1.Integer){
+              if((dftosave.getListOfColumns().get(dftosave.getListOfColumns().size()-1).getVType())instanceof valueTypes.Integer){
                   command = command+"INT ) \n";
               }
-              else if((dftosave.getListOfColumns().get(dftosave.getListOfColumns().size()-1).getVType())instanceof lab1.Double){
+              else if((dftosave.getListOfColumns().get(dftosave.getListOfColumns().size()-1).getVType())instanceof valueTypes.Double){
                   command = command+"DOUBLE) \n";
               }
-              else if((dftosave.getListOfColumns().get(dftosave.getListOfColumns().size()-1).getVType())instanceof lab1.Float){
+              else if((dftosave.getListOfColumns().get(dftosave.getListOfColumns().size()-1).getVType())instanceof valueTypes.Float){
                   command = command+"FLOAT )\n";
               }
               
-              else if((dftosave.getListOfColumns().get(dftosave.getListOfColumns().size()-1).getVType())instanceof lab1.DateTime){
+              else if((dftosave.getListOfColumns().get(dftosave.getListOfColumns().size()-1).getVType())instanceof valueTypes.DateTime){
                   command = command+"DATETIME) \n";
               }
               else{
@@ -191,17 +194,17 @@ public class DB extends DataFrame {
                 Value typo = new SValue();
                 String gt =rsmd.getColumnTypeName(i);
                 if(gt=="INT" || gt=="TINYINT"|| gt=="SMALLINT"|| gt=="MEDIUMINT" || gt=="BIGINT"){
-                    typo = new lab1.Integer();
+                    typo = new valueTypes.Integer();
                 }
                 if(gt=="FLOAT"){
-                    typo = new lab1.Float();
+                    typo = new valueTypes.Float();
                 }
                 if(gt=="DOUBLE"){
-                    typo = new lab1.Double();
+                    typo = new valueTypes.Double();
                 }
                 
                 if(gt=="DATETIME"){
-                    typo=new lab1.DateTime();
+                    typo=new valueTypes.DateTime();
                 }
                 cols[i-1]=new Column(rsmd.getColumnName(i),typo);
                 while (result.next()) {
@@ -245,7 +248,7 @@ public class DB extends DataFrame {
             Column[] cols = new Column[numberofcols];
             for(int i=1;i<=numberofcols;i++) {
                 result=stat.executeQuery("select MIN("+rsmd.getColumnName(i)+")  FROM "+dbname);
-                Value typo = new lab1.Integer();
+                Value typo = new valueTypes.Integer();
                 cols[i-1]=new Column(rsmd.getColumnName(i),typo);
                 result.next();
                 cols[i-1].addElement(new SValue(result.getString(1)));
@@ -286,7 +289,7 @@ public class DB extends DataFrame {
             Column[] cols = new Column[numberofcols];
             for(int i=1;i<=numberofcols;i++) {
                 result=stat.executeQuery("select MAX("+rsmd.getColumnName(i)+")  FROM "+dbname);
-                Value typo = new lab1.Integer();
+                Value typo = new valueTypes.Integer();
                 cols[i-1]=new Column(rsmd.getColumnName(i),typo);
                 result.next();
                 cols[i-1].addElement(new SValue(result.getString(1)));
@@ -334,17 +337,17 @@ public class DB extends DataFrame {
                 Value typo = new SValue();
                 String gt =rsmd.getColumnTypeName(i);
                 if(gt=="INT" || gt=="TINYINT"|| gt=="SMALLINT"|| gt=="MEDIUMINT" || gt=="BIGINT"){
-                    typo = new lab1.Integer();
+                    typo = new valueTypes.Integer();
                 }
                 if(gt=="FLOAT"){
-                    typo = new lab1.Float();
+                    typo = new valueTypes.Float();
                 }
                 if(gt=="DOUBLE"){
-                    typo = new lab1.Double();
+                    typo = new valueTypes.Double();
                 }
               
                 if(gt=="DATETIME"){
-                    typo=new lab1.DateTime();
+                    typo=new valueTypes.DateTime();
                 }
                 cols[i-1]=new Column(rsmd.getColumnName(i),typo);
                 while (result.next()) {

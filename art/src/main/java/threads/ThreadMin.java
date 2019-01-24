@@ -1,9 +1,11 @@
-package lab1;
+package threads;
 
 
 import lab1.DataFrame;
+import valueTypes.Integer;
+import valueTypes.SValue;
+import valueTypes.Value;
 import lab1.Column;
-import lab1.Value;
 
 public class ThreadMin implements Runnable {
     private DataFrame df;
@@ -18,7 +20,7 @@ public class ThreadMin implements Runnable {
 
     	 for(Column k: df.getListOfColumns()){
              if(k.getName().equals(columnToProcess.getName())){
-            	 Value min=new lab1.Integer(java.lang.Integer.MAX_VALUE);
+            	 Value min=new valueTypes.Integer(java.lang.Integer.MAX_VALUE);
             	 if(columnToProcess.listOfValues.get(0) instanceof SValue ==true) {
  	                min = new SValue(" ---- ");}
             	 else {

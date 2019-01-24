@@ -1,8 +1,8 @@
-package lab1;
+package threads;
 
 import lab1.DataFrame;
+import valueTypes.Value;
 import lab1.Column;
-import lab1.Value;
 
 public class Thread implements Runnable {
     private Value id;

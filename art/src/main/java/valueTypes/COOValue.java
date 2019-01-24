@@ -1,4 +1,4 @@
-package lab1;
+package valueTypes;
 
 public class COOValue extends Value{
 	private int index;
@@ -96,7 +96,7 @@ public class COOValue extends Value{
 	}
 
 	@Override
-	protected Value getInstance() {
+	public Value getInstance() {
 		// TODO Auto-generated method stub
 		return null;
 	}

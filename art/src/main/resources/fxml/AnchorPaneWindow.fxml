@@ -94,6 +94,16 @@
             <Insets left="260.0" top="200.0" />
          </StackPane.margin>
       </Button>
+      <ChoiceBox fx:id="operations" prefWidth="150.0" StackPane.alignment="TOP_CENTER">
+         <StackPane.margin>
+            <Insets right="230.0" top="160.0" />
+         </StackPane.margin>
+      </ChoiceBox>
+      <Button fx:id="server" mnemonicParsing="false" onAction="#onActionServer" prefHeight="51.0" prefWidth="83.0" text="operation by server" wrapText="true" StackPane.alignment="TOP_CENTER">
+         <StackPane.margin>
+            <Insets right="300.0" top="200.0" />
+         </StackPane.margin>
+      </Button>
        
    </children>
 </StackPane>

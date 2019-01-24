@@ -1,4 +1,4 @@
-package lab1;
+package valueTypes;
 
 public class SValue extends Value {
     public String value;
@@ -109,7 +109,7 @@ public class SValue extends Value {
 		return type;
 	}
 	@Override
-	protected Value getInstance() {
+	public Value getInstance() {
 		// TODO Auto-generated method stub
 		return null;
 	}

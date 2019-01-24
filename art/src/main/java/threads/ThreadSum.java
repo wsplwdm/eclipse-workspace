@@ -1,8 +1,9 @@
-package lab1;
+package threads;
 
 import lab1.DataFrame;
+import valueTypes.SValue;
+import valueTypes.Value;
 import lab1.Column;
-import lab1.Value;
 
 public class ThreadSum implements Runnable {
     private DataFrame df;

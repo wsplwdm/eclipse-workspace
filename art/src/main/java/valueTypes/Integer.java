@@ -1,6 +1,8 @@
-package lab1;
+package valueTypes;
 
 import java.util.Objects;
+
+import lab1.NotInstanceOf;
 
 public class Integer extends Value{
         private int value;
@@ -28,7 +30,7 @@ public class Integer extends Value{
 
         @Override
         public Value add(Value value) {
-        	if (value instanceof Integer||value instanceof lab1.Double||value instanceof lab1.Float) {
+        	if (value instanceof Integer||value instanceof valueTypes.Double||value instanceof valueTypes.Float) {
                 this.value += java.lang.Double.parseDouble(value.GetValue().toString());
              
                  return this;
@@ -40,7 +42,7 @@ public class Integer extends Value{
 
         @Override
         public Value sub(Value value) throws NotInstanceOf{
-            if (value instanceof lab1.Integer||value instanceof lab1.Double||value instanceof lab1.Float){
+            if (value instanceof valueTypes.Integer||value instanceof valueTypes.Double||value instanceof valueTypes.Float){
                 this.value -= ((Integer) value).getValue();
                 return this;
             }
@@ -52,7 +54,7 @@ public class Integer extends Value{
 
         @Override
         public Value mul(Value value) throws NotInstanceOf{
-            if (value instanceof lab1.Integer||value instanceof lab1.Double||value instanceof lab1.Float){
+            if (value instanceof valueTypes.Integer||value instanceof valueTypes.Double||value instanceof valueTypes.Float){
                 this.value *= ((Double) value).getValue();
                 
                 return this;
@@ -66,7 +68,7 @@ public class Integer extends Value{
         @Override
         public Value div(Value value) throws NotInstanceOf{
         	
-            if (value instanceof lab1.Integer||value instanceof lab1.Double||value instanceof lab1.Float){
+            if (value instanceof valueTypes.Integer||value instanceof valueTypes.Double||value instanceof valueTypes.Float){
                 this.value /= java.lang.Double.parseDouble(value.GetValue().toString());
                 
                 return this;

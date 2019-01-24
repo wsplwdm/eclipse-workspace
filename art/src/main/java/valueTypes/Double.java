@@ -1,6 +1,8 @@
-package lab1;
+package valueTypes;
 
 import java.util.Objects;
+
+import lab1.NotInstanceOf;
 
 public class Double extends Value {
     private double value;
@@ -31,7 +33,7 @@ public class Double extends Value {
 
     @Override
     public Value add(Value value) throws NotInstanceOf {
-    	if (value instanceof Integer||value instanceof lab1.Double||value instanceof lab1.Float) {
+    	if (value instanceof Integer||value instanceof valueTypes.Double||value instanceof valueTypes.Float) {
            this.value += java.lang.Double.parseDouble(value.GetValue().toString());
         
             return this;
@@ -43,7 +45,7 @@ public class Double extends Value {
 
     @Override
     public Value sub(Value value)throws NotInstanceOf {
-    	if (value instanceof Integer||value instanceof lab1.Double||value instanceof lab1.Float) {
+    	if (value instanceof Integer||value instanceof valueTypes.Double||value instanceof valueTypes.Float) {
             this.value -= java.lang.Double.parseDouble(value.GetValue().toString());
          
              return this;
@@ -56,7 +58,7 @@ public class Double extends Value {
 
     @Override
     public Value mul(Value value) throws NotInstanceOf{
-    	if (value instanceof Integer||value instanceof lab1.Double||value instanceof lab1.Float) {
+    	if (value instanceof Integer||value instanceof valueTypes.Double||value instanceof valueTypes.Float) {
             this.value *= java.lang.Double.parseDouble(value.GetValue().toString());
          
              return this;
@@ -69,7 +71,7 @@ public class Double extends Value {
 
     @Override
     public Value div(Value value) throws NotInstanceOf{
-    	if (value instanceof Integer||value instanceof lab1.Double||value instanceof lab1.Float) {
+    	if (value instanceof Integer||value instanceof valueTypes.Double||value instanceof valueTypes.Float) {
             this.value /= java.lang.Double.parseDouble(value.GetValue().toString());
             return this;
     	}
@@ -81,7 +83,7 @@ public class Double extends Value {
 
     @Override
     public Value pow(Value value) throws NotInstanceOf{
-   	 if (value instanceof Integer||value instanceof lab1.Double||value instanceof lab1.Float) {
+   	 if (value instanceof Integer||value instanceof valueTypes.Double||value instanceof valueTypes.Float) {
             this.value = Math.pow((double)this.value,java.lang.Double.parseDouble(value.GetValue().toString()));
             return this;
         }
@@ -95,7 +97,7 @@ public class Double extends Value {
     
 	@Override
     public boolean eq(Value value) throws NotInstanceOf{
-   	 if (value instanceof Integer||value instanceof lab1.Double||value instanceof lab1.Float) {
+   	 if (value instanceof Integer||value instanceof valueTypes.Double||value instanceof valueTypes.Float) {
             return Objects.equals(this.value, java.lang.Double.parseDouble(value.GetValue().toString()));
         }
         
@@ -106,7 +108,7 @@ public class Double extends Value {
 
     @Override
     public boolean lte(Value value)throws NotInstanceOf {
-    	 if (value instanceof Integer||value instanceof lab1.Double||value instanceof lab1.Float) {
+    	 if (value instanceof Integer||value instanceof valueTypes.Double||value instanceof valueTypes.Float) {
              return this.value <= java.lang.Double.parseDouble(value.GetValue().toString());
          }
         
@@ -117,7 +119,7 @@ public class Double extends Value {
 
     @Override
     public boolean gte(Value value) throws NotInstanceOf{
-        if (value instanceof Integer||value instanceof lab1.Double||value instanceof lab1.Float) {
+        if (value instanceof Integer||value instanceof valueTypes.Double||value instanceof valueTypes.Float) {
             return this.value >= java.lang.Double.parseDouble(value.GetValue().toString());
         }
         
@@ -128,7 +130,7 @@ public class Double extends Value {
 
     @Override
     public boolean neq(Value value)throws NotInstanceOf {
-   	 if (value instanceof Integer||value instanceof lab1.Double||value instanceof lab1.Float) {
+   	 if (value instanceof Integer||value instanceof valueTypes.Double||value instanceof valueTypes.Float) {
             return !Objects.equals(this.value, java.lang.Double.parseDouble(value.GetValue().toString()));
         }
         

@@ -18,7 +18,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import lab1.Thread;
+import threads.Thread;
+import threads.ThreadMax;
+import threads.ThreadMean;
+import threads.ThreadMin;
+import threads.ThreadStd;
+import threads.ThreadSum;
+import threads.ThreadVar;
+import valueTypes.Double;
+import valueTypes.Float;
+import valueTypes.Integer;
+import valueTypes.SValue;
+import valueTypes.Value;
 
 
 
@@ -99,23 +110,23 @@ public class DataFrame implements groupby, Serializable{
     	for(int i =0;i<colnumber;i++) {
     		try {
     			int result = java.lang.Integer.parseInt(typ[i]);
-    			Integer resulttype = new lab1.Integer(result);	
+    			Integer resulttype = new valueTypes.Integer(result);	
     			typy[i]=resulttype;
     			}
     		catch(NumberFormatException ei){
     			try {
     				double result = java.lang.Double.parseDouble(typ[i]);
-    				lab1.Double resulttype = new lab1.Double(result);
+    				valueTypes.Double resulttype = new valueTypes.Double(result);
     				typy[i]=resulttype;
     				}
     			catch(NumberFormatException ed) {
     				try {
         				float result = java.lang.Float.parseFloat(typ[i]);
-        				lab1.Float resulttype = new lab1.Float(result);
+        				valueTypes.Float resulttype = new valueTypes.Float(result);
         				typy[i]=resulttype;            				}
         			catch(NumberFormatException ef) {
         				String result = typ[i];
-        				lab1.SValue resulttype = new lab1.SValue(result);
+        				valueTypes.SValue resulttype = new valueTypes.SValue(result);
         				typy[i]=resulttype;
         				}
     			}

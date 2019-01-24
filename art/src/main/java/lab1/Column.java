@@ -2,6 +2,8 @@ package lab1;
 
 import java.util.ArrayList;
 
+import valueTypes.Value;
+
 public class Column {
 	private Value vtype;
     private String type,name;

@@ -1,4 +1,4 @@
-package lab1;
+package valueTypes;
 
 import java.time.LocalDateTime;
 
@@ -119,7 +119,7 @@ public class DateTime extends Value{
 	}
 
 	@Override
-	protected Value getInstance() {
+	public Value getInstance() {
 		// TODO Auto-generated method stub
 		return null;
 	}

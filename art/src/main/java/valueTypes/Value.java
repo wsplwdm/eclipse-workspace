@@ -1,4 +1,4 @@
-package lab1;
+package valueTypes;
 
 public abstract class Value implements Cloneable {
 	 public abstract String toString();
@@ -17,5 +17,5 @@ public abstract class Value implements Cloneable {
 	 public abstract Object GetValue();
 	 public abstract Value create(String s);
 	 protected abstract Value clone();
-	protected abstract Value getInstance();
+	public abstract Value getInstance();
 }
