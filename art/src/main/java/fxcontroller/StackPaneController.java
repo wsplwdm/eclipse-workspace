@@ -137,7 +137,7 @@ public class StackPaneController {
 			
 		} catch (IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			stats1.setText("error: "+e.getMessage());
 		}
 	}
 	
@@ -178,7 +178,7 @@ public class StackPaneController {
         stats2.setText(stat2);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			stats1.setText("something went wrong: "+e.getMessage());
+			stats1.setText("error: "+e.getMessage());
 		}
 	}
 	
@@ -231,7 +231,7 @@ public class StackPaneController {
         stats1.setText("results saved to "+path2.toString());
 		} catch (IOException e) {
 					
-					e.printStackTrace();
+			stats1.setText("error: "+e.getMessage());
 				}
 		
 		
@@ -281,8 +281,8 @@ public class StackPaneController {
 	    	
 	    }
     	catch(Exception e) {
-    		errormessage(e);
-    		stats1.setText(e.getMessage());
+    		
+    		stats1.setText("error: "+e.getMessage());
     	
 	    }
     }
@@ -302,17 +302,13 @@ public class StackPaneController {
     	
     	}
     	catch(Exception e) {
-    		errormessage(e);
+    		stats1.setText("error: "+e.getMessage());
     	}
     	
     }
    
 	
-    ///wypisywanie wyj�tk�w w gui
-    public void errormessage(Exception e) {
-    	stats1.setText(e.toString());
-    	e.printStackTrace();
-    }
+  
     
     
     
@@ -371,9 +367,9 @@ public class StackPaneController {
 		
 		} catch (NullPointerException e) {
 			stats1.setText("failed opening or choosing file");
-			e.printStackTrace();
+			
 		}catch (Exception e) {
-			errormessage(e);
+			stats1.setText("error: "+e.getMessage());
 		}
         
 		
