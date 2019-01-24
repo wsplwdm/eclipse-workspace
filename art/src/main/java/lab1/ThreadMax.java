@@ -16,20 +16,20 @@ public class ThreadMax implements Runnable {
     @Override
     public void run() {
     	try {
-	        for(Column k: df.toList()){
+	        for(Column k: df.getListOfColumns()){
 	            if(k.getName().equals(columnToProcess.getName())){
 	            	
 	            	Value max=new lab1.Integer(java.lang.Integer.MIN_VALUE);
-	            	if(columnToProcess.list.get(0) instanceof SValue ==true) {
+	            	if(columnToProcess.listOfValues.get(0) instanceof SValue ==true) {
 	            		max = new SValue(" ---- ");}
 	            	else {
-	            		max=columnToProcess.list.get(0);
+	            		max=columnToProcess.listOfValues.get(0);
 	            	
 	            
 	                for(int i=0;i<columnToProcess.getColumnSize();i++){
-	                	if(columnToProcess.list.get(i) instanceof SValue !=true) {
-		                    if(max.lte(columnToProcess.list.get(i))){
-		                        max=columnToProcess.list.get(i);
+	                	if(columnToProcess.listOfValues.get(i) instanceof SValue !=true) {
+		                    if(max.lte(columnToProcess.listOfValues.get(i))){
+		                        max=columnToProcess.listOfValues.get(i);
 		                    }
 	                	}
 	                }

@@ -15,17 +15,17 @@ public class ThreadSum implements Runnable {
     @Override
     public void run() {
         Value sum;
-        for(Column k: df.toList()){
+        for(Column k: df.getListOfColumns()){
         	
 	            if(k.getName().equals(columnToProcess.getName())){
-	                sum = columnToProcess.list.get(0);
-	                if(columnToProcess.list.get(0) instanceof SValue==true) {
+	                sum = columnToProcess.listOfValues.get(0);
+	                if(columnToProcess.listOfValues.get(0) instanceof SValue==true) {
 	                	sum=new SValue(" ---- ");}
 	                else {
-	                	sum=columnToProcess.list.get(0);
+	                	sum=columnToProcess.listOfValues.get(0);
 	                
 	                for(int i=1;i<columnToProcess.getColumnSize();i++){
-	                    sum =sum.add(columnToProcess.list.get(i));
+	                    sum =sum.add(columnToProcess.listOfValues.get(i));
 	
 	                }
 	                }

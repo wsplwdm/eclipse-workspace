@@ -22,12 +22,12 @@ public class Thread implements Runnable {
         Value[] values ;
        
         for(int j = 0; j< dfToProcess.size(); j++) {
-            if(groupcol.list.get(j).eq(id)) {
-                values = new Value[dfToProcess.toList().size() - 1];
+            if(groupcol.listOfValues.get(j).eq(id)) {
+                values = new Value[dfToProcess.getListOfColumns().size() - 1];
                 int i = 0;
-                for (int k = 0; k < dfToProcess.toList().size(); k++) {
-                    if (!dfToProcess.toList().get(k).getName().equals(groupcol.getName())) {
-                        values[i] = dfToProcess.toList().get(k).list.get(j);
+                for (int k = 0; k < dfToProcess.getListOfColumns().size(); k++) {
+                    if (!dfToProcess.getListOfColumns().get(k).getName().equals(groupcol.getName())) {
+                        values[i] = dfToProcess.getListOfColumns().get(k).listOfValues.get(j);
                         i++;
                     }
                 }

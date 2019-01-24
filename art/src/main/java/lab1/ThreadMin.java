@@ -16,18 +16,18 @@ public class ThreadMin implements Runnable {
     @Override
     public void run() {
 
-    	 for(Column k: df.toList()){
+    	 for(Column k: df.getListOfColumns()){
              if(k.getName().equals(columnToProcess.getName())){
             	 Value min=new lab1.Integer(java.lang.Integer.MAX_VALUE);
-            	 if(columnToProcess.list.get(0) instanceof SValue ==true) {
+            	 if(columnToProcess.listOfValues.get(0) instanceof SValue ==true) {
  	                min = new SValue(" ---- ");}
             	 else {
-            		 min=columnToProcess.list.get(0);
+            		 min=columnToProcess.listOfValues.get(0);
             	
                  for(int i=0;i<columnToProcess.getColumnSize();i++){
-                	 if(columnToProcess.list.get(i) instanceof SValue !=true) {
-	                     if(min.gte(columnToProcess.list.get(i))){
-	                         min=columnToProcess.list.get(i);
+                	 if(columnToProcess.listOfValues.get(i) instanceof SValue !=true) {
+	                     if(min.gte(columnToProcess.listOfValues.get(i))){
+	                         min=columnToProcess.listOfValues.get(i);
 	                     }
                 	 }
                 }

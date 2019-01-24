@@ -17,19 +17,19 @@ public class ThreadStd implements Runnable {
     @Override
     public void run() {
         Value var;
-        for(Column k: df.toList()){
+        for(Column k: df.getListOfColumns()){
         
 	            if(k.getName().equals(columnToProcess.getName())){
-	                var = columnToProcess.list.get(0);
-	            	if(columnToProcess.list.get(0) instanceof SValue==true) {
+	                var = columnToProcess.listOfValues.get(0);
+	            	if(columnToProcess.listOfValues.get(0) instanceof SValue==true) {
 	            		Value Returnv =new SValue(" ---- ");
 	            		k.addElement(Returnv);
 	            	}
 	            	else {
-	            		var=columnToProcess.list.get(0);
+	            		var=columnToProcess.listOfValues.get(0);
 	            	
 	                for(int i=1;i<columnToProcess.getColumnSize();i++){
-	                    var =var.add(columnToProcess.list.get(i));
+	                    var =var.add(columnToProcess.listOfValues.get(i));
 	
 	                }
 	
@@ -38,7 +38,7 @@ public class ThreadStd implements Runnable {
 	                Value Returnv = new Double(0);
 	                Value colSize = new Double(columnToProcess.getColumnSize()-1);
 	                for (int i = 0; i < columnToProcess.getColumnSize(); i++) {
-	                    Returnv = Returnv.add((columnToProcess.list.get(i).sub(var)).pow(new Double(2)));
+	                    Returnv = Returnv.add((columnToProcess.listOfValues.get(i).sub(var)).pow(new Double(2)));
 	                }
 	                
 	                Returnv=Returnv.div(colSize);

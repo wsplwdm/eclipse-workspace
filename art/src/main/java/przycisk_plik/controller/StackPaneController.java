@@ -89,6 +89,11 @@ public class StackPaneController {
     Value[] yl;
     
 
+    
+    // zapisywanie dataframa do pliku .csv
+    //plik2.saveToCSV(path);
+    
+    
 	public StackPaneController() {
 		
 		
@@ -106,8 +111,8 @@ public class StackPaneController {
 	    	}
 	    	DataFrameToTextArea +="\n";
 	        for (int i=0; i<plik2.size(); i++){
-	            for (Column col:plik2.df){
-	            	DataFrameToTextArea+=col.list.get(i)+"   ";
+	            for (Column col:plik2.getListOfColumns()){
+	            	DataFrameToTextArea+=col.listOfValues.get(i)+"   ";
 	            }
 	            DataFrameToTextArea+="\n";
 	        }
@@ -120,7 +125,7 @@ public class StackPaneController {
 	void onActionStats(){
 		String[] stat;
 		try {
-			stat = plik2.dfStats(path);
+			stat = plik2.statistics(path);
 		
         String stat2="data frame stats:\n \n 		";
         for(String s:nazwy) {
@@ -178,7 +183,7 @@ public class StackPaneController {
 		try {
 			writer = new BufferedWriter(new FileWriter(path2));
 		
-        writer.write("basic df,database df,thread df"+"\n");
+        writer.write("basic df,database df,thread df,");
         writer.write(time1+","+time2+","+time3);
         writer.close();
         stats1.setText("results saved to "+path2.toString());
@@ -186,10 +191,17 @@ public class StackPaneController {
 					
 					e.printStackTrace();
 				}
+		
+		
+		
+		
+		
 	}
 	
     @FXML
     void onActionDraw(ActionEvent event) {
+    	
+    	
     	//rysuje wykres z wybranych kolumn
 		stats1.setText("");
 	    lineChart.getData().clear();
@@ -203,15 +215,15 @@ public class StackPaneController {
 	    	if(plik2.get(xaxis).getVType() instanceof SValue !=true && plik2.get(yaxis).getVType() instanceof SValue !=true ) {
 	    	xl= new Value[plik2.size()];
 	        yl= new Value[plik2.size()];
-	        for(int i =0;i<plik2.get(xaxis).list.size();i++) {
+	        for(int i =0;i<plik2.get(xaxis).listOfValues.size();i++) {
 	      
-	        	xl[i]=(plik2.df.get(xaxis).list.get(i));
+	        	xl[i]=(plik2.getListOfColumns().get(xaxis).listOfValues.get(i));
 	        
 	        		        	
 	        }
-	        for(int i =0;i<plik2.get(yaxis).list.size();i++) {
+	        for(int i =0;i<plik2.get(yaxis).listOfValues.size();i++) {
 			      
-	        	yl[i]=(plik2.df.get(yaxis).list.get(i));
+	        	yl[i]=(plik2.getListOfColumns().get(yaxis).listOfValues.get(i));
 	        	
 	        		        	
 	        }

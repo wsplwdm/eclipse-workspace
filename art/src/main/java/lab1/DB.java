@@ -8,7 +8,7 @@ public class DB extends DataFrame {
     private Connection connectvar = null;
     private Statement stat = null;
     private ResultSet result = null;
-    private String[] dblist;
+   // private String[] dblist;
     public String dbname;
     
     public void connect(){
@@ -104,18 +104,18 @@ public class DB extends DataFrame {
               //System.out.println(dbname);
               String command = "CREATE TABLE "+dbname+" (";
               
-              for(int i=0;i<dftosave.toList().size()-1;i++){
-                  command=command+dftosave.toList().get(i).getName()+" ";
-                  if((dftosave.toList().get(i).getVType())instanceof lab1.Integer){
+              for(int i=0;i<dftosave.getListOfColumns().size()-1;i++){
+                  command=command+dftosave.getListOfColumns().get(i).getName()+" ";
+                  if((dftosave.getListOfColumns().get(i).getVType())instanceof lab1.Integer){
                       command = command+"INT, \n";
                   }
-                  else if((dftosave.toList().get(i).getVType())instanceof lab1.Double){
+                  else if((dftosave.getListOfColumns().get(i).getVType())instanceof lab1.Double){
                       command = command+"DOUBLE, \n";
                   }
-                  else if((dftosave.toList().get(i).getVType())instanceof lab1.Float){
+                  else if((dftosave.getListOfColumns().get(i).getVType())instanceof lab1.Float){
                       command = command+"FLOAT, \n";
                   }
-                  else if((dftosave.toList().get(i).getVType())instanceof lab1.DateTime){
+                  else if((dftosave.getListOfColumns().get(i).getVType())instanceof lab1.DateTime){
                       command = command+"DATETIME, \n";
                   }
                   else{
@@ -124,18 +124,18 @@ public class DB extends DataFrame {
 
               }
               
-              command=command+dftosave.toList().get(dftosave.toList().size()-1).getName()+" ";
-              if((dftosave.toList().get(dftosave.toList().size()-1).getVType())instanceof lab1.Integer){
+              command=command+dftosave.getListOfColumns().get(dftosave.getListOfColumns().size()-1).getName()+" ";
+              if((dftosave.getListOfColumns().get(dftosave.getListOfColumns().size()-1).getVType())instanceof lab1.Integer){
                   command = command+"INT ) \n";
               }
-              else if((dftosave.toList().get(dftosave.toList().size()-1).getVType())instanceof lab1.Double){
+              else if((dftosave.getListOfColumns().get(dftosave.getListOfColumns().size()-1).getVType())instanceof lab1.Double){
                   command = command+"DOUBLE) \n";
               }
-              else if((dftosave.toList().get(dftosave.toList().size()-1).getVType())instanceof lab1.Float){
+              else if((dftosave.getListOfColumns().get(dftosave.getListOfColumns().size()-1).getVType())instanceof lab1.Float){
                   command = command+"FLOAT )\n";
               }
               
-              else if((dftosave.toList().get(dftosave.toList().size()-1).getVType())instanceof lab1.DateTime){
+              else if((dftosave.getListOfColumns().get(dftosave.getListOfColumns().size()-1).getVType())instanceof lab1.DateTime){
                   command = command+"DATETIME) \n";
               }
               else{
@@ -149,18 +149,18 @@ public class DB extends DataFrame {
             	  for(int k =0;k<dftosave.size();k+=ile) {
             		  System.out.println(k);
                    secondcommand="INSERT INTO "+dbname+" (" ;
-                  for(int j=0;j<dftosave.toList().size()-1;j++){
-                      secondcommand=secondcommand+dftosave.toList().get(j).getName()+" , ";
+                  for(int j=0;j<dftosave.getListOfColumns().size()-1;j++){
+                      secondcommand=secondcommand+dftosave.getListOfColumns().get(j).getName()+" , ";
                   }
-                  secondcommand=secondcommand+dftosave.toList().get(dftosave.toList().size()-1).getName();
+                  secondcommand=secondcommand+dftosave.getListOfColumns().get(dftosave.getListOfColumns().size()-1).getName();
                   secondcommand=secondcommand+") VALUES";
                   for(int i =k;(i<k+ile && i<dftosave.size());i++){
                 	  secondcommand+="('";
-                	  for(int j=0;j<dftosave.toList().size()-1;j++){
-	                      secondcommand = secondcommand + dftosave.toList().get(j).list.get(i) + "','";
+                	  for(int j=0;j<dftosave.getListOfColumns().size()-1;j++){
+	                      secondcommand = secondcommand + dftosave.get(j).get(i) + "','";
 
                   }
-                  secondcommand = secondcommand + dftosave.toList().get(dftosave.toList().size()-1).list.get(i);
+                  secondcommand = secondcommand + dftosave.getListOfColumns().get(dftosave.getNumberOfCOlumns()-1).getListOfValues().get(i);
                   secondcommand=secondcommand+"'),";
                  
               }

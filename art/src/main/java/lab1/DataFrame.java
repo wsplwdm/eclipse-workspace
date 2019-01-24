@@ -1,12 +1,16 @@
 package lab1;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -18,24 +22,19 @@ import lab1.Thread;
 
 
 
-public class DataFrame implements groupby{
-    public ArrayList<Column> df = new ArrayList<Column>();
+public class DataFrame implements groupby, Serializable{
+    public ArrayList<Column> listOfColumns = new ArrayList<Column>();
     public String groupelement;
     private Value groupbyid;
     
-    public Value getId(){
-        return groupbyid;
-    }
-    public void setGroupbyId(Value v){
-        groupbyid=v;
-    }
+   
 
     	
     public DataFrame(String[] names, String[] types){
     	///Tworzenie datafram'a z pustymi kolumnami
         for (int i=0; i<names.length; i++)
         {
-            df.add(new Column(names[i],types[i]));
+            listOfColumns.add(new Column(names[i],types[i]));
         }
     }
     
@@ -44,7 +43,7 @@ public class DataFrame implements groupby{
     	 ///Tworzenie datafram'a z pustymi kolumnami
         try {
         	for (int i = 0; i < namesofcolumns.length; ++i) {
-        		df.add(new Column(namesofcolumns[i], typesofcolumns[i]));
+        		listOfColumns.add(new Column(namesofcolumns[i], typesofcolumns[i]));
         	}
         }catch(Exception e) {
         	e.printStackTrace();
@@ -64,7 +63,7 @@ public class DataFrame implements groupby{
     		String[] nazwy = pierwszaLinia.split(",");
     		for (int i=0; i<nazwy.length; i++)
             {
-                df.add(new Column(nazwy[i],types[i]));
+                listOfColumns.add(new Column(nazwy[i],types[i]));
             }    		
     	}
     	
@@ -125,7 +124,7 @@ public class DataFrame implements groupby{
     	}
     	for (int i=0; i<nazwy.length; i++)
         {
-            df.add(new Column(nazwy[i],typy[i]));
+            listOfColumns.add(new Column(nazwy[i],typy[i]));
         }
     	br1.close();
     	FileInputStream fstream = new FileInputStream(file);
@@ -145,7 +144,7 @@ public class DataFrame implements groupby{
     				sv=false;
     				Integer addelement = new Integer();
     				addelement.create(values[j]);
-    				df.get(j).addElement(addelement);
+    				listOfColumns.get(j).addElement(addelement);
     				//System.out.println("adding int   "+addelement.toString()+"  to  "+nazwy[j]+sv);
     				
     			}
@@ -153,7 +152,7 @@ public class DataFrame implements groupby{
     				sv=false;
     				Double addelement = new Double();
     				addelement.create(values[j]);
-    				df.get(j).addElement(addelement);
+    				listOfColumns.get(j).addElement(addelement);
     				//System.out.println("adding double   "+addelement.toString()+"  to  "+nazwy[j]+sv);
     				
     			}
@@ -161,7 +160,7 @@ public class DataFrame implements groupby{
     				sv=false;
     				Float addelement = new Float();
     				addelement.create(values[j]);
-    				df.get(j).addElement(addelement);
+    				listOfColumns.get(j).addElement(addelement);
     				//System.out.println("adding float   "+addelement.toString()+"  to  "+nazwy[j]+sv);
     				
     			}
@@ -169,7 +168,7 @@ public class DataFrame implements groupby{
     			if(sv==true) {
     				SValue addelement = new SValue();
     				addelement.create(values[j]);
-    				df.get(j).addElement(addelement);
+    				listOfColumns.get(j).addElement(addelement);
     				//System.out.println("adding string "+addelement.toString()+"  to  "+nazwy[j]+sv);
     			}
     			}catch(Exception e) {
@@ -190,7 +189,7 @@ public class DataFrame implements groupby{
     public DataFrame(Column[] Kolumny){
     	//tworzenie datafram'a z kolumn
         for (int i=0; i<Kolumny.length; i++) {
-            df.add(Kolumny[i]);
+            listOfColumns.add(Kolumny[i]);
         }
     }
    
@@ -199,17 +198,61 @@ public class DataFrame implements groupby{
 		// TODO Auto-generated constructor stub
 	}
     
+    public void saveToCSV(String path){
+    	FileWriter fileWriter;
+    	String path2=path.replace(".csv", "_zapis.csv");
+		try {
+			fileWriter = new FileWriter(path2);
+		
+        PrintWriter writer = new PrintWriter(fileWriter);
+    	
+		for(Column col:listOfColumns) {
+			writer.print(col.getName()+",");
+		}
+		writer.print("\n");
+        
+       
+    	 for (int i=0; i<size(); i++){
+    		 System.out.println("for i");
+             for (Column col:listOfColumns){
+            	 System.out.println("for col");
+            	 if(col.getListOfValues().get(i).getType()=="SValue") {
+            		 System.out.println("if");
+            		 writer.print("\""+col.getListOfValues().get(i).GetValue()+"\",");
+            		 System.out.println("\""+col.getListOfValues().get(i).GetValue()+"\",");
+            	 }
+            	 else {
+                 System.out.println("else");
+            	 writer.print(col.getListOfValues().get(i).GetValue()+",");
+            	 System.out.println(col.getListOfValues().get(i).GetValue()+",");
+            	 }
+             }
+             writer.write("\n");
+         }
+    	  writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }
+    
    
 	public int size(){
 		 /// zwraca ilość wierszy datafram'a
-        return this.df.get(0).getColumnSize();
+        return this.listOfColumns.get(0).getColumnSize();
     } 
+	public int getNumberOfCOlumns(){
+		 /// zwraca ilość wierszy datafram'a
+       return this.listOfColumns.size();
+   } 
+   
     
   
 	
      public  Column get(String colname){
     	// zwraca kolumnę o podanej nazwie
-        for (Column col:df){
+        for (Column col:listOfColumns){
             if (col.getName()==colname){
             	return col;
             }
@@ -220,7 +263,7 @@ public class DataFrame implements groupby{
      
     public Column get(int i) {
     	//zwraca kolumnę o podanym indeksie
-    	return df.get(i);
+    	return listOfColumns.get(i);
     }
 
     public DataFrame get(String [] cols, boolean copy){ 
@@ -243,15 +286,15 @@ public class DataFrame implements groupby{
     public void add(Value[] tmp){
     	///dodaje wiersz
         int i = 0;
-        for (Column col:df){
-            col.list.add(tmp[i++]);
+        for (Column col:listOfColumns){
+            col.getListOfValues().add(tmp[i++]);
         }
     }
     
     public void add(Value[] vals,int col){
     	//dodawanie obiektow z list do columny o wskazanym indeksie
     	for(int i=0;i<vals.length;i++) {
-    			df.get(col).list.add(vals[i]);
+    			listOfColumns.get(col).getListOfValues().add(vals[i]);
     		}
     		
     	}
@@ -259,19 +302,19 @@ public class DataFrame implements groupby{
     public DataFrame iloc(int a, int b){
     	//zwraca wiersze z podanego zakresu (jako dataframe)
         
-        int size = df.size();
+        int size = listOfColumns.size();
         String[] types = new String[size];
         String[] names = new String[size];
         for (int i=0; i<size; i++){
-            types[i] = df.get(i).getType();
-            names[i] = df.get(i).getName();
+            types[i] = listOfColumns.get(i).getType();
+            names[i] = listOfColumns.get(i).getName();
         }
         DataFrame Nowadf = new DataFrame(names,types);
-        Value[] tmp = new Value[df.size()];
+        Value[] tmp = new Value[listOfColumns.size()];
         for (int i=a; i<=b; i++){
             for (int j=0; j<tmp.length; j++){
         
-                tmp[j] = df.get(j).list.get(i);
+                tmp[j] = listOfColumns.get(j).getListOfValues().get(i);
             }
             Nowadf.add(tmp);
 
@@ -283,9 +326,9 @@ public class DataFrame implements groupby{
     	//zwraca wiersz o podanym indeksie (jako dataframe)
         return iloc(i,i);
     }
-    public ArrayList<Column> toList(){
+    public ArrayList<Column> getListOfColumns(){
     	//zwraca listę kolumn
-        return df;
+        return listOfColumns;
     }
     void setGroupElement(String v){
         groupelement=v;
@@ -295,8 +338,8 @@ public class DataFrame implements groupby{
     public void print(){
     	//drukuje datafram'a
         for (int i=0; i<size(); i++){
-            for (Column col:df){
-                System.out.print(col.list.get(i)+"   ");
+            for (Column col:listOfColumns){
+                System.out.print(col.getListOfValues().get(i)+"   ");
             }
             System.out.println();
         }
@@ -305,12 +348,12 @@ public class DataFrame implements groupby{
   
     
     
-    public String[] dfStats(String path) throws IOException {
+    public String[] statistics(String path) throws IOException {
     	//otwiera datafram'a i zwraca statystyki 
     	String[] ret= {"","","","","",""};
     	//max min mean vaar sum std\
     	DataFrame tmp = new DataFrame(path);
-    	for(int i =0; i<tmp.df.size();i++) {
+    	for(int i =0; i<tmp.listOfColumns.size();i++) {
 	    	
 	    	DataFrame plik;
 			try {
@@ -318,12 +361,12 @@ public class DataFrame implements groupby{
 			
 	    	
 	    	
-	    	ret[0] += plik.maxthrd().df.get(i).list.get(0).toString() +"		";
-	    	ret[1] += plik.minthrd().df.get(i).list.get(0).toString() +"		";
-	    	ret[2] += plik.meanthrd().df.get(i).list.get(0).toString() +" 		 ";
-	    	ret[3] += plik.varthrd().df.get(i).list.get(0).toString() +"		";
-	    	ret[4] += plik.sumthrd().df.get(i).list.get(0).toString() +"		";
-	    	ret[5] += plik.stdthrd().df.get(i).list.get(0).toString() +"		";
+	    	ret[0] += plik.maxthrd().listOfColumns.get(i).getListOfValues().get(0).toString() +"		";
+	    	ret[1] += plik.minthrd().listOfColumns.get(i).getListOfValues().get(0).toString() +"		";
+	    	ret[2] += plik.meanthrd().listOfColumns.get(i).getListOfValues().get(0).toString() +" 		 ";
+	    	ret[3] += plik.varthrd().listOfColumns.get(i).getListOfValues().get(0).toString() +"		";
+	    	ret[4] += plik.sumthrd().listOfColumns.get(i).getListOfValues().get(0).toString() +"		";
+	    	ret[5] += plik.stdthrd().listOfColumns.get(i).getListOfValues().get(0).toString() +"		";
 	    	
 	    
     	
@@ -335,19 +378,25 @@ public class DataFrame implements groupby{
     	return ret;
     }
     
+    public Value getId(){
+        return groupbyid;
+    }
+    public void setGroupbyId(Value v){
+        groupbyid=v;
+    }
     
     public ArrayList<DataFrame> groupby(int id) {
     	// groupby według indeksu kolumny
-    	Column groupByThisColumn = df.get(id);
+    	Column groupByThisColumn = listOfColumns.get(id);
         
-        String[] names = new String[toList().size()-1];
-        Value[] types = new Value[toList().size()-1] ;
+        String[] names = new String[getListOfColumns().size()-1];
+        Value[] types = new Value[getListOfColumns().size()-1] ;
         
         ArrayList<DataFrame> returnDataFrame = new ArrayList<DataFrame>();
         ArrayList<Value> tmpValues = new ArrayList<Value>();
         
         int i=0;
-        for(Column col: toList()){
+        for(Column col: getListOfColumns()){
             if(groupByThisColumn!=col) {
             	names[i] = col.getName();
                 types[i] = col.getVType();
@@ -357,9 +406,9 @@ public class DataFrame implements groupby{
 
         }
         for(i =0;i<size();i++){
-            if(tmpValues.contains(groupByThisColumn.list.get(i))!=true){
+            if(tmpValues.contains(groupByThisColumn.getListOfValues().get(i))!=true){
             	
-                tmpValues.add(groupByThisColumn.list.get(i));
+                tmpValues.add(groupByThisColumn.getListOfValues().get(i));
             }
 
         }
@@ -371,18 +420,18 @@ public class DataFrame implements groupby{
         int j ;
         for(i =0;i<size();i++){
 
-            values = new Value[toList().size()-1];
+            values = new Value[getListOfColumns().size()-1];
             j=0;
-            for(Column col: toList()){
+            for(Column col: getListOfColumns()){
                 if(groupByThisColumn!=col){
-                    values[j]=col.list.get(i);
+                    values[j]=col.getListOfValues().get(i);
                     j++;
                 }
             }
 
 
             for(int k=0;k<returnDataFrame.size();k++){
-                if(groupByThisColumn.list.get(i).eq(returnDataFrame.get(k).getId())){
+                if(groupByThisColumn.getListOfValues().get(i).eq(returnDataFrame.get(k).getId())){
 
                     returnDataFrame.get(k).add(values);
                     break;
@@ -394,10 +443,10 @@ public class DataFrame implements groupby{
     
     public ArrayList<DataFrame> groupbyThread(int id){
     	//groupby wielowątkowy
-    	Column groupByThisColumn = df.get(id);
+    	Column groupByThisColumn = listOfColumns.get(id);
     	
-    	String[] names = new String[toList().size()-1];
-    	Value[] types = new Value[toList().size()-1] ;
+    	String[] names = new String[getListOfColumns().size()-1];
+    	Value[] types = new Value[getListOfColumns().size()-1] ;
     	
     	ArrayList<DataFrame> returnDataFrame = new ArrayList<DataFrame>();
         ArrayList<Value> tmpValues = new ArrayList<Value>();
@@ -406,7 +455,7 @@ public class DataFrame implements groupby{
         int processors = Runtime.getRuntime().availableProcessors();
         
         int i=0;
-        for(Column col: toList()){
+        for(Column col: getListOfColumns()){
             if(col!=groupByThisColumn) {
             	
             	names[i] = col.getName();
@@ -417,8 +466,8 @@ public class DataFrame implements groupby{
 
         }
         for(i =0;i<size();i++){
-            if(tmpValues.contains(groupByThisColumn.list.get(i))!=true){
-                tmpValues.add(groupByThisColumn.list.get(i));
+            if(tmpValues.contains(groupByThisColumn.getListOfValues().get(i))!=true){
+                tmpValues.add(groupByThisColumn.getListOfValues().get(i));
             }
 
         }
@@ -454,7 +503,7 @@ public class DataFrame implements groupby{
     //max i min działający tylko na danej kolumnie zwracający pojedynczą Value z wynikiem
   public Value max(Column col) {
 	  Value max=col.get(0);
-	  for(Value v:col.list) {
+	  for(Value v:col.getListOfValues()) {
 		  if(v.gte(max))
 			  max=v;
 	  }
@@ -462,7 +511,7 @@ public class DataFrame implements groupby{
   }
   public Value min(Column col) {
 	  Value min=col.get(0);
-	  for(Value v:col.list) {
+	  for(Value v:col.getListOfValues()) {
 		  if(v.lte(min))
 			  min=v;
 	  }
@@ -471,26 +520,26 @@ public class DataFrame implements groupby{
     
     
     public DataFrame max() {
-        Value max = toList().get(0).list.get(0);
-        Column[] NewKols = new Column[toList().size()];
+        Value max = getListOfColumns().get(0).getListOfValues().get(0);
+        Column[] NewKols = new Column[getListOfColumns().size()];
         int it=0;
-        for(Column k: toList()){
+        for(Column k: getListOfColumns()){
         	if(k.getVType() instanceof SValue) {
         		max = new SValue("___");
         		NewKols[it] = new Column(k.getName(), k.getType());
-        		NewKols[it].list.add(max);
+        		NewKols[it].getListOfValues().add(max);
                 it++;
         	} 
         	else {
             if(groupelement==null || groupelement!=k.getName()) {
-                max = toList().get(it).list.get(0);
+                max = getListOfColumns().get(it).getListOfValues().get(0);
                 for (int i = 0; i < k.getColumnSize(); i++) {
-                    if (k.list.get(i).gte(max)) {
-                        max = k.list.get(i);
+                    if (k.getListOfValues().get(i).gte(max)) {
+                        max = k.getListOfValues().get(i);
                     }
                 }
                 NewKols[it] = new Column(k.getName(), k.getType());
-                NewKols[it].list.add(max);
+                NewKols[it].getListOfValues().add(max);
                 it++;
             }
             else{
@@ -508,26 +557,26 @@ public class DataFrame implements groupby{
     
     
     public DataFrame min() {
-        Value min = toList().get(0).list.get(0);
-        Column[] NewKols = new Column[toList().size()];
+        Value min = getListOfColumns().get(0).getListOfValues().get(0);
+        Column[] NewKols = new Column[getListOfColumns().size()];
         int it=0;
-        for(Column k: toList()){
+        for(Column k: getListOfColumns()){
         	if(k.getVType() instanceof SValue) {
         		min = new SValue("___");
         		NewKols[it] = new Column(k.getName(), k.getType());
-        		NewKols[it].list.add(min);
+        		NewKols[it].getListOfValues().add(min);
                 it++;
         	} 
         	else {
             if(groupelement==null || groupelement!=k.getName()) {
-                min = toList().get(it).list.get(0);
+                min = getListOfColumns().get(it).getListOfValues().get(0);
                 for (int i = 0; i < k.getColumnSize(); i++) {
-                    if (k.list.get(i).lte(min)) {
-                        min = k.list.get(i);
+                    if (k.getListOfValues().get(i).lte(min)) {
+                        min = k.getListOfValues().get(i);
                     }
                 }
                 NewKols[it] = new Column(k.getName(), k.getType());
-                NewKols[it].list.add(min);
+                NewKols[it].getListOfValues().add(min);
                 it++;
             }
             else{
@@ -541,25 +590,25 @@ public class DataFrame implements groupby{
 
     public DataFrame mean() {
         Value mean;
-        Column[] NewKols = new Column[toList().size()];
+        Column[] NewKols = new Column[getListOfColumns().size()];
         int it=0;
-        for(Column k: toList()){
+        for(Column k: getListOfColumns()){
         	if(k.getVType() instanceof SValue) {
         		mean = new SValue("___");
         		NewKols[it] = new Column(k.getName(), k.getType());
-        		NewKols[it].list.add(mean);
+        		NewKols[it].getListOfValues().add(mean);
                 it++;
         	} 
         	else {
 	        	if(groupelement==null || groupelement!=k.getName()) {
 	            	
-	                mean = toList().get(it).list.get(0);
+	                mean = getListOfColumns().get(it).getListOfValues().get(0);
 	                for (int i = 1; i < k.getColumnSize(); i++) {
-	                    mean = mean.add(k.list.get(i));
+	                    mean = mean.add(k.getListOfValues().get(i));
 	                }
 	                mean = mean.div(new Double(k.getColumnSize()));
 	                NewKols[it] = new Column(k.getName(), k.getType());
-	                NewKols[it].list.add(mean);
+	                NewKols[it].getListOfValues().add(mean);
 	                it++;
 	            }
 	            else{
@@ -575,14 +624,14 @@ public class DataFrame implements groupby{
         DataFrame newmean= this.mean();
         Value Returnv = new Integer(0);
         Value v = new Integer(this.size());
-        Column[] NewKols = new Column[toList().size()];
+        Column[] NewKols = new Column[getListOfColumns().size()];
         
         int it=0;
-        for(Column k: toList()){
+        for(Column k: getListOfColumns()){
         	if(k.getVType() instanceof SValue) {
         		Returnv = new SValue("___");
         		NewKols[it] = new Column(k.getName(), k.getType());
-        		NewKols[it].list.add(Returnv);
+        		NewKols[it].getListOfValues().add(Returnv);
                 it++;
         	}
         	else {
@@ -590,12 +639,12 @@ public class DataFrame implements groupby{
             	
             	
                 for(int i=0;i<k.getColumnSize();i++){
-                    Returnv =Returnv.add( (k.list.get(i).sub(newmean.toList().get(it).list.get(0))).pow(new Integer(2)));
+                    Returnv =Returnv.add( (k.getListOfValues().get(i).sub(newmean.getListOfColumns().get(it).getListOfValues().get(0))).pow(new Integer(2)));
                 }
                 Returnv=Returnv.div(v);
                 Returnv=Returnv.pow(new Double(0.5));
                 NewKols[it] = new Column(k.getName(), k.getType());
-                NewKols[it].list.add(Returnv);
+                NewKols[it].getListOfValues().add(Returnv);
                 Returnv = new Integer(0);
                 it++;
             }
@@ -610,23 +659,23 @@ public class DataFrame implements groupby{
 
     public DataFrame sum() {
         Value sum;
-        Column[] NewKols = new Column[toList().size()];
+        Column[] NewKols = new Column[getListOfColumns().size()];
         int it=0;
-        for(Column k: toList()){
+        for(Column k: getListOfColumns()){
         	if(k.getVType() instanceof SValue) {
         		sum = new SValue("___");
         		NewKols[it] = new Column(k.getName(), k.getType());
-        		NewKols[it].list.add(sum);
+        		NewKols[it].getListOfValues().add(sum);
                 it++;
         	} 
         	else {
             if(groupelement==null || groupelement!=k.getName()) {
-                sum = toList().get(it).list.get(0);
+                sum = getListOfColumns().get(it).getListOfValues().get(0);
                 for (int i = 1; i < k.getColumnSize(); i++) {
-                    sum = sum.add(k.list.get(i));
+                    sum = sum.add(k.getListOfValues().get(i));
                 }
                 NewKols[it] = new Column(k.getName(), k.getType());
-                NewKols[it].list.add(sum);
+                NewKols[it].getListOfValues().add(sum);
                 it++;
             }
             else{
@@ -642,24 +691,24 @@ public class DataFrame implements groupby{
         DataFrame newmean= this.mean();
         Value Returnv = new Integer(0);
         Value v = new Integer(this.size());
-        Column[] NewKols = new Column[toList().size()];
+        Column[] NewKols = new Column[getListOfColumns().size()];
         
         int it=0;
-        for(Column k: toList()){
+        for(Column k: getListOfColumns()){
         	if(k.getVType() instanceof SValue) {
         		Returnv = new SValue("___");
         		NewKols[it] = new Column(k.getName(), k.getType());
-        		NewKols[it].list.add(Returnv);
+        		NewKols[it].getListOfValues().add(Returnv);
                 it++;
         	} 
         	else {
             if(groupelement==null || groupelement!=k.getName()) {
                 for(int i=0;i<k.getColumnSize();i++){
-                    Returnv =Returnv.add( k.list.get(i).sub(newmean.toList().get(it).list.get(0)));
+                    Returnv =Returnv.add( k.getListOfValues().get(i).sub(newmean.getListOfColumns().get(it).getListOfValues().get(0)));
                 }
                 Returnv=Returnv.div(v);
                 NewKols[it] = new Column(k.getName(), k.getType());
-                NewKols[it].list.add(Returnv);
+                NewKols[it].getListOfValues().add(Returnv);
                 Returnv = new Integer(0);
                 it++;
             }
@@ -675,15 +724,15 @@ public class DataFrame implements groupby{
     public DataFrame apply(Applyable operation) {
         Column[] Cols = new Column[size()];
         int it=0;
-        for(Column k: toList()){
+        for(Column k: getListOfColumns()){
             Cols[it]=new Column(k);
             it++;
         }
         DataFrame returndf = new DataFrame(Cols);
         operation.apply(returndf);
-        for(int i=0;i<returndf.toList().size();i++){
-            if(returndf.toList().get(i).getName()==groupelement){
-                returndf.toList().set(i, new Column(this.toList().get(i)));
+        for(int i=0;i<returndf.getListOfColumns().size();i++){
+            if(returndf.getListOfColumns().get(i).getName()==groupelement){
+                returndf.getListOfColumns().set(i, new Column(this.getListOfColumns().get(i)));
 
         }
 
@@ -693,16 +742,16 @@ public class DataFrame implements groupby{
 
     public DataFrame maxthrd(){
         int cores = Runtime.getRuntime().availableProcessors();
-        String[] names = new String[toList().size()];
-        Value[] types = new Value[toList().size()];
-        for(int i=0;i<toList().size();i++){
-            names[i]=toList().get(i).getName();
-            types[i]=toList().get(i).getVType();
+        String[] names = new String[getListOfColumns().size()];
+        Value[] types = new Value[getListOfColumns().size()];
+        for(int i=0;i<getListOfColumns().size();i++){
+            names[i]=getListOfColumns().get(i).getName();
+            types[i]=getListOfColumns().get(i).getVType();
         }
         DataFrame outputFrame = new DataFrame(names,types);
 
         ExecutorService executor = Executors.newFixedThreadPool(cores);
-        for (Column k : toList()) {
+        for (Column k : getListOfColumns()) {
             Runnable worker = new ThreadMax(k,outputFrame);
             executor.execute(worker);
 
@@ -722,16 +771,16 @@ public class DataFrame implements groupby{
 
     public DataFrame minthrd(){
         int cores = Runtime.getRuntime().availableProcessors();
-        String[] names = new String[toList().size()];
-        Value[] types = new Value[toList().size()];
-        for(int i=0;i<toList().size();i++){
-            names[i]=toList().get(i).getName();
-            types[i]=toList().get(i).getVType();
+        String[] names = new String[getListOfColumns().size()];
+        Value[] types = new Value[getListOfColumns().size()];
+        for(int i=0;i<getListOfColumns().size();i++){
+            names[i]=getListOfColumns().get(i).getName();
+            types[i]=getListOfColumns().get(i).getVType();
         }
         DataFrame outputFrame = new DataFrame(names,types);
 
         ExecutorService executor = Executors.newFixedThreadPool(cores);
-        for (Column k : toList()) {
+        for (Column k : getListOfColumns()) {
             Runnable worker = new ThreadMin(k,outputFrame);
             executor.execute(worker);
 
@@ -751,16 +800,16 @@ public class DataFrame implements groupby{
  
     public DataFrame meanthrd(){
         int cores = Runtime.getRuntime().availableProcessors();
-        String[] names = new String[toList().size()];
-        Value[] types = new Value[toList().size()];
-        for(int i=0;i<toList().size();i++){
-            names[i]=toList().get(i).getName();
-            types[i]=toList().get(i).getVType();
+        String[] names = new String[getListOfColumns().size()];
+        Value[] types = new Value[getListOfColumns().size()];
+        for(int i=0;i<getListOfColumns().size();i++){
+            names[i]=getListOfColumns().get(i).getName();
+            types[i]=getListOfColumns().get(i).getVType();
         }
         DataFrame outputFrame = new DataFrame(names,types);
 
         ExecutorService executor = Executors.newFixedThreadPool(cores);
-        for (Column k : toList()) {
+        for (Column k : getListOfColumns()) {
             Runnable worker = new ThreadMean(k,outputFrame);
             executor.execute(worker);
 
@@ -780,16 +829,16 @@ public class DataFrame implements groupby{
 
     public DataFrame stdthrd(){
         int cores = Runtime.getRuntime().availableProcessors();
-        String[] names = new String[toList().size()];
-        Value[] types = new Value[toList().size()];
-        for(int i=0;i<toList().size();i++){
-            names[i]=toList().get(i).getName();
-            types[i]=toList().get(i).getVType();
+        String[] names = new String[getListOfColumns().size()];
+        Value[] types = new Value[getListOfColumns().size()];
+        for(int i=0;i<getListOfColumns().size();i++){
+            names[i]=getListOfColumns().get(i).getName();
+            types[i]=getListOfColumns().get(i).getVType();
         }
         DataFrame outputFrame = new DataFrame(names,types);
 
         ExecutorService executor = Executors.newFixedThreadPool(cores);
-        for (Column k : toList()) {
+        for (Column k : getListOfColumns()) {
             Runnable worker = new ThreadStd(k,outputFrame);
             executor.execute(worker);
 
@@ -809,16 +858,16 @@ public class DataFrame implements groupby{
 
     public DataFrame sumthrd(){
         int cores = Runtime.getRuntime().availableProcessors();
-        String[] names = new String[toList().size()];
-        Value[] types = new Value[toList().size()];
-        for(int i=0;i<toList().size();i++){
-            names[i]=toList().get(i).getName();
-            types[i]=toList().get(i).getVType();
+        String[] names = new String[getListOfColumns().size()];
+        Value[] types = new Value[getListOfColumns().size()];
+        for(int i=0;i<getListOfColumns().size();i++){
+            names[i]=getListOfColumns().get(i).getName();
+            types[i]=getListOfColumns().get(i).getVType();
         }
         DataFrame outputFrame = new DataFrame(names,types);
 
         ExecutorService executor = Executors.newFixedThreadPool(cores);
-        for (Column k : toList()) {
+        for (Column k : getListOfColumns()) {
             Runnable worker = new ThreadSum(k,outputFrame);
             executor.execute(worker);
 
@@ -838,16 +887,16 @@ public class DataFrame implements groupby{
    
     public DataFrame varthrd(){
         int cores = Runtime.getRuntime().availableProcessors();
-        String[] names = new String[toList().size()];
-        Value[] types = new Value[toList().size()];
-        for(int i=0;i<toList().size();i++){
-            names[i]=toList().get(i).getName();
-            types[i]=toList().get(i).getVType();
+        String[] names = new String[getListOfColumns().size()];
+        Value[] types = new Value[getListOfColumns().size()];
+        for(int i=0;i<getListOfColumns().size();i++){
+            names[i]=getListOfColumns().get(i).getName();
+            types[i]=getListOfColumns().get(i).getVType();
         }
         DataFrame outputFrame = new DataFrame(names,types);
 
         ExecutorService executor = Executors.newFixedThreadPool(cores);
-        for (Column k : toList()) {
+        for (Column k : getListOfColumns()) {
             Runnable worker = new ThreadVar(k,outputFrame);
             executor.execute(worker);
 
@@ -875,35 +924,35 @@ public class DataFrame implements groupby{
     public Column colvalmul(Column k,Value mulelement) {
     	Column tmp = new Column(k.getName(),k.getType());
     	for(int i=0;i< k.getColumnSize();i++) {
-    		tmp.addElement(k.list.get(i).mul(mulelement));
+    		tmp.addElement(k.getListOfValues().get(i).mul(mulelement));
     	}
     	return tmp;
     }
     public Column colvaldiv(Column k,Value divelement) throws RuntimeException{
     	Column tmp = new Column(k.getName(),k.getType());
     	for(int i=0;i< k.getColumnSize();i++) {
-    		tmp.addElement(k.list.get(i).div(divelement));
+    		tmp.addElement(k.getListOfValues().get(i).div(divelement));
     	}
     	return tmp;
     }
     public Column colvaladd(Column k,Value addelement) throws RuntimeException{
     	Column tmp = new Column(k.getName(),k.getType());
     	for(int i=0;i< k.getColumnSize();i++) {
-    		tmp.addElement(k.list.get(i).add(addelement));
+    		tmp.addElement(k.getListOfValues().get(i).add(addelement));
     	}
     	return tmp;
     }
     public Column colvalsub(Column k,Value subelement) throws RuntimeException{
     	Column tmp = new Column(k.getName(),k.getType());
     	for(int i=0;i< k.getColumnSize();i++) {
-    		tmp.addElement(k.list.get(i).sub(subelement));
+    		tmp.addElement(k.getListOfValues().get(i).sub(subelement));
     	}
     	return tmp;
     }
     public Column colvalpow(Column k,Value powelement)throws RuntimeException {
     	Column tmp = new Column(k.getName(),k.getType());
     	for(int i=0;i< k.getColumnSize();i++) {
-    		tmp.addElement(k.list.get(i).pow(powelement));
+    		tmp.addElement(k.getListOfValues().get(i).pow(powelement));
     	}
     	return tmp;
     }
@@ -911,7 +960,7 @@ public class DataFrame implements groupby{
     	if(k.getColumnSize()==addelement.getColumnSize()) {
     		Column tmp = new Column(k.getName(),k.getType());
         	for(int i=0;i< k.getColumnSize();i++) {
-        		tmp.addElement(k.list.get(i).add(addelement.list.get(i)));
+        		tmp.addElement(k.getListOfValues().get(i).add(addelement.getListOfValues().get(i)));
         	}
         	return tmp;
     		
@@ -925,7 +974,7 @@ public class DataFrame implements groupby{
     	if(k.getColumnSize()==subelement.getColumnSize()) {
     		Column tmp = new Column(k.getName(),k.getType());
         	for(int i=0;i< k.getColumnSize();i++) {
-        		tmp.addElement(k.list.get(i).sub(subelement.list.get(i)));
+        		tmp.addElement(k.getListOfValues().get(i).sub(subelement.getListOfValues().get(i)));
         	}
         	return tmp;
     		
@@ -939,7 +988,7 @@ public class DataFrame implements groupby{
     	if(k.getColumnSize()==element.getColumnSize()) {
     		Column tmp = new Column(k.getName(),k.getType());
         	for(int i=0;i< k.getColumnSize();i++) {
-        		tmp.addElement(k.list.get(i).mul(element.list.get(i)));
+        		tmp.addElement(k.getListOfValues().get(i).mul(element.getListOfValues().get(i)));
         	}
         	return tmp;
     		
@@ -952,7 +1001,7 @@ public class DataFrame implements groupby{
         	if(k.getColumnSize()==element.getColumnSize()) {
         		Column tmp = new Column(k.getName(),k.getType());
             	for(int i=0;i< k.getColumnSize();i++) {
-            		tmp.addElement(k.list.get(i).div(element.list.get(i)));
+            		tmp.addElement(k.getListOfValues().get(i).div(element.getListOfValues().get(i)));
             	}
             	return tmp;
         		
@@ -966,7 +1015,7 @@ public class DataFrame implements groupby{
         	if(k.getColumnSize()==element.getColumnSize()) {
         		Column tmp = new Column(k.getName(),k.getType());
             	for(int i=0;i< k.getColumnSize();i++) {
-            		tmp.addElement(k.list.get(i).pow(element.list.get(i)));
+            		tmp.addElement(k.getListOfValues().get(i).pow(element.getListOfValues().get(i)));
             	}
             	return tmp;
         		

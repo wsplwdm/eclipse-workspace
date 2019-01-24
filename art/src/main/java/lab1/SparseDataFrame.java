@@ -23,7 +23,7 @@ public void add(Value[] vals,int col){
 	for(int i=0;i<vals.length;i++) {
 		if(vals[i].toString()!=hidelement.toString()) {
 			COOValue tmp = new COOValue(i,vals[i]);
-			sdf.get(col).list.add(tmp);
+			sdf.get(col).listOfValues.add(tmp);
 		}
 		sdf.get(col).anotherOneHidelement();
 	}
@@ -36,9 +36,9 @@ public DataFrame toDense(SparseDataFrame sparse) {
 		int tmp=column.getColumnSize();
 		Column ktmp= new Column(column.getName(),column.getType());
 		for(int i=0;i<column.getDfsize()-tmp;i++) {
-			ktmp.list.add(hidelement);
+			ktmp.listOfValues.add(hidelement);
 		for(int j=0;j<tmp;j++){
-			ktmp.list.add(((COOValue) column.list.get(j)).getIndex(),((COOValue) column.get(j)).getValue());
+			ktmp.listOfValues.add(((COOValue) column.listOfValues.get(j)).getIndex(),((COOValue) column.get(j)).getValue());
 			}
 		
 		}
@@ -54,12 +54,12 @@ public DataFrame toDense(SparseDataFrame sparse) {
 public SparseDataFrame(DataFrame dataf, SValue hide) {
 	super(dataf);
 	hidelement = hide;
-	for(int i=0;i<dataf.df.size();i++){
+	for(int i=0;i<dataf.listOfColumns.size();i++){
 		Column ktmp= new Column(dataf.get(i).getName(),dataf.get(i).getType());
-		for(int j=0;j<dataf.df.get(0).getColumnSize();j++) {
-			if(dataf.df.get(i).get(j)!=hide) {
-				COOValue tmpc = new COOValue(j,dataf.df.get(i).get(j));
-				ktmp.list.add(tmpc);
+		for(int j=0;j<dataf.listOfColumns.get(0).getColumnSize();j++) {
+			if(dataf.listOfColumns.get(i).get(j)!=hide) {
+				COOValue tmpc = new COOValue(j,dataf.listOfColumns.get(i).get(j));
+				ktmp.listOfValues.add(tmpc);
 			}
 		}
 		
