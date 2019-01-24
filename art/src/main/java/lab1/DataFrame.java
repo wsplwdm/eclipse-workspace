@@ -40,7 +40,7 @@ public class DataFrame implements groupby, Serializable{
     
    
 
-    	
+    public DataFrame() {}
     public DataFrame(String[] names, String[] types){
     	///Tworzenie datafram'a z pustymi kolumnami
         for (int i=0; i<names.length; i++)

@@ -74,6 +74,7 @@ public class DB extends DataFrame {
         }
         return returnframe ;
     }
+    /*
     public DB(String path) throws IOException {
     	super(path);
     	try {
@@ -95,6 +96,11 @@ public class DB extends DataFrame {
              System.out.println("SQL state "+e.getSQLState());
              System.out.println("SQL vendor error "+e.getErrorCode());
          }
+    }*/
+    public DB(String name){
+    	super();
+    	this.dbname=name;
+    	
     }
     public DB(DataFrame dftosave) {
     	super(dftosave);
