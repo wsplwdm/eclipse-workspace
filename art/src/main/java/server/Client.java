@@ -13,8 +13,12 @@ public class Client
 { 
     public static void main(String[] args) throws IOException  
     { 
-        try
-        { 	String[] names= {"jeden","dwa"};
+        try { 	
+        	//sample client for testing purpouse
+        	//for more developed version check 
+        	// StacPaneController.onActionServer
+        	// (GUI button 'operation by server')
+        	String[] names= {"jeden","dwa"};
         	String[] tnames= {"jeden","dwa"};
 			DataFrame df = new DataFrame(names,tnames);
             Scanner scn = new Scanner(System.in); 
@@ -25,36 +29,35 @@ public class Client
             // establish the connection with server port 5056 
             Socket s = new Socket(ip, 6000); 
       
-            // obtaining input and out streams 
+           
             
             ObjectInputStream dis = new ObjectInputStream(s.getInputStream()); 
             System.out.println("in"); 
             ObjectOutputStream dos = new ObjectOutputStream(s.getOutputStream()); 
             System.out.println("out");
-            // the following loop performs the exchange of 
-            // information between client and client handler 
-            //dos.writeObject("min"); 
-            //dos.writeObject(df); 
+            
+            // loop to connect to middleman in case he was busy
+            //
             while (true)  
             { 
-                System.out.println(dis.readUTF()); 
-                String tosend = scn.nextLine(); 
-                
-                  
-                // If client sends exit,close this connection  
-                // and then break from the while loop 
-                if(tosend.equals("Exit")) 
-                { 
-                    System.out.println("Closing this connection : " + s); 
-                    s.close(); 
-                    System.out.println("Connection closed"); 
-                    break; 
-                } 
-                  
-                // printing date or time as requested by client 
-                String received = dis.readUTF(); 
-                System.out.println(received); 
+            	dos.writeObject("hello");
+                String h =dis.readObject().toString();
+                if(h =="hello") {
+                	
+                	//choose operation to make
+                	
+                	String choosenOperation = "max";
+                	
+                	dos.writeObject(choosenOperation);
+                	dos.writeObject(df);
+                	break;
+                }
             } 
+                String r =dis.readObject().toString();
+                System.out.println(r);
+                DataFrame outputFrame = (DataFrame) dis.readObject();
+                outputFrame.print(); 
+           
               
             // closing resources 
             scn.close(); 

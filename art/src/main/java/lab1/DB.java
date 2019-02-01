@@ -8,13 +8,17 @@ import valueTypes.SValue;
 import valueTypes.Value;
 
 public class DB extends DataFrame {
-    private Connection connectvar = null;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Connection connectvar = null;
     private Statement stat = null;
     private ResultSet result = null;
-   // private String[] dblist;
-    public String dbname;
+    private String dbname;
     
     public void connect(){
+    	//connection with database
         try{
            connectvar = DriverManager.getConnection("jdbc:mysql://mysql.agh.edu.pl/margansk","margansk","pAuhC1rjphRvK86h");
         }
@@ -24,16 +28,17 @@ public class DB extends DataFrame {
     }
     
     public DataFrame getDataFrame(){
+    	//get DataFrame out of DB
         DataFrame returnframe =null;
         try{
             connect();
             stat= connectvar.createStatement();
-            result=stat.executeQuery("select *  FROM "+dbname);
+            result=stat.executeQuery("select *  FROM "+getDbname());
             ResultSetMetaData rsmd = result.getMetaData();
             int numberofcols= rsmd.getColumnCount();
             Column[] cols = new Column[numberofcols];
             for(int i=1;i<=numberofcols;i++) {
-                result=stat.executeQuery("select *  FROM "+dbname);
+                result=stat.executeQuery("select *  FROM "+getDbname());
                 Value typo = new SValue();
                 String gt =rsmd.getColumnTypeName(i);
                 if(gt=="INT" || gt=="TINYINT"|| gt=="SMALLINT"|| gt=="MEDIUMINT" || gt=="BIGINT"){
@@ -75,16 +80,21 @@ public class DB extends DataFrame {
         return returnframe ;
     }
    
-    /*
+    
     public DB(String path) throws IOException {
+    	//creating DB directly from file
+    	//it's supposed to be much faster method than creating table with CREATE and INSERT 
+    	//but something wrong with acces rights to DataBase
     	super(path);
     	try {
-    	dbname = fxcontroller.StackPaneController.nazwapliku;
+    		String[] pathDecomposed = path.split("\\");
+    		setDbname(pathDecomposed[pathDecomposed.length-1].split(".")[1]);
+    	
     	 connect();
          stat = connectvar.createStatement();
-         //stat.executeUpdate("Drop table 1groupby");
+         //stat.executeUpdate("Drop table "+dbname);
          String command ="LOAD DATA INFILE \""+path+"\"\r\n" + 
-         		"INTO TABLE "+dbname+"\r\n" + 
+         		"INTO TABLE "+getDbname()+"\r\n" + 
          		"COLUMNS TERMINATED BY ','\r\n" + 
          		"OPTIONALLY ENCLOSED BY '\"'\r\n" + 
          		"ESCAPED BY '\"'\r\n" + 
@@ -97,22 +107,17 @@ public class DB extends DataFrame {
              System.out.println("SQL state "+e.getSQLState());
              System.out.println("SQL vendor error "+e.getErrorCode());
          }
-    }*/
-    public DB(String name) {
-    	super();
-    	this.dbname=name;
-    	
     }
+  
     public DB(DataFrame dftosave) {
     	super(dftosave);
     	
     	  try {
-          	//dbname = fxcontroller.StackPaneController.nazwapliku;
               connect();
               stat = connectvar.createStatement();
               stat.executeUpdate("Drop table 1groupby");
               //System.out.println(dbname);
-              String command = "CREATE TABLE "+dbname+" (";
+              String command = "CREATE TABLE "+getDbname()+" (";
               
               for(int i=0;i<dftosave.getListOfColumns().size()-1;i++){
                   command=command+dftosave.getListOfColumns().get(i).getName()+" ";
@@ -154,11 +159,16 @@ public class DB extends DataFrame {
               System.out.println(command);
               stat.executeUpdate(command);
               String secondcommand;
+              
+              
+              //sending data to DB 
+              //one command takes 'ile' lines of DataFrame
+              
               int ile=10000;
               
             	  for(int k =0;k<dftosave.size();k+=ile) {
             		  System.out.println(k);
-                   secondcommand="INSERT INTO "+dbname+" (" ;
+                   secondcommand="INSERT INTO "+getDbname()+" (" ;
                   for(int j=0;j<dftosave.getListOfColumns().size()-1;j++){
                       secondcommand=secondcommand+dftosave.getListOfColumns().get(j).getName()+" , ";
                   }
@@ -249,12 +259,12 @@ public class DB extends DataFrame {
             stat= connectvar.createStatement();
 
 
-            result=stat.executeQuery("select *  FROM "+dbname);
+            result=stat.executeQuery("select *  FROM "+getDbname());
             ResultSetMetaData rsmd = result.getMetaData();
             int numberofcols= rsmd.getColumnCount();
             Column[] cols = new Column[numberofcols];
             for(int i=1;i<=numberofcols;i++) {
-                result=stat.executeQuery("select MIN("+rsmd.getColumnName(i)+")  FROM "+dbname);
+                result=stat.executeQuery("select MIN("+rsmd.getColumnName(i)+")  FROM "+getDbname());
                 Value typo = new valueTypes.Integer();
                 cols[i-1]=new Column(rsmd.getColumnName(i),typo);
                 result.next();
@@ -290,12 +300,12 @@ public class DB extends DataFrame {
             stat= connectvar.createStatement();
 
 
-            result=stat.executeQuery("select *  FROM "+dbname);
+            result=stat.executeQuery("select *  FROM "+getDbname());
             ResultSetMetaData rsmd = result.getMetaData();
             int numberofcols= rsmd.getColumnCount();
             Column[] cols = new Column[numberofcols];
             for(int i=1;i<=numberofcols;i++) {
-                result=stat.executeQuery("select MAX("+rsmd.getColumnName(i)+")  FROM "+dbname);
+                result=stat.executeQuery("select MAX("+rsmd.getColumnName(i)+")  FROM "+getDbname());
                 Value typo = new valueTypes.Integer();
                 cols[i-1]=new Column(rsmd.getColumnName(i),typo);
                 result.next();
@@ -332,14 +342,14 @@ public class DB extends DataFrame {
             stat= connectvar.createStatement();
 
             stat.executeQuery("SET OPTION SQL_SELECT_LIMIT=DEFAULT");
-            System.out.println("select *  FROM "+dbname+"  GROUP BY "+colname+";");
-            result=stat.executeQuery("select *  FROM "+dbname+"  GROUP BY "+colname+";");
-            System.out.println("select *  FROM "+dbname+"  GROUP BY "+colname+";");
+            System.out.println("select *  FROM "+getDbname()+"  GROUP BY "+colname+";");
+            result=stat.executeQuery("select *  FROM "+getDbname()+"  GROUP BY "+colname+";");
+            System.out.println("select *  FROM "+getDbname()+"  GROUP BY "+colname+";");
             ResultSetMetaData rsmd = result.getMetaData();
             int numberofcols= rsmd.getColumnCount();
             Column[] cols = new Column[numberofcols];
             for(int i=1;i<=numberofcols;i++) {
-                result=stat.executeQuery("select *  FROM "+dbname+"  GROUP BY "+colname+";");
+                result=stat.executeQuery("select *  FROM "+getDbname()+"  GROUP BY "+colname+";");
                 //System.out.println("select *  FROM "+dbname+"  GROUP BY "+colname+";");
                 Value typo = new SValue();
                 String gt =rsmd.getColumnTypeName(i);
@@ -387,4 +397,12 @@ public class DB extends DataFrame {
         }
         return returnframe ;
     }
+
+	public String getDbname() {
+		return dbname;
+	}
+
+	public void setDbname(String dbname) {
+		this.dbname = dbname;
+	}
 }

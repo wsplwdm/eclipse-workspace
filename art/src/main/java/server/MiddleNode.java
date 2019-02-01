@@ -25,12 +25,13 @@ public class MiddleNode{
    
 public static void main(String[] args) throws IOException  
         { 	
-		System.out.println("i'm middlenode");
+		System.out.println("middlenode started");
             // server is listening on port 6000 
             ServerSocket ss = new ServerSocket(6000); 
+            
+            //port numbers for worker threads
             int[]ports= {6001,6002,6003};
-            // running infinite loop for getting 
-            // client request 
+             
             while (true)  
             { 
                 Socket s = null; 
@@ -41,18 +42,19 @@ public static void main(String[] args) throws IOException
                       
                     System.out.println("A new client is connected : " + s); 
                       
-                    // obtaining input and out streams 
+                    
                     ObjectInputStream dis = new ObjectInputStream(s.getInputStream()); 
                     System.out.println("A new client is connected : " + s); 
                     ObjectOutputStream dos = new ObjectOutputStream(s.getOutputStream()); 
                       
                     System.out.println("Assigning new thread for this client"); 
       
+                    
                     // create a new thread object 
                     
                     ClientHandler t = new ClientHandler(s,ports, dis, dos); 
       
-                    // Invoking the start() method 
+                  
                     t.start(); 
                       
                 } 

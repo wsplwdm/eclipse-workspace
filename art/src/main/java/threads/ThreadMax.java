@@ -22,9 +22,9 @@ public class ThreadMax implements Runnable {
 	            if(k.getName().equals(columnToProcess.getName())){
 	            	
 	            	Value max=new valueTypes.Integer(java.lang.Integer.MIN_VALUE);
-	            	if(columnToProcess.listOfValues.get(0) instanceof SValue ==true) {
-	            		max = new SValue(" ---- ");}
-	            	else {
+	            	//if(columnToProcess.listOfValues.get(0) instanceof SValue ==true) {
+	            	//	max = new SValue(" ---- ");}
+	            	//else {
 	            		max=columnToProcess.listOfValues.get(0);
 	            	
 	            
@@ -35,7 +35,7 @@ public class ThreadMax implements Runnable {
 		                    }
 	                	}
 	                }
-	            	}
+	            	//}
 	                k.addElement(max);
 	                break;
 	            }

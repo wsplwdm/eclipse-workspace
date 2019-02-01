@@ -2,27 +2,27 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="operations" key="selection"/>
+		<item value="normalny" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="normalny"/>
+			<item value="nazwapliku"/>
+			<item value="time2"/>
+			<item value="operationType"/>
+			<item value="lengt"/>
+			<item value="length"/>
+			<item value="catch"/>
+			<item value="zapis"/>
+			<item value="wynik"/>
+			<item value="przycisk_plik"/>
+			<item value="przycisk"/>
 			<item value="operations"/>
 			<item value="choiceX"/>
 			<item value="addAll"/>
 			<item value="choiceY"/>
-			<item value="data"/>
-			<item value="close"/>
-			<item value="start"/>
-			<item value="out."/>
-			<item value="out"/>
-			<item value="ins"/>
-			<item value="outs"/>
-			<item value=".get(j)."/>
-			<item value=".get(i)."/>
-			<item value="node"/>
-			<item value="middle"/>
 		</list>
 		<list key="replacehistory">
 			<item value="workerOut."/>
@@ -46,7 +46,7 @@
 		<item value="284" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="391" key="DIALOG_HEIGHT"/>
-		<item value="1095" key="DIALOG_X_ORIGIN"/>
-		<item value="277" key="DIALOG_Y_ORIGIN"/>
+		<item value="1307" key="DIALOG_X_ORIGIN"/>
+		<item value="361" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

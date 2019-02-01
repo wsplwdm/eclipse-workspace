@@ -36,7 +36,7 @@ import valueTypes.Value;
 public class DataFrame implements groupby, Serializable{
     public ArrayList<Column> listOfColumns = new ArrayList<Column>();
     public String groupelement;
-    private Value groupbyid;
+    private String groupbyid;
     
    
 
@@ -264,7 +264,7 @@ public class DataFrame implements groupby, Serializable{
      public  Column get(String colname){
     	// zwraca kolumnę o podanej nazwie
         for (Column col:listOfColumns){
-            if (col.getName()==colname){
+            if (col.getName().equals(colname)){
             	return col;
             }
         }
@@ -364,7 +364,7 @@ public class DataFrame implements groupby, Serializable{
     	String[] ret= {"","","","","",""};
     	//max min mean vaar sum std\
     	DataFrame tmp = new DataFrame(path);
-    	for(int i =0; i<tmp.listOfColumns.size();i++) {
+    	for(int i =0; i<tmp.getListOfColumns().size();i++) {
 	    	
 	    	DataFrame plik;
 			try {
@@ -372,12 +372,12 @@ public class DataFrame implements groupby, Serializable{
 			
 	    	
 	    	
-	    	ret[0] += plik.maxthrd().listOfColumns.get(i).getListOfValues().get(0).toString() +"		";
-	    	ret[1] += plik.minthrd().listOfColumns.get(i).getListOfValues().get(0).toString() +"		";
-	    	ret[2] += plik.meanthrd().listOfColumns.get(i).getListOfValues().get(0).toString() +" 		 ";
-	    	ret[3] += plik.varthrd().listOfColumns.get(i).getListOfValues().get(0).toString() +"		";
-	    	ret[4] += plik.sumthrd().listOfColumns.get(i).getListOfValues().get(0).toString() +"		";
-	    	ret[5] += plik.stdthrd().listOfColumns.get(i).getListOfValues().get(0).toString() +"		";
+	    	ret[0] += plik.maxthrd().getListOfColumns().get(i).getListOfValues().get(0).toString() +"		";
+	    	ret[1] += plik.minthrd().getListOfColumns().get(i).getListOfValues().get(0).toString() +"		";
+	    	ret[2] += plik.meanthrd().getListOfColumns().get(i).getListOfValues().get(0).toString() +" 		 ";
+	    	ret[3] += plik.varthrd().getListOfColumns().get(i).getListOfValues().get(0).toString() +"		";
+	    	ret[4] += plik.sumthrd().getListOfColumns().get(i).getListOfValues().get(0).toString() +"		";
+	    	ret[5] += plik.stdthrd().getListOfColumns().get(i).getListOfValues().get(0).toString() +"		";
 	    	
 	    
     	
@@ -389,11 +389,11 @@ public class DataFrame implements groupby, Serializable{
     	return ret;
     }
     
-    public Value getId(){
+    public String getId(){
         return groupbyid;
     }
-    public void setGroupbyId(Value v){
-        groupbyid=v;
+    public void setGroupbyId(String string){
+        groupbyid=string;
     }
     
     public ArrayList<DataFrame> groupby(int id) {
@@ -404,27 +404,35 @@ public class DataFrame implements groupby, Serializable{
         Value[] types = new Value[getListOfColumns().size()-1] ;
         
         ArrayList<DataFrame> returnDataFrame = new ArrayList<DataFrame>();
-        ArrayList<Value> tmpValues = new ArrayList<Value>();
+        ArrayList<String> tmpValues = new ArrayList<String>();
         
         int i=0;
         for(Column col: getListOfColumns()){
             if(groupByThisColumn!=col) {
             	names[i] = col.getName();
                 types[i] = col.getVType();
-                
+               // System.out.println(names[i]);
+               // System.out.println(types[i]);
                 i++;
             }
 
         }
         for(i =0;i<size();i++){
-            if(tmpValues.contains(groupByThisColumn.getListOfValues().get(i))!=true){
-            	
-                tmpValues.add(groupByThisColumn.getListOfValues().get(i));
+        	//System.out.println(i);
+        	
+            if(tmpValues.contains(groupByThisColumn.getListOfValues().get(i).toString())){
+            }
+            
+            else {
+                tmpValues.add(groupByThisColumn.getListOfValues().get(i).toString());
+                //System.out.println("adding"+groupByThisColumn.getListOfValues().get(i));
+                
             }
 
         }
         for(i =0;i<tmpValues.size();i++){
             returnDataFrame.add(new DataFrame(names,types));
+            //System.out.println("dodaje ");
             returnDataFrame.get(i).setGroupbyId(tmpValues.get(i));
         }
         Value[] values ;
@@ -442,7 +450,7 @@ public class DataFrame implements groupby, Serializable{
 
 
             for(int k=0;k<returnDataFrame.size();k++){
-                if(groupByThisColumn.getListOfValues().get(i).eq(returnDataFrame.get(k).getId())){
+                if(groupByThisColumn.getListOfValues().get(i).toString().equals(returnDataFrame.get(k).getId())){
 
                     returnDataFrame.get(k).add(values);
                     break;
@@ -451,6 +459,10 @@ public class DataFrame implements groupby, Serializable{
         }
         return returnDataFrame;
     }
+    
+ 
+    
+    
     
     public ArrayList<DataFrame> groupbyThread(int id){
     	//groupby wielowątkowy
@@ -484,7 +496,7 @@ public class DataFrame implements groupby, Serializable{
         }
         for(i =0;i<tmpValues.size();i++){
             returnDataFrame.add(new DataFrame(names,types));
-            returnDataFrame.get(i).setGroupbyId(tmpValues.get(i));
+            returnDataFrame.get(i).setGroupbyId(tmpValues.get(i).toString());
         }
 
 
@@ -535,13 +547,13 @@ public class DataFrame implements groupby, Serializable{
         Column[] NewKols = new Column[getListOfColumns().size()];
         int it=0;
         for(Column k: getListOfColumns()){
-        	if(k.getVType() instanceof SValue) {
+        	/*if(k.getVType() instanceof SValue) {
         		max = new SValue("___");
         		NewKols[it] = new Column(k.getName(), k.getType());
         		NewKols[it].getListOfValues().add(max);
                 it++;
-        	} 
-        	else {
+        	} */
+        	//else {
             if(groupelement==null || groupelement!=k.getName()) {
                 max = getListOfColumns().get(it).getListOfValues().get(0);
                 for (int i = 0; i < k.getColumnSize(); i++) {
@@ -557,7 +569,7 @@ public class DataFrame implements groupby, Serializable{
                 NewKols[it]= new Column(k);
                 it++;
             }
-        	}
+        	//}
         }
         
         

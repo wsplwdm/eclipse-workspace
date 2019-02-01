@@ -59,8 +59,9 @@ public class SValue extends Value {
 
     @Override
     public boolean gte(Value v) {
-        boolean returnvalue = (value.length()>=v.toString().length());
-        return returnvalue;
+        int returnvalue = (value.compareTo(v.toString()));
+        
+        return returnvalue>0;
     }
 
     @Override

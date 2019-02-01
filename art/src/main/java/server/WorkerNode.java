@@ -22,8 +22,10 @@ public class WorkerNode  {
 
 public static void main(String[] args) throws IOException  
     { 	
+	
+	
 		System.out.println("i'm workernode");
-        // server is listening on port 5000 
+        //this workernode is listening on port 6001
         ServerSocket ss = new ServerSocket(6001); 
         String inputline="";
         boolean ready = true;
@@ -48,6 +50,9 @@ public static void main(String[] args) throws IOException
         		ArrayList<DataFrame> groupbyRet=new ArrayList<DataFrame>();
             	DataFrame dfDone;
             	String operation = inputStream.readObject().toString();
+            	// in groupby case the first message contains
+    			// groupby#name
+    			// where name is name of column to group by
                 String[] operationType=operation.split("#");
                 DataFrame dataFrameToCalculate =  (DataFrame) inputStream.readObject();
                 if(operationType[0]=="max"){

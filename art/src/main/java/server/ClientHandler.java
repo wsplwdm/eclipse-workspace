@@ -27,7 +27,7 @@ class ClientHandler extends java.lang.Thread
 	@Override
     public void run()  
     {  	System.out.println("i'm client handler");
-    	//int j=0;
+    	
     	long start;
     	boolean foundWorker = false;
     	String errorMessage;
@@ -37,6 +37,9 @@ class ClientHandler extends java.lang.Thread
 		try {
 			
 			String operation = clientIn.readObject().toString();
+			// in groupby case the first message contains
+			// groupby#name
+			// where name is name of column to group by
 			String[] operationType = operation.split("#");
 			DataFrame dfToCalc = (DataFrame) clientIn.readObject();
 		
@@ -96,7 +99,7 @@ class ClientHandler extends java.lang.Thread
                          	break;
                          }
                      }
- 	             //przerwanie jeœli trwa wiêcej ni¿ 10 milisekund
+ 	             //timeout 10 ms
  	               if((System.nanoTime()-start)/1000000>=10){
  	            	   
  	                   break;
@@ -105,10 +108,7 @@ class ClientHandler extends java.lang.Thread
  	               if(i>ports.length) {
  	            	   i=0;
  	               }
- 	              // j++;
- 	               //if(j>=workerOut.size()){
- 	                //   j=0;
- 	               	//}
+ 	            
                  
                  
     	 	} 
@@ -122,7 +122,7 @@ class ClientHandler extends java.lang.Thread
         
         try
         { 
-            System.out.println("koñczenie ha");
+            
             this.clientIn.close();
             this.clientOut.close(); 
         }catch(IOException e){ 
