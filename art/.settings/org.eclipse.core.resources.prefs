@@ -1,4 +1,3 @@
 eclipse.preferences.version=1
-encoding//src/main/java/fxcontroller/StackPaneController.java=UTF-8
-encoding//src/main/java/lab1/DataFrame.java=UTF-8
-encoding//src/main/java/lab1/Main.java=UTF-8
+encoding//src/main/dataframe/df/Main.java=UTF-8
+encoding//src/main/dataframe/df/StackPaneController.java=UTF-8

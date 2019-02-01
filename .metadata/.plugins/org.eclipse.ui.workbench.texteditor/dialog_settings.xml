@@ -2,12 +2,16 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="normalny" key="selection"/>
+		<item value="id" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="id"/>
+			<item value="lab1"/>
+			<item value="adding"/>
+			<item value="groupb"/>
 			<item value="normalny"/>
 			<item value="nazwapliku"/>
 			<item value="time2"/>
@@ -19,12 +23,9 @@
 			<item value="wynik"/>
 			<item value="przycisk_plik"/>
 			<item value="przycisk"/>
-			<item value="operations"/>
-			<item value="choiceX"/>
-			<item value="addAll"/>
-			<item value="choiceY"/>
 		</list>
 		<list key="replacehistory">
+			<item value="dataframe.lab1"/>
 			<item value="workerOut."/>
 			<item value="workerOut"/>
 			<item value="workerIn"/>
@@ -39,7 +40,6 @@
 			<item value=" df"/>
 			<item value="df"/>
 			<item value="columnToProcess"/>
-			<item value="setGroupbyId"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
